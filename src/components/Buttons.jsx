@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const Button = () => {
     return (
@@ -43,13 +43,13 @@ export const ArchiveButton = () => {
 export const LoginButton = () => {
     const naviagate = useNavigate();
     return (
-        <button className="text-black px-7 py-1 mx-2 border-black border-2 rounded-full hover:bg-black hover:text-white" onClick={() => naviagate('/login', {replace: true})}>Login</button>
+        <button className="text-black px-7 py-2 mx-2 box-border border-black border-2 rounded-full hover:bg-black hover:text-white" onClick={() => naviagate('/login', {replace: true})}>Login</button>
     )
 }
 export const RegisterButton = () => {
     const naviagate = useNavigate();
     return (
-        <button className="text-white px-7 py-1 border-black border-2 bg-blue-600 rounded-full hover:bg-blue-400 hover:text-black" onClick={() => naviagate('/register', {replace: true})}>Register</button>
+        <button className="bg-blue-500 text-white px-7 py-2 rounded-full hover:bg-blue-600 transition duration-300rounded-full" onClick={() => naviagate('/register', {replace: true})}>Register</button>
     )
 }
 
