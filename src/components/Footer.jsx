@@ -5,7 +5,7 @@ export const Footer = () => {
         <footer className="w-full py-8 bg-gray-900 text-white">
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center mb-6">
                 <div className="flex items-center mb-4 md:mb-0">
-                    <img src="../assets/ .jpg" alt="Creator" className="w-16 h-16 rounded-full mr-4" />
+                    <img src="/assets/images/creator.jpg" className="w-16 h-16 object-cover rounded-full mr-4" />
                     <div>
                         <h3 className="text-lg font-semibold">Eshan Sud</h3>
                         <p className="text-sm">Creator of Task Master</p>

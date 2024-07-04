@@ -22,8 +22,8 @@ export const Navbar = () => {
             <div className={`bg-white/75 fixed top-0 z-50 p-4 w-full shadow-2xl border-solid border-b-[1px] border-black flex align-middle justify-between transition-transform duration-300 ${showNavbar ? 'transform translate-y-0' : 'transform -translate-y-full'}`}>
                 <Link to="/" className="tracking-wider text-2xl font-mono">Task Master<hr className="border-solid border-slate-950" /></Link>
                 <div className="list-none flex justify-center items-center text-lg absolute left-1/2 transform -translate-x-1/2 z-40">
-                    <MenuItem to='/' name='Home'/>
-                    <MenuItem to='/about' name='About'/>
+                    <MenuItem to='/home' name='Home'/>
+                    <MenuItem to='/about-us' name='About us'/>
                     <MenuItem to='/contact' name='Contact'/>
                 </div>
                 <div>

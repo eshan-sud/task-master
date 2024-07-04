@@ -22,7 +22,7 @@ const features = [
 
 export const Features = () => {
     return (
-        <div className=" shadow-lg relative w-full h-auto bg-blue-50 flex flex-col items-center justify-center mt-[100vh] py-20">
+        <div className=" shadow-lg relative w-full h-auto bg-blue-50 flex flex-col items-center justify-center py-20">
             <h1 className="text-4xl font-bold mb-12">Features</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 px-10">
                 {features.map((feature, index) => (

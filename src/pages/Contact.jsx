@@ -1,13 +1,15 @@
-import React from 'react'
-import { Navbar } from '../components/Navbar'
+import React from 'react';
+import { Navbar } from '../components/Navbar';
+import { Background } from '../components/Background';
 
 export const Contact = () => {
   return (
     <>
       <Navbar />
-      <div className="w-full h-screen bg-black/10">
+      <div className="w-full mt-[60px]">
         <div>Contact</div>
       </div>
+      <Background />
     </>
   )
 }
