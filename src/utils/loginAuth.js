@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext } from "react";
 
 const loginAuth = () => {
-    const [isAuthenticated, setAutheticated] = useContext()
+  const [isAuthenticated, setAutheticated] = useContext();
 
-    return (isAuthenticated)
-}
+  return isAuthenticated;
+};
 
 // export isAuthenticated;

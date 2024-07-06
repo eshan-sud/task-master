@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar } from '../components/Navbar.jsx';
-import { Introduction } from '../components/Introduction.jsx';
-import { Features } from '../components/Features.jsx';
-import { Pricing } from '../components/Pricing.jsx';
-import { FAQs } from '../components/FAQs.jsx';
-import { Footer } from '../components/Footer.jsx';
-import { Background } from '../components/Background.jsx';
+import React from "react";
+import { Introduction } from "../components/home/Introduction.jsx";
+import { Features } from "../components/home/Features.jsx";
+import { Pricing } from "../components/home/Pricing.jsx";
+import { FAQs } from "../components/home/FAQs.jsx";
 
 // import isAuthenticated from '../utlis/loginAuth.js';
 
 const Home = () => {
-
-    return (
-        <>
-            <Navbar />
-            <Introduction />
-            <Features />
-            <Pricing />
-            <FAQs />
-            <Footer />
-            <Background />
-        </>
-    );
+  return (
+    <>
+      <Introduction />
+      <Features />
+      <Pricing />
+      <FAQs />
+    </>
+  );
 };
 
 export { Home };

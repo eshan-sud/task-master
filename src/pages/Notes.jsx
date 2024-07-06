@@ -1,9 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export const Notes = () => {
-    return (
-        <div className='bg-black h-screen w-full'>
-            Notes
-        </div>
-    )
-}
+  return <div className="bg-black h-screen w-full"> Notes </div>;
+};
