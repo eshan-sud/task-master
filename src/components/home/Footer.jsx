@@ -12,9 +12,9 @@ export const Footer = () => {
             className="w-16 h-16 object-cover rounded-full mr-4"
           />
           <div>
-            <h3 className="text-lg font-semibold">Eshan Sud</h3>
-            <p className="text-sm">Creator of Task Master</p>
-            <p className="text-sm">Student @ Manipal University Jaipur</p>
+            <h3 className="text-lg font-semibold"> Eshan Sud </h3>
+            <p className="text-sm"> Creator of Task Master </p>
+            <p className="text-sm"> Student @ Manipal University Jaipur </p>
           </div>
         </div>
         <ul className="flex space-x-6 mb-4 md:mb-0">

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 import { Field, EmailField } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
@@ -7,19 +8,74 @@ import { Link } from "react-router-dom";
 import { EmailValidator } from "../utils/EmailValidator.js";
 import { FormContainer } from "../components/FormContainer";
 
-const handleLogin = (event) => {
-  event.preventDefault();
-  // Handle Login Logic
-};
+import { endpoints } from "../ApiEndpoints.js";
 
-const LoginForm = ({ handleLogin }) => {
+import toast from "react-hot-toast";
+import AuthContext from "../utils/AuthContext.js";
+
+const LoginForm = () => {
+  const Navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isRememberMe, setIsRememberMe] = useState("");
+  const logindetails = {
+    email,
+    password,
+  };
+
+  // If login-remember-me is checked => localStorage ; else => sessionStorage
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    console.log(logindetails);
+    try {
+      const response = await fetch(endpoints.loginAuth, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(logindetails),
+        credentials: "include",
+      });
+
+      const message = await response.json();
+
+      if (response.ok) {
+        console.log(message.user);
+        window.localStorage.setItem("token", message.token);
+        window.localStorage.setItem(
+          "fullName",
+          `${message.user.firstName} ${message.user.lastName}`
+        );
+        login(); // Update the authentication state
+        toast.success(message.message);
+        Navigate("/", { replace: true }); // Redirection to Home
+      } else {
+        toast.error(message.error); // Error Handling
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <>
       <form className="flex flex-col gap-4 w-full" onSubmit={handleLogin}>
         <EmailValidator>
-          <EmailField type="text" name="Email" autofocus={true} />
+          <EmailField
+            type="email"
+            name="Email"
+            email={email}
+            setEmail={setEmail}
+          />
         </EmailValidator>
-        <Field type="password" name="Password" />
+        <Field
+          type="password"
+          name="Password"
+          value={password}
+          setValue={setPassword}
+        />
         <Link
           className="text-blue-600/70 text-sm underline"
           to="/forgotPassword"
@@ -27,36 +83,32 @@ const LoginForm = ({ handleLogin }) => {
           Forgot your password?
         </Link>
         <div className="flex items-center">
-          <input id="login-remember-me" type="checkbox" className="mr-2" />
+          <input
+            id="login-remember-me"
+            type="checkbox"
+            className="mr-2"
+            value={isRememberMe}
+            onChange={() => {
+              setIsRememberMe(!isRememberMe);
+            }}
+          />
           <label htmlFor="login-remember-me"> Remember me </label>
         </div>
         <SubmitButton />
       </form>
-    </>
-  );
-};
-
-export const Login = () => {
-  return (
-    <>
-      <FormContainer
-        form={<LoginForm handleLogin={handleLogin} />}
-        heading="Welcome Back!"
-        subHeading="Login your account"
-      />
       <span className="text-lg font-semibold text-center mt-[1.6rem]">
         Don't have an account yet?
         <Link className="text-blue-600 hover:underline ml-2" to="/register">
           Register for free!
         </Link>
-        <div>OR</div>
+        <div> OR </div>
         <div className="flex justify-center">
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               console.log(credentialResponse);
             }}
             onError={() => {
-              console.log("Login Failed");
+              console.log("Google Login Failed!");
             }}
           />
         </div>
@@ -65,52 +117,12 @@ export const Login = () => {
   );
 };
 
-//   return (
-//     <>
-//       <div className="flex items-center justify-center bg-black/10">
-//         <div className="flex flex-col p-10 m-[90px] justify-center items-center bg-white/30 rounded-3xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[15px] border border-white w-full max-w-md">
-//           <span className="text-2xl font-bold mb-2 text-center">
-//             Welcome Back!
-//           </span>
-//           <span className="text-sm font-normal mb-4 text-center">
-//             Login your account
-//           </span>
-//           <form className="flex flex-col gap-4 w-full" onSubmit={handleLogin}>
-//             <EmailValidator>
-//               <Field type="text" name="Email" />
-//             </EmailValidator>
-//             <Field type="password" name="Password" />
-//             <Link
-//               className="text-blue-600/70 text-sm underline"
-//               to="/forgotPassword"
-//             >
-//               Forgot your password?
-//             </Link>
-//             <div className="flex items-center">
-//               <input id="login-remember-me" type="checkbox" className="mr-2" />
-//               <label htmlFor="login-remember-me"> Remember me </label>
-//             </div>
-//             <SubmitButton />
-//           </form>
-//           <span className="text-lg font-semibold text-center mt-[1.6rem]">
-//             Don't have an account yet?
-//             <Link className="text-blue-600 hover:underline ml-2" to="/register">
-//               Register for free!
-//             </Link>
-//             <div>OR</div>
-//             <div className="flex justify-center">
-//               <GoogleLogin
-//                 onSuccess={(credentialResponse) => {
-//                   console.log(credentialResponse);
-//                 }}
-//                 onError={() => {
-//                   console.log("Login Failed");
-//                 }}
-//               />
-//             </div>
-//           </span>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
+export const Login = () => {
+  return (
+    <FormContainer
+      form={<LoginForm />}
+      heading="Welcome Back!"
+      subHeading="Login your account"
+    />
+  );
+};

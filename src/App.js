@@ -1,30 +1,41 @@
-import { Toaster } from "react-hot-toast";
-
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
+
+import { useContext, useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+
 import { Home } from "./pages/Home.jsx";
 import { AboutUs } from "./pages/AboutUs.jsx";
 import { Contact } from "./pages/Contact.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Register } from "./pages/Register.jsx";
 import { ForgotPassword } from "./pages/ForgotPassword.jsx";
+import { Profile } from "./pages/Profile.jsx";
 
 import { Loader } from "./components/Loader.jsx";
-import { useEffect, useState } from "react";
 import { Layout } from "./components/Layout.jsx";
 
+import AuthContext from "./utils/AuthContext.js";
+import { Dashboard } from "./components/profile/Dashboard.jsx";
+import { Analytics } from "./components/profile/Analytics.jsx";
+import { Archive } from "./components/profile/Archive.jsx";
+import { Teams } from "./components/profile/Teams.jsx";
+import { Settings } from "./components/profile/Settings.jsx";
+
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const handleLoad = () => {
-      setIsLoading(false);
-    };
-    window.addEventListener("load", handleLoad);
-    return () => {
-      window.removeEventListener("load", handleLoad);
-    };
-  }, [isLoading]);
-  if (isLoading) return <Loader />;
+  const { isAuthenticated } = useContext(AuthContext);
+
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   const handleLoad = () => {
+  //     setIsLoading(false);
+  //   };
+  //   window.addEventListener("load", handleLoad);
+  //   return () => {
+  //     window.removeEventListener("load", handleLoad);
+  //   };
+  // }, [isLoading]);
+  // if (isLoading) return <Loader />;
 
   return (
     <>
@@ -32,18 +43,40 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<Navigate to="/home" replace />} />
-            <Route exact path="/home" element={<Home />} />
-            <Route exact path="/about-us" element={<AboutUs />} />
-            <Route exact path="/contact" element={<Contact />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/register" element={<Register />} />
-            <Route exact path="/forgotPassword" element={<ForgotPassword />} />
-
-            {/* <Route exact path="/account" element={<Account />} /> */}
-            {/* <Route exact path="/notes" element={<Notes />} /> */}
-            {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-            <Route exact path="*" element={<Navigate to="/home" replace />} />
+            {isAuthenticated ? (
+              <>
+                <Route exact="true" path="/profile" element={<Profile />} />
+                <Route exact="true" path="/dashboard" element={<Dashboard />} />
+                <Route exact="true" path="/analytics" element={<Analytics />} />
+                <Route exact="true" path="/archive" element={<Archive />} />
+                <Route exact="true" path="/teams" element={<Teams />} />
+                <Route exact="true" path="/settings" element={<Settings />} />
+                <Route
+                  exact
+                  path="*"
+                  element={<Navigate to="/profile" replace />}
+                />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Navigate to="/home" replace />} />
+                <Route exact="true" path="/home" element={<Home />} />
+                <Route exact="true" path="/about-us" element={<AboutUs />} />
+                <Route exact="true" path="/contact" element={<Contact />} />
+                <Route exact="true" path="/login" element={<Login />} />
+                <Route exact="true" path="/register" element={<Register />} />
+                <Route
+                  exact="true"
+                  path="/forgotPassword"
+                  element={<ForgotPassword />}
+                />
+                <Route
+                  exact
+                  path="*"
+                  element={<Navigate to="/home" replace />}
+                />
+              </>
+            )}
           </Routes>
         </Layout>
       </BrowserRouter>

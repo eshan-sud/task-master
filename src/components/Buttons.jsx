@@ -1,8 +1,302 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Button = () => {
-  return <></>;
+import { FaPlus } from "react-icons/fa";
+import { GiPin } from "react-icons/gi";
+
+import {
+  HiArrowsExpand,
+  HiOutlineMicrophone,
+  HiSun,
+  HiMoon,
+  HiCheck,
+  HiArrowCircleLeft,
+  HiArrowCircleRight,
+} from "react-icons/hi";
+
+import { IoIosNotifications } from "react-icons/io";
+
+export const LightDarkModeSetting = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDarkMode ? "light" : "dark"
+    );
+  };
+
+  useEffect(() => {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    setIsDarkMode(currentTheme === "dark");
+  }, []);
+
+  return (
+    <label class="inline-flex items-center relative">
+      <input class="peer hidden" id="toggle" type="checkbox" />
+      <div class="relative w-[110px] h-[50px] bg-white peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md"></div>
+      <svg
+        height="0"
+        width="100"
+        viewBox="0 0 24 24"
+        data-name="Layer 1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        class="fill-white peer-checked:opacity-60 absolute w-6 h-6 left-[13px]"
+      >
+        <path d="M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5,5,2.24,5,5-2.24,5-5,5ZM13,0h-2V5h2V0Zm0,19h-2v5h2v-5ZM5,11H0v2H5v-2Zm19,0h-5v2h5v-2Zm-2.81-6.78l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54ZM7.76,17.66l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54Zm0-11.31l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Zm13.44,13.44l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Z"></path>
+      </svg>
+      <svg
+        height="512"
+        width="512"
+        viewBox="0 0 24 24"
+        data-name="Layer 1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        class="fill-black opacity-60 peer-checked:opacity-70 peer-checked:fill-white absolute w-6 h-6 right-[13px]"
+      >
+        <path d="M12.009,24A12.067,12.067,0,0,1,.075,10.725,12.121,12.121,0,0,1,10.1.152a13,13,0,0,1,5.03.206,2.5,2.5,0,0,1,1.8,1.8,2.47,2.47,0,0,1-.7,2.425c-4.559,4.168-4.165,10.645.807,14.412h0a2.5,2.5,0,0,1-.7,4.319A13.875,13.875,0,0,1,12.009,24Zm.074-22a10.776,10.776,0,0,0-1.675.127,10.1,10.1,0,0,0-8.344,8.8A9.928,9.928,0,0,0,4.581,18.7a10.473,10.473,0,0,0,11.093,2.734.5.5,0,0,0,.138-.856h0C9.883,16.1,9.417,8.087,14.865,3.124a.459.459,0,0,0,.127-.465.491.491,0,0,0-.356-.362A10.68,10.68,0,0,0,12.083,2ZM20.5,12a1,1,0,0,1-.97-.757l-.358-1.43L17.74,9.428a1,1,0,0,1,.035-1.94l1.4-.325.351-1.406a1,1,0,0,1,1.94,0l.355,1.418,1.418.355a1,1,0,0,1,0,1.94l-1.418.355-.355,1.418A1,1,0,0,1,20.5,12ZM16,14a1,1,0,0,0,2,0A1,1,0,0,0,16,14Zm6,4a1,1,0,0,0,2,0A1,1,0,0,0,22,18Z"></path>
+      </svg>
+    </label>
+  );
+};
+
+export const PreviousButton = () => {
+  return (
+    <button type="button">
+      <HiArrowCircleLeft />
+    </button>
+  );
+};
+export const NextButton = () => {
+  return (
+    <button type="button">
+      <HiArrowCircleRight />
+    </button>
+  );
+};
+
+export const NotificationButton = ({ toggleNotificationPanel }) => {
+  return (
+    <div
+      className="p-3 rounded-full bg-gray-400"
+      onClick={toggleNotificationPanel}
+    >
+      <IoIosNotifications />
+    </div>
+  );
+};
+
+export const BackToTopButton = () => {
+  return (
+    <button type="button" className="backToTopButton">
+      <div className="text">
+        <span>Back</span>
+        <span>to</span>
+        <span>top</span>
+      </div>
+      <div className="clone">
+        <span>Back</span>
+        <span>to</span>
+        <span>top</span>
+      </div>
+      <svg
+        strokeWidth="2"
+        stroke="black"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20px"
+      >
+        <path
+          d="M14 5l7 7m0 0l-7 7m7-7H3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        ></path>
+      </svg>
+      <style jsx="true">{`
+        .backToTopButton {
+          width: 140px;
+          height: 56px;
+          overflow: hidden;
+          border: none;
+          color: #fff;
+          background: none;
+          position: relative;
+          padding-bottom: 2em;
+          cursor: pointer;
+        }
+
+        .backToTopButton > div,
+        .backToTopButton > svg {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          color: black;
+        }
+
+        .backToTopButton:before {
+          content: "";
+          position: absolute;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          transform: scaleX(0);
+          transform-origin: bottom right;
+          background: black;
+          transition: transform 0.25s ease-out;
+        }
+
+        .backToTopButton:hover:before {
+          transform: scaleX(1);
+          transform-origin: bottom left;
+        }
+
+        .backToTopButton .text span,
+        .backToTopButton .clone span {
+          opacity: 1;
+          font-size: 1.3rem;
+          transition: 0.2s;
+          margin-left: 4px;
+        }
+
+        .backToTopButton .clone span {
+          transform: translateY(60px);
+        }
+
+        .backToTopButton:hover .clone span {
+          opacity: 1;
+          transform: translateY(0);
+          transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+        }
+
+        .backToTopButton:hover .text span {
+          opacity: 1;
+          transform: translateY(-60px);
+          transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1) 0s;
+        }
+
+        .backToTopButton:hover .clone span:nth-child(1) {
+          transition-delay: 0.15s;
+        }
+
+        .backToTopButton:hover .clone span:nth-child(2) {
+          transition-delay: 0.2s;
+        }
+
+        .backToTopButton:hover .clone span:nth-child(3) {
+          transition-delay: 0.25s;
+        }
+
+        .backToTopButton:hover .clone span:nth-child(4) {
+          transition-delay: 0.3s;
+        }
+
+        .backToTopButton svg {
+          width: 20px;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%) rotate(-50deg);
+          transition: 0.2s ease-out;
+        }
+
+        .backToTopButton:hover svg {
+          transform: translateY(-50%) rotate(-90deg);
+        }
+      `}</style>
+    </button>
+  );
+};
+
+export const PinButton = ({}) => {
+  return (
+    <label className="container flex items-center justify-center w-11 h-11 bg-transparent rounded-lg cursor-pointer transition-transform duration-200 active:scale-90 bg-gray-400 hover:bg-gray-600 hover:shadow-md">
+      <input type="checkbox" className="hidden" />
+      <GiPin />
+    </label>
+  );
+};
+
+export const SendButton = () => {
+  return (
+    <button
+      type="button"
+      className="sendButton relative flex items-center bg-royalblue text-white py-2 px-4 pl-3 rounded-lg transition-all duration-200 cursor-pointer focus:outline-none"
+    >
+      <div className="svg-wrapper-1">
+        <div className="svg-wrapper">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            className="transition-transform duration-300 ease-in-out"
+          >
+            <path fill="none" d="M0 0h24v24H0z"></path>
+            <path
+              fill="currentColor"
+              d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <span className="ml-1 transition-all duration-300 ease-in-out">Send</span>
+      <style jsx="true">{`
+        .sendButton {
+          background-color: royalblue;
+        }
+        .sendButton:hover .svg-wrapper {
+          animation: fly-1 0.6s ease-in-out infinite alternate;
+        }
+        .sendButton:hover svg {
+          transform: translateX(1.2em) rotate(45deg) scale(1.1);
+        }
+        .sendButton:hover span {
+          transform: translateX(5em);
+          opacity: 0;
+        }
+        .sendButton:active {
+          transform: scale(0.95);
+        }
+        @keyframes fly-1 {
+          from {
+            transform: translateY(0.1em);
+          }
+          to {
+            transform: translateY(-0.1em);
+          }
+        }
+      `}</style>
+    </button>
+  );
+};
+
+export const AddItemButton = () => {
+  return (
+    <button
+      type="button"
+      className="button relative w-36 h-10 cursor-pointer flex items-center border border-green-600 bg-green-700 rounded-xl overflow-hidden transition-all duration-300 hover:bg-green-600 active:border-green-800 active:bg-green-800"
+    >
+      <span className="button__text transform translate-x-8 text-white font-semibold transition-all duration-300">
+        Add Item
+      </span>
+      <span className="button__icon absolute transform translate-x-[109px] h-full w-10 bg-green-600 flex items-center justify-center transition-all duration-300">
+        <FaPlus color="white" />
+      </span>
+      <style jsx="true">{`
+        .button:hover .button__text {
+          color: transparent;
+        }
+        .button:hover .button__icon {
+          width: 148px;
+          transform: translateX(0);
+        }
+      `}</style>
+    </button>
+  );
 };
 
 export const SubmitButton = () => {
@@ -18,7 +312,10 @@ export const SubmitButton = () => {
 
 export const CreateButton = () => {
   return (
-    <button className="border-2 border-[#24b4fb] bg-[#24b4fb] rounded-[0.9em] px-[1.2em] py-[0.8em] pr-[1em] transition-all ease-in-out duration-200 text-[16px] hover:bg-[#0071e2]">
+    <button
+      type="button"
+      className="border-2 border-[#24b4fb] bg-[#24b4fb] rounded-[0.9em] px-[1.2em] py-[0.8em] pr-[1em] transition-all ease-in-out duration-200 text-[16px] hover:bg-[#0071e2]"
+    >
       <span className="flex justify-center items-center text-white font-semibold">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -66,9 +363,40 @@ export const GoBackButton = () => {
   );
 };
 
+export const GoBackButton2 = () => {
+  return (
+    <button
+      type="button"
+      class="bg-white text-center w-48 rounded-2xl h-14 relative font-sans text-black text-xl font-semibold group"
+    >
+      <div class="bg-green-400 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
+        <svg
+          width="25px"
+          height="25px"
+          viewBox="0 0 1024 1024"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="#000000"
+            d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"
+          ></path>
+          <path
+            fill="#000000"
+            d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"
+          ></path>
+        </svg>
+      </div>
+      <p class="translate-x-2">Go Back</p>
+    </button>
+  );
+};
+
 export const ArchiveButton = () => {
   return (
-    <button className="group hover:svg-icon flex justify-center items-center px-4 py-2 gap-2 h-10 w-32 border-none bg-[#056bfa27] rounded-full cursor-pointer hover:bg-[#056bfa49]">
+    <button
+      type="button"
+      className="group hover:svg-icon flex justify-center items-center px-4 py-2 gap-2 h-10 w-32 border-none bg-[#056bfa27] rounded-full cursor-pointer hover:bg-[#056bfa49]"
+    >
       <svg
         className="w-6 h-6 group-hover:animate-spin"
         viewBox="0 0 24 24"
@@ -96,6 +424,7 @@ export const LoginButton = () => {
   const naviagate = useNavigate();
   return (
     <button
+      type="button"
       className="text-black px-7 py-1 mx-2 box-border border-black border-2 rounded-full hover:bg-black hover:text-white"
       onClick={() => naviagate("/login")}
     >
@@ -103,10 +432,12 @@ export const LoginButton = () => {
     </button>
   );
 };
+
 export const RegisterButton = () => {
   const naviagate = useNavigate();
   return (
     <button
+      type="button"
       className="bg-blue-500 text-white px-7 py-1 rounded-full hover:bg-blue-600 transition duration-300rounded-full"
       onClick={() => naviagate("/register", { replace: true })}
     >
@@ -117,6 +448,7 @@ export const RegisterButton = () => {
 
 export const AddNew = () => {
   <button
+    type="button"
     title="Add New"
     className="group cursor-pointer outline-none hover:rotate-90 duration-300"
   >

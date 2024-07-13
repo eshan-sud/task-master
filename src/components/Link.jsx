@@ -17,3 +17,43 @@ export const MenuItem = ({ to, name }) => {
     </li>
   );
 };
+
+export const SidebarItem = ({ to, name, icon }) => {
+  return (
+    <li className="flex items-center font-semi-bold tracking-tighter">
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          isActive
+            ? "text-blue-500 underline flex items-center hover:bg-gray-200 rounded-lg px-1 py-2 w-full"
+            : "hover:text-blue hover:underline flex items-center hover:bg-gray-200 rounded-lg px-1 py-2 w-full"
+        }
+      >
+        <span className="mr-6 text-2xl">{icon}</span>
+        <span className="text-xl">{name}</span>
+      </NavLink>
+    </li>
+  );
+};
+
+// export const SidebarItem = ({ to, name, icon, isHovered }) => {
+//   return (
+//     <li
+//       className={`flex items-center mx-4 my-2 font-semi-bold tracking-tighter ${
+//         !isHovered ? "justify-center" : ""
+//       }`}
+//     >
+//       <NavLink
+//         to={to}
+//         className={({ isActive }) =>
+//           isActive
+//             ? "text-black underline flex items-center"
+//             : "hover:text-black hover:underline flex items-center"
+//         }
+//       >
+//         <span className="text-2xl">{icon}</span>
+//         {isHovered && <span className="ml-2 text-xl">{name}</span>}
+//       </NavLink>
+//     </li>
+//   );
+// };

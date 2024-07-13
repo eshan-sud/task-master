@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { MenuItem } from "./Link";
+import { MenuItem } from "../Link";
 import { Link } from "react-router-dom";
-import { LoginButton, RegisterButton } from "./Buttons";
+import { LoginButton, RegisterButton } from "../Buttons";
 
 export const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -30,6 +30,8 @@ export const Navbar = () => {
           Task Master
           <hr className="border-solid border-slate-950" />
         </Link>
+
+        {/* Change to UL */}
         <div className="list-none flex justify-center items-center text-lg absolute left-1/2 transform -translate-x-1/2 z-40">
           <MenuItem to="/home" name="Home" />
           <MenuItem to="/about-us" name="About us" />
