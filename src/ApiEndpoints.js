@@ -13,5 +13,4 @@ export const endpoints = {
   uploadAvatar: `${baseURL}avatar/upload`,
   getUserAvatar: `${baseURL}auth/getUserAvatar`,
   removeAvatar: `${baseURL}avatar/removeAvatar`,
-  baseURL: baseURL,
 };
