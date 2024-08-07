@@ -2,9 +2,16 @@
 const baseURL = "http://localhost:8000/api/v1/";
 
 export const endpoints = {
-  // Auth Endpoint
+  // Auth Endpoints
   loginAuth: `${baseURL}auth/login`,
   logoutAuth: `${baseURL}auth/logout`,
-  resetPassword: `${baseURL}auth/resetPassword`,
   registerAuth: `${baseURL}auth/register`,
+  resetPassword: `${baseURL}auth/resetPassword`,
+  userSearch: `${baseURL}auth/userSearch`,
+
+  // Avatar Endpoints
+  uploadAvatar: `${baseURL}avatar/upload`,
+  getUserAvatar: `${baseURL}auth/getUserAvatar`,
+  removeAvatar: `${baseURL}avatar/removeAvatar`,
+  baseURL: baseURL,
 };

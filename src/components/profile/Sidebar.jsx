@@ -54,7 +54,7 @@ export const Sidebar = () => {
   return (
     <div>
       <div
-        className={`fixed top-0 left-0 h-screen z-40 transition-all duration-300 ease-in-out ${
+        className={`shadow-right-md fixed top-0 left-0 h-screen z-40 transition-all duration-300 ease-in-out ${
           isOpen ? "w-64" : "w-16"
         }`}
         ref={sidebarRef}
@@ -64,7 +64,7 @@ export const Sidebar = () => {
             <button
               ref={buttonRef}
               onClick={toggleSidebar}
-              className="text-2xl focus:outline-none z-50"
+              className="text-2xl focus:outline-none z-40"
             >
               <div className="hover:bg-gray-200 rounded-lg px-1 py-2 w-full flex">
                 {isOpen ? <FiX /> : <FiMenu />}
@@ -91,17 +91,28 @@ export const Sidebar = () => {
           <ul className="overflow-hidden">
             <li className="flex items-center">
               <button
+                title="Logout"
+                type="button"
                 onClick={toggleLogoutModal}
-                className="hover:bg-gray-200 rounded-lg px-1 py-2 w-full flex"
+                className="flex items-center hover:bg-gray-200 rounded-lg px-1 py-2 w-full"
               >
-                <FiLogOut className="text-2xl" />
-                {isOpen && <span className="ml-2 text-xl"> Logout </span>}
+                <FiLogOut className="text-2xl text-red-600" />
+                {isOpen && (
+                  <span className="ml-2 text-xl text-red-600">Logout</span>
+                )}
               </button>
             </li>
           </ul>
         </div>
         {showLogoutModal && <Logout toggleLogoutModal={toggleLogoutModal} />}
       </div>
+      <style jsx="true">
+        {`
+          .shadow-right-md {
+            box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.1); /* Adjust values as needed */
+          }
+        `}
+      </style>
     </div>
   );
 };

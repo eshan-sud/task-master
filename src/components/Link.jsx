@@ -35,25 +35,3 @@ export const SidebarItem = ({ to, name, icon }) => {
     </li>
   );
 };
-
-// export const SidebarItem = ({ to, name, icon, isHovered }) => {
-//   return (
-//     <li
-//       className={`flex items-center mx-4 my-2 font-semi-bold tracking-tighter ${
-//         !isHovered ? "justify-center" : ""
-//       }`}
-//     >
-//       <NavLink
-//         to={to}
-//         className={({ isActive }) =>
-//           isActive
-//             ? "text-black underline flex items-center"
-//             : "hover:text-black hover:underline flex items-center"
-//         }
-//       >
-//         <span className="text-2xl">{icon}</span>
-//         {isHovered && <span className="ml-2 text-xl">{name}</span>}
-//       </NavLink>
-//     </li>
-//   );
-// };

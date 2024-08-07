@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-import { DraggableCard } from "../components/profile/Tasks";
+import { NoteContainer } from "../components/profile/Tasks";
 import {
-  AddItemButton,
+  AddButton,
   SendButton,
   PinButton,
   BackToTopButton,
@@ -17,14 +17,15 @@ export const Profile = () => {
     bio: "Software developer with a passion for learning new technologies.",
   };
 
-  const cards = [
-    { id: 1, content: "Task 1" },
-    { id: 2, content: "Task 2" },
-    { id: 3, content: "Task 3" },
-  ];
+  // const cards = [
+  //   { id: 1, content: "Task 1" },
+  //   { id: 2, content: "Task 2" },
+  //   { id: 3, content: "Task 3" },
+  // ];
+  // const pinnedCards = [];
 
   return (
-    <div className="relative min-h-screen p-8 bg-green-200">
+    <div className="relative min-h-screen p-10 bg-green-200 rounded-[64px]">
       <div className="profile-details mb-8">
         <h1 className="text-2xl font-bold mb-2"> Profile </h1>
         <p className="text-lg">
@@ -39,22 +40,36 @@ export const Profile = () => {
       </div>
 
       <div className="buttons mb-8">
-        <AddItemButton />
         <SendButton />
-        <BackToTopButton />
         <PinButton />
         <AddNew />
         <ArchiveButton />
       </div>
 
-      <div className="tasks">
-        <h2 className="text-xl font-bold mb-4">Tasks</h2>
+      <div className="mb-4 p-5 bg-white/50 rounded-xl">
+        <AddButton name="Category" color="blue" />
+        <AddButton name="Task" color="green" />
+      </div>
+
+      <div className="pinnedTasks">
+        <h2 className="text-xl font-bold mb-4"> Pinned Tasks </h2>
         <div>
-          {cards.map((card) => (
+          {/* {pinnedCards.map((card) => (
             <DraggableCard key={card.id} id={card.id} content={card.content} />
-          ))}
+          ))} */}
         </div>
       </div>
+
+      <div className="tasks">
+        <h2 className="text-xl font-bold mb-4"> Current Tasks </h2>
+        <div>
+          {/* {cards.map((card) => (
+            <DraggableCard key={card.id} id={card.id} content={card.content} />
+          ))} */}
+          <NoteContainer />
+        </div>
+      </div>
+      <BackToTopButton />
     </div>
   );
 };

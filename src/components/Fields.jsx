@@ -5,15 +5,19 @@ import { CgSearch } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
 
-// import { LightDarkModeSetting } from "../Buttons";
+// import { endpoints } from "../ApiEndpoints";
+
 export const SearchField = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleSearch = (event) => {
     event.preventDefault();
-    if (!inputValue) toast.error("Search value cannot be empty");
+    if (!inputValue) {
+      toast.error("Search value cannot be empty");
+    }
     // Handle Search Logic
   };
 
@@ -22,29 +26,63 @@ export const SearchField = () => {
   };
 
   const handleMouseLeave = () => {
+    if (!inputValue && !isFocused) {
+      setIsHovered(false);
+    }
+  };
+
+  const handleReset = () => {
+    setInputValue("");
     setIsHovered(false);
+    setIsFocused(false);
+    inputRef.current.blur();
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    setIsHovered(true);
+  };
+
+  const handleBlur = (event) => {
+    if (!inputRef.current.contains(event.relatedTarget) && !inputValue) {
+      setIsFocused(false);
+      setIsHovered(false);
+    }
   };
 
   useEffect(() => {
-    if (!isHovered && !inputValue) {
-      inputRef.current.blur(); // Unfocus the input if it's empty & not hovered
-    }
-  }, [isHovered, inputValue]);
+    const handleClickOutside = (event) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target) &&
+        !inputValue
+      ) {
+        setIsHovered(false);
+        setIsFocused(false);
+        inputRef.current.blur();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [inputValue]);
 
   return (
     <div className="flex items-center">
       <form
+        id="searchForm"
         onSubmit={handleSearch}
-        className={`p-5 overflow-hidden w-[60px] h-[60px] ${
-          isHovered || inputValue ? "w-[270px]" : "w-[60px]"
-        } bg-white rounded-full flex group items-center duration-300 border-2 border-transparent focus-within:border-blue-500 placeholder-gray-400 transition-all shadow-md`}
+        className={`p-2 overflow-hidden h-10 ${
+          isHovered || inputValue || isFocused ? "w-[270px]" : "w-10"
+        } bg-gray-200 rounded-full flex items-center duration-300 border-2 ${
+          isFocused ? "border-blue-500" : "border-transparent"
+        } placeholder-gray-400 transition-all shadow-md`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <button
-          type="submit"
-          className="flex items-center justify-center fill-black"
-        >
+        <button type="submit">
           <CgSearch />
         </button>
         <input
@@ -54,8 +92,10 @@ export const SearchField = () => {
           placeholder="Search..."
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
-        <button type="reset" className="p-1" onClick={() => setInputValue("")}>
+        <button type="reset" className="p-1" onClick={handleReset}>
           <MdCancel />
         </button>
       </form>

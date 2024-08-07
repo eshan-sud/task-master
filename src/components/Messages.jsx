@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { CloseButton } from "./Buttons";
 
-const MessageContainer = ({ children, onClose }) => {
+export const MessageContainer = ({ children, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div
@@ -51,6 +52,7 @@ export const WelcomeMessage = () => {
 export const YesNoMessage = ({ heading, message, onClose, onNo, onYes }) => {
   return (
     <MessageContainer onClose={onClose}>
+      <CloseButton onClose={onClose} />
       <h2 className="text-2xl font-bold mb-4"> {heading} </h2>
       <p className="mb-4"> {message} </p>
       <div className="flex justify-between w-full">

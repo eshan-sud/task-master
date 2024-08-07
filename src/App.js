@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
@@ -12,10 +12,12 @@ import { Register } from "./pages/Register.jsx";
 import { ForgotPassword } from "./pages/ForgotPassword.jsx";
 import { Profile } from "./pages/Profile.jsx";
 
-import { Loader } from "./components/Loader.jsx";
+// import { Loader } from "./components/Loader.jsx";
 import { Layout } from "./components/Layout.jsx";
 
 import AuthContext from "./utils/AuthContext.js";
+import LightModeContext from "./utils/LightModeContext.js";
+
 import { Dashboard } from "./components/profile/Dashboard.jsx";
 import { Analytics } from "./components/profile/Analytics.jsx";
 import { Archive } from "./components/profile/Archive.jsx";
@@ -24,6 +26,7 @@ import { Settings } from "./components/profile/Settings.jsx";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
+  const { isLightMode } = useContext(LightModeContext);
 
   // const [isLoading, setIsLoading] = useState(true);
   // useEffect(() => {
@@ -39,18 +42,42 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
       <BrowserRouter>
         <Layout>
           <Routes>
             {isAuthenticated ? (
               <>
-                <Route exact="true" path="/profile" element={<Profile />} />
-                <Route exact="true" path="/dashboard" element={<Dashboard />} />
-                <Route exact="true" path="/analytics" element={<Analytics />} />
-                <Route exact="true" path="/archive" element={<Archive />} />
-                <Route exact="true" path="/teams" element={<Teams />} />
-                <Route exact="true" path="/settings" element={<Settings />} />
+                <Route
+                  exact="true"
+                  path="/profile"
+                  element={<Profile isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/dashboard"
+                  element={<Dashboard isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/analytics"
+                  element={<Analytics isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/archive"
+                  element={<Archive isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/teams"
+                  element={<Teams isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/settings"
+                  element={<Settings isLightMode={isLightMode} />}
+                />
                 <Route
                   exact
                   path="*"
@@ -60,15 +87,35 @@ function App() {
             ) : (
               <>
                 <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route exact="true" path="/home" element={<Home />} />
-                <Route exact="true" path="/about-us" element={<AboutUs />} />
-                <Route exact="true" path="/contact" element={<Contact />} />
-                <Route exact="true" path="/login" element={<Login />} />
-                <Route exact="true" path="/register" element={<Register />} />
+                <Route
+                  exact="true"
+                  path="/home"
+                  element={<Home isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/about-us"
+                  element={<AboutUs isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/contact"
+                  element={<Contact isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/login"
+                  element={<Login isLightMode={isLightMode} />}
+                />
+                <Route
+                  exact="true"
+                  path="/register"
+                  element={<Register isLightMode={isLightMode} />}
+                />
                 <Route
                   exact="true"
                   path="/forgotPassword"
-                  element={<ForgotPassword />}
+                  element={<ForgotPassword isLightMode={isLightMode} />}
                 />
                 <Route
                   exact

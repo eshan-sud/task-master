@@ -26,11 +26,11 @@ const Logout = ({ toggleLogoutModal }) => {
       if (response.ok) {
         console.log(message.user);
         window.localStorage.clear();
-        logout(); // Update the authentication state
+        logout();
         toast.success(message.message);
-        navigate("/", { replace: true }); // Redirection to Home
+        navigate("/", { replace: true });
       } else {
-        toast.error(message.error); // Error Handling
+        toast.error(message.error);
       }
     } catch (error) {
       console.error("Error:", error);

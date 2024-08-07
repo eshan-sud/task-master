@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Field, EmailField, GenderInput } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EmailValidator } from "../utils/EmailValidator.js";
 import { FormContainer } from "../components/FormContainer";
 import { endpoints } from "../ApiEndpoints.js";
 import toast from "react-hot-toast";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,7 +40,7 @@ const RegisterForm = () => {
       console.log(message);
       if (response.ok) {
         toast.success("message.message");
-        Navigate("/login", { replace: true }); // Redirection to Login Page
+        navigate("/login", { replace: true }); // Redirection to Login Page
       } else {
         toast.error(message.error); // Error Handling
       }

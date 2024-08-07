@@ -1,49 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import { FaPlus } from "react-icons/fa";
 import { GiPin } from "react-icons/gi";
-
 import {
-  HiArrowsExpand,
-  HiOutlineMicrophone,
-  HiSun,
-  HiMoon,
-  HiCheck,
+  // HiArrowsExpand,
+  // HiOutlineMicrophone,
+  // HiCheck,
   HiArrowCircleLeft,
   HiArrowCircleRight,
 } from "react-icons/hi";
+import { IoClose } from "react-icons/io5";
 
 import { IoIosNotifications } from "react-icons/io";
 
-export const LightDarkModeSetting = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+import LightModeContext from "../utils/LightModeContext.js";
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.setAttribute(
-      "data-theme",
-      isDarkMode ? "light" : "dark"
-    );
-  };
-
-  useEffect(() => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    setIsDarkMode(currentTheme === "dark");
-  }, []);
+export const LightDarkModeButton = () => {
+  const { isLightMode, toggleLightMode } = useContext(LightModeContext);
 
   return (
-    <label class="inline-flex items-center relative">
-      <input class="peer hidden" id="toggle" type="checkbox" />
-      <div class="relative w-[110px] h-[50px] bg-white peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md"></div>
+    <label className="inline-flex items-center relative">
+      <input
+        className="peer hidden"
+        id="toggle"
+        type="checkbox"
+        checked={!isLightMode}
+        onChange={toggleLightMode}
+      />
+      <div className="relative w-[110px] h-[50px] bg-white peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md"></div>
       <svg
         height="0"
         width="100"
         viewBox="0 0 24 24"
-        data-name="Layer 1"
-        id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
-        class="fill-white peer-checked:opacity-60 absolute w-6 h-6 left-[13px]"
+        className="fill-white peer-checked:opacity-60 absolute w-6 h-6 left-[13px]"
       >
         <path d="M12,17c-2.76,0-5-2.24-5-5s2.24-5,5-5,5,2.24,5,5-2.24,5-5,5ZM13,0h-2V5h2V0Zm0,19h-2v5h2v-5ZM5,11H0v2H5v-2Zm19,0h-5v2h5v-2Zm-2.81-6.78l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54ZM7.76,17.66l-1.41-1.41-3.54,3.54,1.41,1.41,3.54-3.54Zm0-11.31l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Zm13.44,13.44l-3.54-3.54-1.41,1.41,3.54,3.54,1.41-1.41Z"></path>
       </svg>
@@ -51,10 +43,8 @@ export const LightDarkModeSetting = () => {
         height="512"
         width="512"
         viewBox="0 0 24 24"
-        data-name="Layer 1"
-        id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
-        class="fill-black opacity-60 peer-checked:opacity-70 peer-checked:fill-white absolute w-6 h-6 right-[13px]"
+        className="fill-black opacity-60 peer-checked:opacity-70 peer-checked:fill-white absolute w-6 h-6 right-[13px]"
       >
         <path d="M12.009,24A12.067,12.067,0,0,1,.075,10.725,12.121,12.121,0,0,1,10.1.152a13,13,0,0,1,5.03.206,2.5,2.5,0,0,1,1.8,1.8,2.47,2.47,0,0,1-.7,2.425c-4.559,4.168-4.165,10.645.807,14.412h0a2.5,2.5,0,0,1-.7,4.319A13.875,13.875,0,0,1,12.009,24Zm.074-22a10.776,10.776,0,0,0-1.675.127,10.1,10.1,0,0,0-8.344,8.8A9.928,9.928,0,0,0,4.581,18.7a10.473,10.473,0,0,0,11.093,2.734.5.5,0,0,0,.138-.856h0C9.883,16.1,9.417,8.087,14.865,3.124a.459.459,0,0,0,.127-.465.491.491,0,0,0-.356-.362A10.68,10.68,0,0,0,12.083,2ZM20.5,12a1,1,0,0,1-.97-.757l-.358-1.43L17.74,9.428a1,1,0,0,1,.035-1.94l1.4-.325.351-1.406a1,1,0,0,1,1.94,0l.355,1.418,1.418.355a1,1,0,0,1,0,1.94l-1.418.355-.355,1.418A1,1,0,0,1,20.5,12ZM16,14a1,1,0,0,0,2,0A1,1,0,0,0,16,14Zm6,4a1,1,0,0,0,2,0A1,1,0,0,0,22,18Z"></path>
       </svg>
@@ -77,10 +67,22 @@ export const NextButton = () => {
   );
 };
 
+export const CloseButton = ({ onClose }) => {
+  return (
+    <button
+      type="button"
+      className="absolute top-2 right-2 text-gray-600 m-3"
+      onClick={onClose}
+    >
+      <IoClose size={20} />
+    </button>
+  );
+};
+
 export const NotificationButton = ({ toggleNotificationPanel }) => {
   return (
     <div
-      className="p-3 rounded-full bg-gray-400"
+      className="w-10 h-10 rounded-full cursor-pointer p-3 bg-gray-200"
       onClick={toggleNotificationPanel}
     >
       <IoIosNotifications />
@@ -89,8 +91,16 @@ export const NotificationButton = ({ toggleNotificationPanel }) => {
 };
 
 export const BackToTopButton = () => {
+  const handleBackToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <button type="button" className="backToTopButton">
+    <button
+      type="button"
+      onClick={handleBackToTop}
+      className="backToTopButton fixed bottom-10 z-30 right-10 w-32 h-14 overflow-hidden border-none p-6 bg-white/50 flex justify-center rounded-xl cursor-pointer"
+    >
       <div className="text">
         <span>Back</span>
         <span>to</span>
@@ -102,12 +112,12 @@ export const BackToTopButton = () => {
         <span>top</span>
       </div>
       <svg
+        width="20px"
         strokeWidth="2"
         stroke="black"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        width="20px"
       >
         <path
           d="M14 5l7 7m0 0l-7 7m7-7H3"
@@ -116,18 +126,6 @@ export const BackToTopButton = () => {
         ></path>
       </svg>
       <style jsx="true">{`
-        .backToTopButton {
-          width: 140px;
-          height: 56px;
-          overflow: hidden;
-          border: none;
-          color: #fff;
-          background: none;
-          position: relative;
-          padding-bottom: 2em;
-          cursor: pointer;
-        }
-
         .backToTopButton > div,
         .backToTopButton > svg {
           position: absolute;
@@ -182,15 +180,12 @@ export const BackToTopButton = () => {
         .backToTopButton:hover .clone span:nth-child(1) {
           transition-delay: 0.15s;
         }
-
         .backToTopButton:hover .clone span:nth-child(2) {
           transition-delay: 0.2s;
         }
-
         .backToTopButton:hover .clone span:nth-child(3) {
           transition-delay: 0.25s;
         }
-
         .backToTopButton:hover .clone span:nth-child(4) {
           transition-delay: 0.3s;
         }
@@ -211,9 +206,9 @@ export const BackToTopButton = () => {
   );
 };
 
-export const PinButton = ({}) => {
+export const PinButton = () => {
   return (
-    <label className="container flex items-center justify-center w-11 h-11 bg-transparent rounded-lg cursor-pointer transition-transform duration-200 active:scale-90 bg-gray-400 hover:bg-gray-600 hover:shadow-md">
+    <label className="container flex items-center justify-center w-11 h-11 bg-transparent rounded-lg cursor-pointer transition-transform duration-200 active:scale-90 bg-gray-400 hover:bg-white hover:shadow-md">
       <input type="checkbox" className="hidden" />
       <GiPin />
     </label>
@@ -274,27 +269,20 @@ export const SendButton = () => {
   );
 };
 
-export const AddItemButton = () => {
+export const AddButton = ({ name, color }) => {
   return (
     <button
       type="button"
-      className="button relative w-36 h-10 cursor-pointer flex items-center border border-green-600 bg-green-700 rounded-xl overflow-hidden transition-all duration-300 hover:bg-green-600 active:border-green-800 active:bg-green-800"
+      className={`group button relative w-44 h-10 cursor-pointer flex items-center border border-${color}-600 bg-${color}-700 rounded-xl overflow-hidden transition-all duration-300 hover:bg-${color}-600 active:border-${color}-800 active:bg-${color}-700`}
     >
-      <span className="button__text transform translate-x-8 text-white font-semibold transition-all duration-300">
-        Add Item
+      <span className="group-hover:text-transparent transform translate-x-8 text-white font-semibold transition-all duration-300">
+        Add {name}
       </span>
-      <span className="button__icon absolute transform translate-x-[109px] h-full w-10 bg-green-600 flex items-center justify-center transition-all duration-300">
+      <span
+        className={`group-hover:translate-x-0 group-hover:w-full absolute transform translate-x-[140px] h-full w-10 bg-${color}-600 flex items-center justify-center transition-all duration-300`}
+      >
         <FaPlus color="white" />
       </span>
-      <style jsx="true">{`
-        .button:hover .button__text {
-          color: transparent;
-        }
-        .button:hover .button__icon {
-          width: 148px;
-          transform: translateX(0);
-        }
-      `}</style>
     </button>
   );
 };
