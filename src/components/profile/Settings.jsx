@@ -1,3 +1,5 @@
+// src/components/profile/Settings.jsx
+
 import React from "react";
 
 export const Settings = () => {

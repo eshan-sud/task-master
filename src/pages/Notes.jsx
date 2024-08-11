@@ -1,3 +1,5 @@
+// src/Notes.jsx
+
 import React from "react";
 
 export const Notes = () => {

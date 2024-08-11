@@ -1,3 +1,5 @@
+// src/Home.jsx
+
 import React from "react";
 import { Introduction } from "../components/home/Introduction.jsx";
 import { Features } from "../components/home/Features.jsx";

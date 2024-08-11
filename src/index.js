@@ -1,22 +1,20 @@
+// index.js
+
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import "./index.css";
 
-import { LightModeContextProvider } from "./utils/LightModeContext";
-import { AuthProvider } from "./utils/AuthContext";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Providers } from "./utils/Providers";
+
+// Temporary
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <LightModeContextProvider>
-      <AuthProvider>
-        <GoogleOAuthProvider clientId="1039949305731-17b06fhmts037eqm4mquio1cbjddlcis.apps.googleusercontent.com">
-          <App />
-        </GoogleOAuthProvider>
-      </AuthProvider>
-    </LightModeContextProvider>
+    <Providers>
+      <App />
+    </Providers>
   </React.StrictMode>
 );
 

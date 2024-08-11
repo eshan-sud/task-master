@@ -1,3 +1,5 @@
+// src/components/home/Pricing.jsx
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

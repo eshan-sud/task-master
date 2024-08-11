@@ -1,3 +1,5 @@
+// src/components/profile/Archive.jsxs
+
 import React from "react";
 
 export const Archive = () => {

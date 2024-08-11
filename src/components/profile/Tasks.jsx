@@ -1,4 +1,4 @@
-// Tasks.jsx
+// src/components/profile/Tasks.jsx
 
 import React, { useState, useEffect, useContext } from "react";
 import Draggable from "react-draggable";
@@ -69,7 +69,7 @@ export const NoteContainer = () => {
         const result = await response.json();
         setNotes(result.notes);
       } catch (error) {
-        console.error("Error fetching notes:", error);
+        toast.error("Error fetching notes");
       }
     };
     fetchNotes();
@@ -103,8 +103,7 @@ export const NoteContainer = () => {
         toast.error(result.error);
       }
     } catch (error) {
-      console.error("Error adding note:", error);
-      toast.error("An error occurred while adding the note.");
+      toast.error("An error occurred while adding the note");
     }
   };
 
@@ -124,8 +123,7 @@ export const NoteContainer = () => {
         toast.error(result.error);
       }
     } catch (error) {
-      console.error("Error removing note:", error);
-      toast.error("An error occurred while removing the note.");
+      toast.error("An error occurred while removing the note");
     }
   };
 

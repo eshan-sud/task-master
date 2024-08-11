@@ -1,3 +1,5 @@
+// src/components/profile/Analytics.jsx
+
 import React from "react";
 
 export const Analytics = () => {

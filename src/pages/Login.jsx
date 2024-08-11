@@ -1,34 +1,38 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../App.css";
-import { Field, EmailField } from "../components/Fields";
-import { SubmitButton } from "../components/Buttons";
-import { GoogleLogin } from "@react-oauth/google";
-import { Link } from "react-router-dom";
+// src/Login.jsx
+
+import React, { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import AuthContext from "../utils/AuthContext.js";
+import { useRememberMe } from "../utils/RememberMeContext.js";
 import { EmailValidator } from "../utils/EmailValidator.js";
-import { FormContainer } from "../components/FormContainer";
+import { GoogleLogin } from "@react-oauth/google";
+import "../App.css";
 
 import { endpoints } from "../ApiEndpoints.js";
 
-import toast from "react-hot-toast";
-import AuthContext from "../utils/AuthContext.js";
+import { Field, EmailField } from "../components/Fields";
+import { SubmitButton } from "../components/Buttons";
+import { FormContainer } from "../components/FormContainer";
 
 const LoginForm = () => {
   const Navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const { isRememberMe, setIsRememberMe } = useRememberMe();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isRememberMe, setIsRememberMe] = useState("");
   const logindetails = {
     email,
     password,
   };
 
-  // If login-remember-me is checked => localStorage ; else => sessionStorage
-
+  const handleRememberMeChange = (event) => {
+    console.log("Checkbox checked:", event.target.checked);
+    setIsRememberMe(event.target.checked);
+  };
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log(logindetails);
+    // console.log(logindetails);
     try {
       const response = await fetch(endpoints.loginAuth, {
         method: "POST",
@@ -42,20 +46,25 @@ const LoginForm = () => {
       const message = await response.json();
 
       if (response.ok) {
-        console.log(message.user);
-        window.localStorage.setItem("token", message.token);
-        window.localStorage.setItem(
+        // console.log(message.user);
+        const storage = isRememberMe
+          ? window.localStorage
+          : window.sessionStorage;
+        storage.setItem("token", message.token);
+        storage.setItem(
           "fullName",
           `${message.user.firstName} ${message.user.lastName}`
         );
-        login(); // Update the authentication state
+        storage.setItem("email", message.user.email);
+
+        login();
         toast.success(message.message);
-        Navigate("/", { replace: true }); // Redirection to Home
+        Navigate("/", { replace: true });
       } else {
-        toast.error(message.error); // Error Handling
+        toast.error(message.error);
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error(error);
     }
   };
 
@@ -68,6 +77,7 @@ const LoginForm = () => {
             name="Email"
             email={email}
             setEmail={setEmail}
+            autoFocus={true}
           />
         </EmailValidator>
         <Field
@@ -87,10 +97,8 @@ const LoginForm = () => {
             id="login-remember-me"
             type="checkbox"
             className="mr-2"
-            value={isRememberMe}
-            onChange={() => {
-              setIsRememberMe(!isRememberMe);
-            }}
+            checked={isRememberMe}
+            onChange={handleRememberMeChange}
           />
           <label htmlFor="login-remember-me"> Remember me </label>
         </div>

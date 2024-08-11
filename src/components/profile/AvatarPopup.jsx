@@ -1,3 +1,5 @@
+// src/components/profile/AvatarProfile.jsx
+
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { endpoints } from "../../ApiEndpoints";
@@ -96,7 +98,6 @@ const ChangeAvatar = ({ togglePopup, fetchUserAvatar }) => {
         toast.error(message.error);
       }
     } catch (error) {
-      console.error("Error:", error);
       toast.error("An error occurred while uploading the image.");
     }
   };

@@ -1,3 +1,5 @@
+// src/components/profile/Sidebar.jsx
+
 import React, { useEffect, useRef, useState } from "react";
 import {
   FiX,
@@ -10,6 +12,7 @@ import {
   FiSettings,
   FiLogOut,
 } from "react-icons/fi";
+
 import { SidebarItem } from "../Link";
 import Logout from "./Logout";
 

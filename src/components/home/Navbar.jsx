@@ -1,7 +1,14 @@
+// src/components/home/Navbar.jsx
+
 import React, { useEffect, useState } from "react";
-import { MenuItem } from "../Link";
 import { Link } from "react-router-dom";
+
+import { CiHome } from "react-icons/ci";
+import { BsQuestion } from "react-icons/bs";
+import { CiPhone } from "react-icons/ci";
+
 import { LoginButton, RegisterButton } from "../Buttons";
+import { MenuItem } from "../Link";
 
 export const Navbar = ({ LightModeContext }) => {
   const [showNavbar, setShowNavbar] = useState(true);
@@ -31,12 +38,11 @@ export const Navbar = ({ LightModeContext }) => {
           <hr className="border-solid border-slate-950" />
         </Link>
 
-        {/* Change to UL */}
-        <div className="list-none flex justify-center items-center text-lg absolute left-1/2 transform -translate-x-1/2 z-40">
-          <MenuItem to="/home" name="Home" />
-          <MenuItem to="/about-us" name="About us" />
-          <MenuItem to="/contact" name="Contact" />
-        </div>
+        <ul className="list-none flex justify-center items-center text-lg absolute left-1/2 transform -translate-x-1/2 z-40">
+          <MenuItem to="/home" name="Home" icon={<CiHome />} />
+          <MenuItem to="/about-us" name="About us" icon={<BsQuestion />} />
+          <MenuItem to="/contact" name="Contact" icon={<CiPhone />} />
+        </ul>
         <div>
           <LoginButton />
           <RegisterButton />

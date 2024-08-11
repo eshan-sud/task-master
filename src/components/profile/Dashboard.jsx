@@ -1,3 +1,5 @@
+// src/components/profile/Dashboard.jsx
+
 import React from "react";
 
 export const Dashboard = () => {

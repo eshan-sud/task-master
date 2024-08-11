@@ -1,4 +1,7 @@
+// src/Profile.jsx
+
 import React from "react";
+import { useRememberMe } from "../utils/RememberMeContext.js";
 
 import { NoteContainer } from "../components/profile/Tasks";
 import {
@@ -11,11 +14,8 @@ import {
 } from "../components/Buttons";
 
 export const Profile = () => {
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    bio: "Software developer with a passion for learning new technologies.",
-  };
+  const { isRememberMe } = useRememberMe();
+  const storage = isRememberMe ? window.localStorage : window.sessionStorage;
 
   // const cards = [
   //   { id: 1, content: "Task 1" },
@@ -29,13 +29,10 @@ export const Profile = () => {
       <div className="profile-details mb-8">
         <h1 className="text-2xl font-bold mb-2"> Profile </h1>
         <p className="text-lg">
-          <strong> Name: </strong> {user.name}
+          <strong> Name: </strong> {storage.getItem("fullName")}
         </p>
         <p className="text-lg">
-          <strong> Email: </strong> {user.email}
-        </p>
-        <p className="text-lg">
-          <strong> Bio: </strong> {user.bio}
+          <strong> Email: </strong> {storage.getItem("email")}
         </p>
       </div>
 

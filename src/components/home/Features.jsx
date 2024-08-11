@@ -1,3 +1,5 @@
+// src/components/Home/Features.jsx
+
 import React from "react";
 import {
   FaTasks,

@@ -1,3 +1,5 @@
+// src/components/profile/Teams.jsx
+
 import React from "react";
 
 export const Teams = () => {

@@ -1,18 +1,21 @@
+// src/components/Link.jsx
+
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export const MenuItem = ({ to, name }) => {
+export const MenuItem = ({ to, name, icon }) => {
   return (
-    <li className="flex items-center mx-4 font-semi-bold tracking-tighter underline-offset-8">
+    <li className="mx-4 font-semi-bold tracking-tighter underline-offset-8">
       <NavLink
-        to={`${to}`}
+        to={to}
         className={({ isActive }) =>
           isActive
-            ? "text-blue-600 underline"
-            : "hover:text-blue-600 hover:underline"
+            ? "text-blue-600 underline flex items-center justify-center"
+            : "hover:text-blue-600 hover:underline flex items-center justify-center"
         }
       >
-        {name}
+        <span className="mr-1">{icon}</span>
+        <span>{name}</span>
       </NavLink>
     </li>
   );

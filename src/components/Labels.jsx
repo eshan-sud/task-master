@@ -1,3 +1,5 @@
+// src/components/Labels.jsx
+
 import React from "react";
 
 export const CircularLabel = ({ title, htmlFor, children }) => {

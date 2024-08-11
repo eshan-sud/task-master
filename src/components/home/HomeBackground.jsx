@@ -9,6 +9,7 @@ export const HomeBackground = () => {
       autoPlay
       muted
       loop
+      // preload="auto"
     />
   );
 };

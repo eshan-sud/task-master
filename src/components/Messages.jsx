@@ -1,4 +1,8 @@
+// src/components/Messages.jsx
+
 import React, { useEffect, useState } from "react";
+import { useRememberMe } from "../utils/RememberMeContext.js";
+
 import { CloseButton } from "./Buttons";
 
 export const MessageContainer = ({ children, onClose }) => {
@@ -16,15 +20,17 @@ export const MessageContainer = ({ children, onClose }) => {
 };
 
 export const WelcomeMessage = () => {
+  const { isRememberMe } = useRememberMe();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const hasSeenWelcomeMessage = localStorage.getItem("hasSeenWelcomeMessage");
+    const storage = isRememberMe ? window.localStorage : window.sessionStorage;
+    const hasSeenWelcomeMessage = storage.getItem("hasSeenWelcomeMessage");
     if (!hasSeenWelcomeMessage) {
       setVisible(true);
-      localStorage.setItem("hasSeenWelcomeMessage", "true");
+      storage.setItem("hasSeenWelcomeMessage", "true");
     }
-  }, []);
+  }, [isRememberMe]);
 
   const hideMessage = () => {
     setVisible(false);

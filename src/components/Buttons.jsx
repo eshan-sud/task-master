@@ -1,7 +1,7 @@
+// src/components/Buttons.jsx
+
 import React, { useContext } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import { FaPlus } from "react-icons/fa";
 import { GiPin } from "react-icons/gi";
 import {
@@ -12,7 +12,6 @@ import {
   HiArrowCircleRight,
 } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
-
 import { IoIosNotifications } from "react-icons/io";
 
 import LightModeContext from "../utils/LightModeContext.js";

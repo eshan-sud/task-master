@@ -1,3 +1,5 @@
+// src/components/FeedbackForm.jsx
+
 import React from "react";
 
 export const FeedbackForm = () => {

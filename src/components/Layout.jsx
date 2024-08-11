@@ -1,3 +1,5 @@
+// src/components/Layout.jsx
+
 import React, { useContext } from "react";
 
 import { Navbar } from "./home/Navbar.jsx";

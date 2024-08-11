@@ -1,3 +1,5 @@
+// src/components/ModeSwitch.jsx
+
 import React from "react";
 
 export const ModeSwitch = () => {

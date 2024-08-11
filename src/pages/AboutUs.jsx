@@ -1,3 +1,5 @@
+// src/AboutUs.jsx
+
 import React from "react";
 
 export const AboutUs = () => {

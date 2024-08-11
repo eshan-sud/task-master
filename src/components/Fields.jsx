@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { CircularLabel } from "./Labels";
+// src/components/Fields.jsx
 
+import React, { useEffect, useRef, useState } from "react";
 import { CgSearch } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
 
 // import { endpoints } from "../ApiEndpoints";
+
+import { CircularLabel } from "./Labels";
 
 export const SearchField = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -103,7 +105,14 @@ export const SearchField = () => {
   );
 };
 
-export const EmailField = ({ type, name, email, setEmail, className }) => {
+export const EmailField = ({
+  type,
+  name,
+  email,
+  setEmail,
+  className,
+  autoFocus = false,
+}) => {
   return (
     <div className="relative">
       <input
@@ -113,6 +122,7 @@ export const EmailField = ({ type, name, email, setEmail, className }) => {
         onChange={(event) => {
           setEmail(event.target.value.toLowerCase());
         }}
+        autoFocus={autoFocus}
         className={`border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none overflow-hidden bg-[#F3F3F3] rounded-[10px] transition-all duration-500 focus:bg-white peer ${className}`}
       />
       <label
@@ -127,14 +137,29 @@ export const EmailField = ({ type, name, email, setEmail, className }) => {
   );
 };
 
-export const Field = ({ name, type, value, setValue }) => {
+export const Field = ({
+  name,
+  type,
+  value,
+  setValue,
+  autoFocus = false,
+  allowSpecialChars = true,
+}) => {
+  const handleChange = (event) => {
+    let inputValue = event.target.value;
+    if (!allowSpecialChars) {
+      inputValue = inputValue.replace(/[^a-zA-Z\s]/g, "");
+    }
+    setValue(inputValue.toLowerCase());
+  };
   return (
     <div className="relative">
       <input
         value={value}
         type={type}
         id={name}
-        onChange={(event) => setValue(event.target.value.toLowerCase())}
+        onChange={handleChange}
+        autoFocus={autoFocus}
         className="border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none overflow-hidden bg-[#F3F3F3] rounded-[10px] transition-all duration-500 focus:border-[#4A9DEC] focus:shadow-[0px_0px_0px_7px_rgba(74,157,236,0.2)] focus:bg-white peer"
       />
       <label

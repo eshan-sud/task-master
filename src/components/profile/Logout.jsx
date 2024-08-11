@@ -1,14 +1,19 @@
+// src/components/profile/Logout.jsx
+
 import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../utils/AuthContext";
+import { useRememberMe } from "../../utils/RememberMeContext.js";
+
 import { endpoints } from "../../ApiEndpoints";
 
-import AuthContext from "../../utils/AuthContext";
 import { YesNoMessage } from "../Messages";
 
 const Logout = ({ toggleLogoutModal }) => {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
+  const { isRememberMe } = useRememberMe();
   const handleLogout = async (event) => {
     event.preventDefault();
 
@@ -20,12 +25,13 @@ const Logout = ({ toggleLogoutModal }) => {
         },
         credentials: "include",
       });
-
       const message = await response.json();
-
       if (response.ok) {
-        console.log(message.user);
-        window.localStorage.clear();
+        // console.log(message.user);
+        const storage = isRememberMe
+          ? window.localStorage
+          : window.sessionStorage;
+        storage.clear();
         logout();
         toast.success(message.message);
         navigate("/", { replace: true });
@@ -33,7 +39,7 @@ const Logout = ({ toggleLogoutModal }) => {
         toast.error(message.error);
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error(error);
     }
   };
   return (

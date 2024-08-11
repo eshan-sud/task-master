@@ -1,11 +1,16 @@
+// src/Register.jsx
+
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+
+import { EmailValidator } from "../utils/EmailValidator.js";
+
+import { endpoints } from "../ApiEndpoints.js";
+
 import { Field, EmailField, GenderInput } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
-import { Link, useNavigate } from "react-router-dom";
-import { EmailValidator } from "../utils/EmailValidator.js";
 import { FormContainer } from "../components/FormContainer";
-import { endpoints } from "../ApiEndpoints.js";
-import toast from "react-hot-toast";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -25,7 +30,7 @@ const RegisterForm = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    console.log(registerDetails);
+    // console.log(registerDetails);
     try {
       const response = await fetch(endpoints.registerAuth, {
         method: "POST",
@@ -37,15 +42,15 @@ const RegisterForm = () => {
       });
 
       const message = await response.json();
-      console.log(message);
+      // console.log(message);
       if (response.ok) {
-        toast.success("message.message");
-        navigate("/login", { replace: true }); // Redirection to Login Page
+        toast.success(message.message);
+        navigate("/login", { replace: true });
       } else {
-        toast.error(message.error); // Error Handling
+        toast.error(message.error);
       }
     } catch (error) {
-      console.error("Error:", error);
+      toast.error(error);
     }
   };
 
@@ -56,16 +61,17 @@ const RegisterForm = () => {
           <Field
             type="text"
             name="First Name"
-            className="flex-1"
             value={firstName}
             setValue={setFirstName}
+            autoFocus={true}
+            allowSpecialChars={false}
           />
           <Field
             type="text"
             name="Last Name"
-            className="flex-1"
             value={lastName}
             setValue={setLastName}
+            allowSpecialChars={false}
           />
         </span>
         <EmailValidator>

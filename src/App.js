@@ -1,8 +1,9 @@
-import "./App.css";
+// App.js
 
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import "./App.css";
 
 import { Home } from "./pages/Home.jsx";
 import { AboutUs } from "./pages/AboutUs.jsx";
@@ -14,15 +15,14 @@ import { Profile } from "./pages/Profile.jsx";
 
 // import { Loader } from "./components/Loader.jsx";
 import { Layout } from "./components/Layout.jsx";
-
-import AuthContext from "./utils/AuthContext.js";
-import LightModeContext from "./utils/LightModeContext.js";
-
 import { Dashboard } from "./components/profile/Dashboard.jsx";
 import { Analytics } from "./components/profile/Analytics.jsx";
 import { Archive } from "./components/profile/Archive.jsx";
 import { Teams } from "./components/profile/Teams.jsx";
 import { Settings } from "./components/profile/Settings.jsx";
+
+import AuthContext from "./utils/AuthContext.js";
+import LightModeContext from "./utils/LightModeContext.js";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);

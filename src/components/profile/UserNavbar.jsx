@@ -1,15 +1,20 @@
+// src/components/profile/UserNavbar.jsx
+
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { CiUser } from "react-icons/ci";
+import { useRememberMe } from "../../utils/RememberMeContext.js";
 
 import { SearchField } from "../Fields.jsx";
 import { NotificationButton, LightDarkModeButton } from "../Buttons.jsx";
 import { AvatarPopup } from "./AvatarPopup.jsx";
+
 import { endpoints } from "../../ApiEndpoints";
 
-import { CiUser } from "react-icons/ci";
-
 export const UserNavbar = () => {
-  const userName = useState(window.localStorage.getItem("fullName"));
+  const { isRememberMe } = useRememberMe();
+  const storage = isRememberMe ? window.localStorage : window.sessionStorage;
+  const userName = useState(storage.getItem("fullName"));
   const [userAvatar, setUserAvatar] = useState(null);
   const [showAvatarPanel, setShowAvatarPanel] = useState(false);
   const avatarRef = useRef(null);
@@ -25,12 +30,12 @@ export const UserNavbar = () => {
         const avatarUrl = URL.createObjectURL(await response.blob());
         setUserAvatar(avatarUrl);
       } else {
-        console.error("Failed to fetch user avatar:", response.statusText);
         setUserAvatar(null);
+        toast.error("Failed to fetch user avatar");
       }
     } catch (error) {
-      console.error("Error fetching user avatar:", error);
       setUserAvatar(null);
+      toast.error("Error fetching user avatar");
     }
   };
 
@@ -50,8 +55,7 @@ export const UserNavbar = () => {
         toast.error(data.error);
       }
     } catch (error) {
-      console.error("Error removing avatar:", error);
-      toast.error("An error occurred while removing the avatar.");
+      toast.error("An error occurred while removing the avatar");
     }
   };
 

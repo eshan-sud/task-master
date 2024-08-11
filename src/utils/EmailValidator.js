@@ -1,3 +1,5 @@
+// src/utils/EmailValidator.js
+
 import React, { useState, useEffect } from "react";
 
 const isValidEmail = (email) => {

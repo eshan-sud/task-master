@@ -1,4 +1,7 @@
+// src/components/MenuBar.jsx
+
 import React from "react";
+
 import home from "/resources/images/Home.svg";
 import search from "/resources/images/Search.svg";
 import profile from "/resources/images/Profile.svg";

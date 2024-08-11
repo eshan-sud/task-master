@@ -1,3 +1,5 @@
+// src/components/profile/ProfileBackground.jsx
+
 import React from "react";
 
 export const ProfileBackground = () => {

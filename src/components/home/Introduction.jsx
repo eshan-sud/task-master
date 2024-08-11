@@ -1,3 +1,5 @@
+// src/components/home/Introduction.jsx
+
 import React from "react";
 
 export const Introduction = () => {
