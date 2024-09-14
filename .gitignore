@@ -16,6 +16,7 @@ backend/node_modules/
 coverage/
 frontend/coverage/
 backend/coverage/
+screenshots/
 
 # production
 build/
