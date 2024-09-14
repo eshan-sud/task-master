@@ -1,0 +1,99 @@
+Virtual Signature Creator | HTML5, CSS3, JavaScript	|			      [github.com/eshan-sud/virtual-signature-creator]
+•	Created a responsive website designed to create virtual signatures on any device from anywhere.
+•	Implemented a set of settings giving the ability to change the stroke colour, stroke width, background colour & download file types (between PNG, JPG& PDF) and Dark Mode setting as well.
+Portfolio Website | HTML5, CSS3, JavaScript		|				      [github.com/eshan-sud/portfolio-website]
+•	Created a dynamic & responsive portfolio website designed to effectively showcase my skills, projects, and resume to potential employers and peers, enhancing visibility and professional branding.
+•	Implemented custom animations to engage visitors coupled with dark mode option for enhanced user experience.
+GUI Based Bank Management System |Java, FX, Swing, AWT	|				 [github.com/eshan-sud/bank-management-system]
+•	Developed a GUI based Bank Management System, user and admin logins, authentications, and ability to store and modify user information.
+•	Implemented a robust system for creating new customer accounts, facilitating secure login procedures, and providing administrators with exclusive access for managing system operations.
+CLI Library Management System | Python, MySQL		|			      [github.com/eshan-sud/library-management-system]
+•	Engineered a CLI based Library Management System, enabling efficient management of library resources and member operations.
+•	Implemented a comprehensive set of functionalities, including book management, member registration, book issuance, and return processes, enhancing the overall efficiency and effectiveness of library operations.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					(1)
+
+Task Master:
+-CRUD & Searching & Sorting (Based on many filters) Tasks
+-Archive tasks
+-Recycle Bin (Clears after 30 days)
+-Check Marking each task
+-Integration with Calendar & Google Maps
+-Login/Signup
+-Notifications using Email & Push & Desktop Notifications
+-Progress Tracking
+-Setting Priority Levels to each task (Have a default setting for each)
+-Voice Commands
+-Dark Mode
+-Offline Mode
+-Attachment Upload
+-Location based reminders
+-Sharing/Collaborating
+-Time Tracking
+-Export/Import [CSV, Excel]
+-In App Chat
+-Voice Memos
+-Custom Sound effects
+-Categories / Custom categories
+-Chatbot - For landing page
+-Add Captcha on all forms
+
+-> Real time task allotment, point system , leaderboard for organisations , 
+
+
+
+Android Application =>
+
+=Customizable Widgets
+=AI => Predictive task completion times
+=LLM => Dividing tasks into subtasks
+=AI => Suggestions on prioritising tasks
+
+
+						(2)
+
+Knowledge Buddy Extension :
+Searches input through a search engine of your choice & reads and understands the top 5 or so webpages and teaches you about that topic a/c to your need
+
+-
+-Search engine of your choice
+-Adjustable number of read pages
+-Adjustable temperature
+-Adjustable knowledge depth
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
