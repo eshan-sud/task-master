@@ -1,4 +1,4 @@
-# Task Management Web Application (Task Master)
+# Task Master - Task Management Web Application
 
 Task Master is a powerful task management web application that allows users to efficiently manage their tasks with a wide range of features such as task sorting, calendar integration, notifications, and much more. This application is ideal for individuals, teams, or organizations looking for a comprehensive tool to track and prioritize tasks in real time.
 
