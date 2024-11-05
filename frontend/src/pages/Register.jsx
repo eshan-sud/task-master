@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
-import { EmailValidator } from "../utils/EmailValidator.js";
-
 import { endpoints } from "../ApiEndpoints.js";
 
 import { Field, EmailField, GenderInput } from "../components/Fields";
@@ -74,14 +72,13 @@ const RegisterForm = () => {
             allowSpecialChars={false}
           />
         </span>
-        <EmailValidator>
-          <EmailField
-            type="email"
-            name="Email"
-            email={email}
-            setEmail={setEmail}
-          />
-        </EmailValidator>
+        <EmailField
+          type="email"
+          name="Email"
+          email={email}
+          setEmail={setEmail}
+          autoFocus={true}
+        />
         <Field
           type="password"
           name="Password"

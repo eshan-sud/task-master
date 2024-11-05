@@ -130,7 +130,7 @@ function App() {
           </Routes>
         </Layout>
       </BrowserRouter>
-      <DebugComponent />
+      {/* <DebugComponent /> */}
     </>
   );
 }

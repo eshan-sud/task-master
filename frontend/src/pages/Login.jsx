@@ -71,15 +71,13 @@ const LoginForm = () => {
   return (
     <>
       <form className="flex flex-col gap-4 w-full" onSubmit={handleLogin}>
-        <EmailValidator>
-          <EmailField
-            type="email"
-            name="Email"
-            email={email}
-            setEmail={setEmail}
-            autoFocus={true}
-          />
-        </EmailValidator>
+        <EmailField
+          type="email"
+          name="Email"
+          email={email}
+          setEmail={setEmail}
+          autoFocus={true}
+        />
         <Field
           type="password"
           name="Password"

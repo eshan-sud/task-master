@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 // import { endpoints } from "../ApiEndpoints";
 
 import { CircularLabel } from "./Labels";
+import { EmailValidator, isValidEmail } from "../utils/EmailValidator.js";
 
 export const SearchField = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -110,29 +111,45 @@ export const EmailField = ({
   name,
   email,
   setEmail,
-  className,
+  className = "",
   autoFocus = false,
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <div className="relative">
-      <input
-        value={email}
-        type={type}
-        id={name}
-        onChange={(event) => {
-          setEmail(event.target.value.toLowerCase());
-        }}
-        autoFocus={autoFocus}
-        className={`border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none overflow-hidden bg-[#F3F3F3] rounded-[10px] transition-all duration-500 focus:bg-white peer ${className}`}
-      />
-      <label
-        htmlFor={name}
-        className={`absolute left-2.5 transition-all duration-200 ease-in-out transform ${
-          email ? "top-0 text-xs text-blue-500" : "top-4 text-sm text-gray-600"
-        } peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500`}
-      >
-        {name}
-      </label>
+      <EmailValidator setEmail={setEmail} email={email}>
+        <div className="relative">
+          <input
+            value={email}
+            type={type}
+            id={name}
+            autoFocus={autoFocus}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            onChange={(event) => setEmail(event.target.value.toLowerCase())}
+            className={`peer border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none overflow-hidden bg-[#F3F3F3] rounded-[10px] transition-all duration-500 focus:bg-white ${className} ${
+              isFocused
+                ? email === ""
+                  ? "border-[#4A9DEC] shadow-[0px_0px_0px_7px_rgba(74,157,236,0.2)]"
+                  : isValidEmail(email)
+                  ? "border-green-500 shadow-[0px_0px_0px_7px_rgba(34,197,94,0.2)]"
+                  : "border-red-500 shadow-[0px_0px_0px_7px_rgba(239,68,68,0.2)]"
+                : ""
+            }`}
+          />
+          <label
+            htmlFor={name}
+            className={`absolute left-2.5 transition-all duration-200 ease-in-out transform ${
+              email
+                ? "top-0 text-xs text-blue-500"
+                : "top-4 text-sm text-gray-600"
+            } peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500`}
+          >
+            {name}
+          </label>
+        </div>
+      </EmailValidator>
     </div>
   );
 };
