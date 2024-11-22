@@ -236,3 +236,43 @@ export const GenderInput = ({ setGender }) => {
     </div>
   );
 };
+
+export const NewPasswordField = ({
+  type = "password",
+  name = "New Password",
+  value,
+  onChange,
+  className = "",
+  autoFocus = true,
+}) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className="relative">
+      <input
+        value={value}
+        type={type}
+        id={name}
+        autoFocus={autoFocus}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onChange={(event) => onChange(event.target.value)}
+        className={`peer border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none bg-[#F3F3F3] rounded-[10px] transition-all duration-500 focus:bg-white ${className} ${
+          isFocused
+            ? value === ""
+              ? "border-[#4A9DEC] shadow-[0px_0px_0px_7px_rgba(74,157,236,0.2)]"
+              : "border-green-500 shadow-[0px_0px_0px_7px_rgba(34,197,94,0.2)]"
+            : ""
+        }`}
+      />
+      <label
+        htmlFor={name}
+        className={`absolute left-2.5 transition-all duration-200 ease-in-out transform ${
+          value ? "top-0 text-xs text-blue-500" : "top-4 text-sm text-gray-600"
+        } peer-focus:top-0 peer-focus:text-xs peer-focus:text-blue-500`}
+      >
+        {name}
+      </label>
+    </div>
+  );
+};

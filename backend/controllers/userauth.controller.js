@@ -3,14 +3,18 @@
 const path = require("path");
 const fs = require("fs");
 const User = require("../models/user.model");
+const OTP = require("../models/user.OTP");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+// const { sendOTPEmail } = require("../utils/emailService");
 const { setUser, getUser } = require("../utils/auth.utils");
 
 const handleLoginAuth = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password || email.trim() === "" || password.trim() === "") {
-    return res.status(400).json({ error: "All fields are required" });
-  }
   try {
+    const { email, password } = req.body;
+    if (!email || !password || email.trim() === "" || password.trim() === "") {
+      return res.status(400).json({ error: "All fields are required" });
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -32,23 +36,22 @@ const handleLoginAuth = async (req, res) => {
 };
 
 const handleRegisterAuth = async (req, res) => {
-  const { firstName, lastName, email, password, gender } = req.body;
-  if (
-    !firstName ||
-    !lastName ||
-    !email ||
-    !password ||
-    !gender ||
-    firstName.trim() === "" ||
-    lastName.trim() === "" ||
-    email.trim() === "" ||
-    password.trim() === "" ||
-    gender.trim() === ""
-  ) {
-    return res.status(400).json({ error: "All fields are required" });
-  }
-
   try {
+    const { firstName, lastName, email, password, gender } = req.body;
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !gender ||
+      firstName.trim() === "" ||
+      lastName.trim() === "" ||
+      email.trim() === "" ||
+      password.trim() === "" ||
+      gender.trim() === ""
+    ) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "User Already Exists" });
@@ -110,9 +113,64 @@ const handleGetUserAvatar = async (req, res) => {
   }
 };
 
+const handleGetUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+const handleGenerateOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const hashedOTP = await bcrypt.hash(otp.toString(), 10);
+    await OTP.create({ email, otp: hashedOTP, createdAt: Date.now() });
+    // await sendOTPEmail(email, otp);
+    return res.status(200).json({ message: "OTP sent to email" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error generating OTP" });
+  }
+};
+
+const handleVerifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ error: "Email and OTP are required" });
+    }
+    const otpRecord = await OTP.findOne({ email });
+    if (!otpRecord) {
+      return res.status(404).json({ error: "OTP not found" });
+    }
+    const isMatch = await bcrypt.compare(otp.toString(), otpRecord.otp);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Invalid OTP" });
+    }
+    await OTP.deleteOne({ email });
+    return res.status(200).json({ message: "OTP verified successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error verifying OTP" });
+  }
+};
+
 module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
   handleGetUserAvatar,
+  handleGetUser,
+  handleGenerateOTP,
+  handleVerifyOTP,
 };

@@ -5,7 +5,6 @@ import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import AuthContext from "../utils/AuthContext.js";
 import { useRememberMe } from "../utils/RememberMeContext.js";
-import { EmailValidator } from "../utils/EmailValidator.js";
 import { GoogleLogin } from "@react-oauth/google";
 import "../App.css";
 

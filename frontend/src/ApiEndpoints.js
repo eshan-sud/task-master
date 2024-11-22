@@ -8,6 +8,8 @@ export const endpoints = {
   registerAuth: `${baseURL}auth/register`,
   resetPassword: `${baseURL}auth/resetPassword`,
   userSearch: `${baseURL}auth/userSearch`,
+  generateOTP: `${baseURL}auth/generateOTP`,
+  verifyOTP: `${baseURL}auth/verifyOTP`,
 
   // Avatar Endpoints
   uploadAvatar: `${baseURL}avatar/upload`,
