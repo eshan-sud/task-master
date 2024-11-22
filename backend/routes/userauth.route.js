@@ -6,7 +6,6 @@ const {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
-  handleGetUserAvatar,
   handleGetUser,
   handleGenerateOTP,
   handleVerifyOTP,
@@ -14,12 +13,15 @@ const {
 
 const router = express.Router();
 
+// Auth
 router.post("/login", handleLoginAuth);
+router.get("/logout", handleLogoutAuth);
 router.post("/register", handleRegisterAuth);
-router.post("/logout", handleLogoutAuth);
-router.get("/getUserAvatar", authenticate, handleGetUserAvatar);
 router.get("/getUser", authenticate, handleGetUser);
 router.post("/generateOTP", authenticate, handleGenerateOTP);
 router.get("/verifyOTP", authenticate, handleVerifyOTP);
+
+// Tasks
+// router.get("/getTasks", authenticate, handleGetTasks);
 
 module.exports = router;

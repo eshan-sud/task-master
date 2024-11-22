@@ -1,8 +1,43 @@
 // filename - controllers/avatar.controller.js
 
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 const User = require("../models/user.model");
+
+const handleGetUserAvatar = async (req, res) => {
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(400).json({ error: "User ID not provided" });
+    }
+    const user = await User.findById(req.user._id);
+    if (!user || !user.avatar) {
+      return res.status(404).json({ error: "Avatar not found" });
+    }
+    const avatarPath = path.resolve(`uploads/${user.avatar}`);
+    if (!fs.existsSync(avatarPath)) {
+      return res.status(404).json({ error: "Avatar file does not exist" });
+    }
+    const extname = path.extname(user.avatar).toLowerCase();
+    let contentType = "application/octet-stream";
+    switch (extname) {
+      case ".jpg":
+      case ".jpeg":
+        contentType = "image/jpeg";
+        break;
+      case ".png":
+        contentType = "image/png";
+        break;
+      case ".gif":
+        contentType = "image/gif";
+        break;
+    }
+    res.setHeader("Content-Type", contentType);
+    res.sendFile(avatarPath);
+  } catch (error) {
+    console.error("Error retrieving avatar:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 const handleUploadAvatar = async (req, res) => {
   try {
@@ -53,6 +88,7 @@ const handleRemoveAvatar = async (req, res) => {
 };
 
 module.exports = {
+  handleGetUserAvatar,
   handleUploadAvatar,
   handleRemoveAvatar,
 };

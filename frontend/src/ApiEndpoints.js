@@ -6,13 +6,20 @@ export const endpoints = {
   loginAuth: `${baseURL}auth/login`,
   logoutAuth: `${baseURL}auth/logout`,
   registerAuth: `${baseURL}auth/register`,
-  resetPassword: `${baseURL}auth/resetPassword`,
-  userSearch: `${baseURL}auth/userSearch`,
   generateOTP: `${baseURL}auth/generateOTP`,
   verifyOTP: `${baseURL}auth/verifyOTP`,
+  resetPassword: `${baseURL}auth/resetPassword`,
+
+  // Tasks
+  getTasks: `${baseURL}tasks/getTasks`,
+  updateTask: `${baseURL}tasks/patchTask`,
+  delelteTask: `${baseURL}tasks/deleteTask`,
+
+  // Search
+  // userSearch: `${baseURL}auth/userSearch`,
 
   // Avatar Endpoints
+  getUserAvatar: `${baseURL}avatar/getUserAvatar`,
   uploadAvatar: `${baseURL}avatar/upload`,
-  getUserAvatar: `${baseURL}auth/getUserAvatar`,
   removeAvatar: `${baseURL}avatar/removeAvatar`,
 };

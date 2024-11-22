@@ -6,8 +6,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: GMAIL_ID,
-    pass: GMAIL_PASSWORD,
+    user: process.env.GMAIL_ID,
+    pass: process.env.GMAIL_APP_PASSWORD,
   },
 });
 
@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
  */
 const sendOTPEmail = async (email, otp) => {
   const mailOptions = {
-    from: "your-email@gmail.com",
+    from: process.env.GMAIL_ID,
     to: email,
     subject: "Your OTP Code",
     text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
@@ -31,6 +31,7 @@ const sendOTPEmail = async (email, otp) => {
     console.error("Failed to send OTP email:", error);
     throw new Error("Could not send OTP email");
   }
+  return true;
 };
 
 module.exports = { sendOTPEmail };

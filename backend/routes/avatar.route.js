@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require("path");
 const router = express.Router();
 const {
+  handleGetUserAvatar,
   handleUploadAvatar,
   handleRemoveAvatar,
 } = require("../controllers/avatar.controller");
@@ -20,12 +21,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+// Avatar
 router.post(
   "/upload",
   authenticate,
   upload.single("avatar"),
   handleUploadAvatar
 );
+router.get("/getUserAvatar", authenticate, handleGetUserAvatar);
 router.delete("/removeAvatar", authenticate, handleRemoveAvatar);
 
 module.exports = router;

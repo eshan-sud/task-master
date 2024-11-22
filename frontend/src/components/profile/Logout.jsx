@@ -19,7 +19,7 @@ const Logout = ({ toggleLogoutModal }) => {
 
     try {
       const response = await fetch(endpoints.logoutAuth, {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },

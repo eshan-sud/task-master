@@ -62,7 +62,7 @@ export const NoteContainer = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await fetch(endpoints.getNotes, {
+        const response = await fetch(endpoints.getTasks, {
           method: "GET",
           credentials: "include",
         });

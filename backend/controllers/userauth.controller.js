@@ -1,12 +1,10 @@
 // filename - controllers/userauth.controller.js
 
-const path = require("path");
-const fs = require("fs");
 const User = require("../models/user.model");
 const OTP = require("../models/user.OTP");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-// const { sendOTPEmail } = require("../utils/emailService");
+const { sendOTPEmail } = require("../utils/emailService");
 const { setUser, getUser } = require("../utils/auth.utils");
 
 const handleLoginAuth = async (req, res) => {
@@ -78,44 +76,14 @@ const handleLogoutAuth = async (req, res) => {
   }
 };
 
-const handleGetUserAvatar = async (req, res) => {
-  try {
-    if (!req.user || !req.user._id) {
-      return res.status(400).json({ error: "User ID not provided" });
-    }
-    const user = await User.findById(req.user._id);
-    if (!user || !user.avatar) {
-      return res.status(404).json({ error: "Avatar not found" });
-    }
-    const avatarPath = path.resolve(`uploads/${user.avatar}`);
-    if (!fs.existsSync(avatarPath)) {
-      return res.status(404).json({ error: "Avatar file does not exist" });
-    }
-    const extname = path.extname(user.avatar).toLowerCase();
-    let contentType = "application/octet-stream";
-    switch (extname) {
-      case ".jpg":
-      case ".jpeg":
-        contentType = "image/jpeg";
-        break;
-      case ".png":
-        contentType = "image/png";
-        break;
-      case ".gif":
-        contentType = "image/gif";
-        break;
-    }
-    res.setHeader("Content-Type", contentType);
-    res.sendFile(avatarPath);
-  } catch (error) {
-    console.error("Error retrieving avatar:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 const handleGetUser = async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+    const user = await User.findOne({ email });
+    console.log(user);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -129,16 +97,33 @@ const handleGetUser = async (req, res) => {
 const handleGenerateOTP = async (req, res) => {
   try {
     const { email } = req.body;
+
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
+
+    // Generate a 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000);
+    // Hash the OTP for security
     const hashedOTP = await bcrypt.hash(otp.toString(), 10);
-    await OTP.create({ email, otp: hashedOTP, createdAt: Date.now() });
-    // await sendOTPEmail(email, otp);
+    // Store the OTP in the database
+    const otpRecord = await OTP.create({
+      email,
+      otp: hashedOTP,
+      createdAt: Date.now(),
+    });
+    if (!otpRecord) {
+      return res.status(500).json({ error: "Failed to store OTP in database" });
+    }
+    console.log(`OTP stored successfully for ${email}`);
+    // Send OTP via email
+    const emailSent = await sendOTPEmail(email, otp);
+    if (!emailSent) {
+      return res.status(500).json({ error: "Failed to send OTP email" });
+    }
     return res.status(200).json({ message: "OTP sent to email" });
   } catch (error) {
-    console.error(error);
+    console.error("Error generating OTP:", error);
     return res.status(500).json({ error: "Error generating OTP" });
   }
 };
@@ -154,6 +139,7 @@ const handleVerifyOTP = async (req, res) => {
       return res.status(404).json({ error: "OTP not found" });
     }
     const isMatch = await bcrypt.compare(otp.toString(), otpRecord.otp);
+    console.log(otpRecord.otp);
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid OTP" });
     }
@@ -169,7 +155,6 @@ module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
-  handleGetUserAvatar,
   handleGetUser,
   handleGenerateOTP,
   handleVerifyOTP,
