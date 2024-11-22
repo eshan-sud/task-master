@@ -76,18 +76,17 @@ const handleLogoutAuth = async (req, res) => {
   }
 };
 
-const handleGetUser = async (req, res) => {
+const handleUserExists = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
     const user = await User.findOne({ email });
-    console.log(user);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ exists: false });
     }
-    return res.json(user);
+    return res.json({ exists: true });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server error" });
@@ -155,7 +154,7 @@ module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
-  handleGetUser,
+  handleUserExists,
   handleGenerateOTP,
   handleVerifyOTP,
 };

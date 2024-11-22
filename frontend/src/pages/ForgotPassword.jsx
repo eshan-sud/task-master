@@ -11,21 +11,37 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
   const handleForgotPassword = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(endpoints.userSearch, {
+      // Check if the user exists
+      const userExistsResponse = await fetch(endpoints.userExists, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      const message = await response.json();
-
-      if (response.ok) {
-        toast.success("OTP sent to your email!");
-        setStep(2); // Proceed to OTP Verification
-      } else {
-        toast.error(message.error);
+      const userExistsMessage = await userExistsResponse.json();
+      if (!userExistsResponse.ok) {
+        toast.error("User Not Verified!");
+        return;
       }
+      if (!userExistsMessage.exists) {
+        toast.error("User Not Found!");
+        return;
+      }
+      const otpResponse = await fetch(endpoints.generateOTP, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!otpResponse.ok) {
+        toast.error("Couldn't generate or send OTP to your email!");
+        return;
+      }
+
+      toast.success("OTP Sent to your Email!");
+      setStep(2); // Proceed to OTP Verification
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Something Went Wrong!");
+      console.error(error);
     }
   };
 
@@ -37,8 +53,8 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
       <EmailField
         type="email"
         name="Email"
-        value={email}
-        onChange={setEmail}
+        email={email}
+        setEmail={setEmail}
         autoFocus={true}
       />
       <SubmitButton text="Send OTP" />
@@ -50,7 +66,7 @@ const OTPVerificationForm = ({ email, otp, setOtp, setStep }) => {
   const handleOtpVerification = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(endpoints.verifyOtp, {
+      const response = await fetch(endpoints.verifyOTP, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
