@@ -10,7 +10,7 @@ Task Master is a powerful task management web application that allows users to e
 - **Recycle Bin**: Deleted tasks are stored for 30 days before permanent deletion.
 - **Task Completion**: Checkmark tasks as completed.
 - **Calendar & Google Maps Integration**: Sync tasks with your calendar and set location-based reminders using Google Maps.
-- **Login/Signup**: User authentication to create personal accounts.
+  [x] **Login/Signup**: User authentication to create personal accounts.
 - **Notifications**: Get notified via email, push, and desktop notifications.
 - **Progress Tracking**: Track task completion progress.
 - **Priority Levels**: Set priority levels for tasks with default and customizable settings.
@@ -28,16 +28,13 @@ Task Master is a powerful task management web application that allows users to e
 - **Task Categories**: Organize tasks into default or custom categories.
 - **Chatbot for Landing Page**: Provide a chatbot interface on the landing page.
 - **Captcha on Forms**: Add Captcha to all forms for added security.
+- **Password Reset**: Using OTP sent to an email.
 
 ### Special Features for Organizations
 
 - **Real-Time Task Allotment**: Allocate tasks in real-time.
 - **Point System**: Award points for task completion.
 - **Leaderboard**: View rankings for individuals or teams based on task completion.
-
-## Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### Available Scripts
 
