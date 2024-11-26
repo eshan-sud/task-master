@@ -101,16 +101,16 @@ const handleUserExists = async (req, res) => {
 const handleGenerateOTP = async (req, res) => {
   try {
     const { email } = req.body;
-
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
-
+    // Remove any existing OTPs for this email
+    await OTP.deleteMany({ email });
     // Generate a 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000);
     // Hash the OTP for security
     const hashedOTP = await bcrypt.hash(otp.toString(), 10);
-    // Store the OTP in the database
+    // Store the new OTP in the database
     const otpRecord = await OTP.create({
       email,
       otp: hashedOTP,
@@ -119,7 +119,7 @@ const handleGenerateOTP = async (req, res) => {
     if (!otpRecord) {
       return res.status(500).json({ error: "Failed to store OTP in database" });
     }
-    console.log(`OTP stored successfully for ${email}`);
+    console.log(`New OTP stored successfully for ${email}`);
     // Send OTP via email
     const emailSent = await sendOTPEmail(email, otp);
     if (!emailSent) {
