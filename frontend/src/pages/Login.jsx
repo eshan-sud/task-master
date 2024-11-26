@@ -24,7 +24,6 @@ const LoginForm = () => {
     email,
     password,
   };
-
   const handleRememberMeChange = (event) => {
     console.log("Checkbox checked:", event.target.checked);
     setIsRememberMe(event.target.checked);

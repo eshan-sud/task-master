@@ -6,6 +6,7 @@ import { FormContainer } from "../components/FormContainer";
 import { SubmitButton } from "../components/Buttons";
 import toast from "react-hot-toast";
 import { endpoints } from "../ApiEndpoints.js";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
   const handleForgotPassword = async (event) => {
@@ -114,6 +115,7 @@ const ResetPasswordForm = ({
   setConfirmPassword,
   setStep,
 }) => {
+  const navigate = useNavigate();
   const handleResetPassword = async (event) => {
     event.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -122,7 +124,7 @@ const ResetPasswordForm = ({
     }
     try {
       const response = await fetch(endpoints.resetPassword, {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, newPassword }),
       });
@@ -130,7 +132,7 @@ const ResetPasswordForm = ({
 
       if (response.ok) {
         toast.success("Password reset successfully!");
-        setStep(1); // Reset flow
+        navigate("/login");
       } else {
         toast.error(message.error);
       }

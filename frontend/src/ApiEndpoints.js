@@ -9,7 +9,7 @@ export const endpoints = {
   userExists: `${baseURL}auth/userExists`,
   generateOTP: `${baseURL}auth/generateOTP`,
   verifyOTP: `${baseURL}auth/verifyOTP`,
-  // resetPassword: `${baseURL}auth/resetPassword`,
+  resetPassword: `${baseURL}auth/resetPassword`,
 
   // Tasks
   getTasks: `${baseURL}tasks/getTasks`,

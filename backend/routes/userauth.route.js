@@ -9,6 +9,7 @@ const {
   handleUserExists,
   handleGenerateOTP,
   handleVerifyOTP,
+  handleResetPassword,
 } = require("../controllers/userauth.controller");
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.post("/register", handleRegisterAuth);
 router.post("/userExists", handleUserExists);
 router.post("/generateOTP", handleGenerateOTP);
 router.post("/verifyOTP", handleVerifyOTP);
+router.put("/resetPassword", handleResetPassword);
 
 // Tasks
 // router.get("/getTasks", authenticate, handleGetTasks);

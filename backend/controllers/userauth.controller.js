@@ -17,15 +17,13 @@ const handleLoginAuth = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
-    if (user.password !== password) {
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid password" });
     }
-
     const token = setUser(user);
-
     res.cookie("token", token, { httpOnly: true, secure: true });
-
     return res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
     console.error("Error occurred during Login:", error);
@@ -52,13 +50,20 @@ const handleRegisterAuth = async (req, res) => {
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: "User Already Exists" });
+      return res.status(400).json({ error: "User already exists" });
     }
-    await User.create({ firstName, lastName, email, password, gender });
-    return res.status(201).json({ message: "User Created Successfully" });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      gender,
+    });
+    return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    console.error("Error occurred during Registration:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error occurred during registration:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -150,6 +155,28 @@ const handleVerifyOTP = async (req, res) => {
   }
 };
 
+const handleResetPassword = async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+      return res
+        .status(400)
+        .json({ error: "Email and New Password are required" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    return res.status(200).json({ message: "Password reset successfully!" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    return res.status(500).json({ error: "Error resetting password" });
+  }
+};
+
 module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
@@ -157,4 +184,5 @@ module.exports = {
   handleUserExists,
   handleGenerateOTP,
   handleVerifyOTP,
+  handleResetPassword,
 };
