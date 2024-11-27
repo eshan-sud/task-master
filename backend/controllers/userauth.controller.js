@@ -1,5 +1,6 @@
 // filename - backend/controllers/userauth.controller.js
 
+require("dotenv").config();
 const User = require("../models/user.model");
 const OTP = require("../models/user.OTP");
 const bcrypt = require("bcryptjs");
@@ -31,9 +32,43 @@ const handleLoginAuth = async (req, res) => {
   }
 };
 
+const verifyCaptcha = async (captchaToken) => {
+  try {
+    const GOOGLE_RECAPTCHA_SECRET_KEY = process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
+
+    // Make sure secret & token are available
+    if (!GOOGLE_RECAPTCHA_SECRET_KEY || !captchaToken) {
+      throw new Error("Missing required parameters: secret or captcha token.");
+    }
+
+    const response = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          secret: GOOGLE_RECAPTCHA_SECRET_KEY,
+          response: captchaToken,
+        }),
+      }
+    );
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error("Error verifying CAPTCHA:", error);
+    return false;
+  }
+};
+
 const handleRegisterAuth = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, gender } = req.body;
+    const { firstName, lastName, email, password, gender, captchaToken } =
+      req.body;
+    if (!captchaToken || !verifyCaptcha(captchaToken)) {
+      return res.status(400).json({ error: "Invalid CAPTCHA" });
+    }
     if (
       !firstName ||
       !lastName ||

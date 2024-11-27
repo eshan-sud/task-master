@@ -42,7 +42,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - **Token Refresh:** Implement JWT refresh tokens for secure, continuous sessions.
 - **Logout Everywhere:** Log out from all devices simultaneously.
 - **Session Expiry:** Expire tokens after a set duration and prompt re-login.
-- **Captcha on Forms:** Add Captcha to all forms for added security.
+- [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
 - **Rate Limiting:** Prevent brute-force attacks on login or OTP endpoints.
 - **Encryption:** Encrypt sensitive user data & use HTTPS to secure communications.
 - **Audit Logging:** Track and log sensitive actions like logins & profile updates.
