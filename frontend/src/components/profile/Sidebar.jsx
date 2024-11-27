@@ -1,4 +1,4 @@
-// src/components/profile/Sidebar.jsx
+// filename - frontend/src/components/profile/Sidebar.jsx
 
 import React, { useEffect, useRef, useState } from "react";
 import {

@@ -1,4 +1,4 @@
-// src/components/profile/Archive.jsx
+// filename - frontend/src/components/profile/Archive.jsx
 
 import React, { useState } from "react";
 

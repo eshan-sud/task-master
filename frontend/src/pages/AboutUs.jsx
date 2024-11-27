@@ -1,4 +1,4 @@
-// src/AboutUs.jsx
+// filename - frontend/src/pages/AboutUs.jsx
 
 import React from "react";
 

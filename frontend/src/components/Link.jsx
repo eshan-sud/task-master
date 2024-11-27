@@ -1,4 +1,4 @@
-// src/components/Link.jsx
+// filename - frontend/src/components/Link.jsx
 
 import React from "react";
 import { NavLink } from "react-router-dom";

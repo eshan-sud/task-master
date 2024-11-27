@@ -1,4 +1,4 @@
-// src/components/home/FAQs.jsx
+// filename - frontend/src/components/home/FAQs.jsx
 
 import React from "react";
 // import { PlayStoreButton, AppStoreButton } from '../components/Buttons.jsx';

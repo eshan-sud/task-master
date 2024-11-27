@@ -1,3 +1,5 @@
+// filename - frontend/src/components/home/HomeBackground.jsx
+
 import React from "react";
 
 export const HomeBackground = () => {

@@ -1,4 +1,4 @@
-// App.js
+// filename - frontend/src/App.js
 
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";

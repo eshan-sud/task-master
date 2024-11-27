@@ -1,4 +1,4 @@
-// src/components/profile/Logout.jsx
+// filename - frontend/src/components/profile/Logout.jsx
 
 import React, { useContext } from "react";
 import toast from "react-hot-toast";

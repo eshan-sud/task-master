@@ -1,4 +1,4 @@
-// src/components/profile/Settings.jsx
+// filename - frontend/src/components/profile/Settings.jsx
 
 import React, { useState, useEffect } from "react";
 

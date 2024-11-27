@@ -1,4 +1,4 @@
-// src/components/profile/Dashboard.jsx
+// filename - frontend/src/components/profile/Dashboard.jsx
 
 import React, { useState } from "react";
 import Calendar from "react-calendar";

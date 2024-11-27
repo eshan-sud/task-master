@@ -1,4 +1,4 @@
-// src/components/profile/Analytics.jsx
+// filename - frontend/src/components/profile/Analytics.jsx
 
 import React, { useState } from "react";
 import {

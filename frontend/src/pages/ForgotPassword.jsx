@@ -1,4 +1,4 @@
-// src/ForgotPassword.jsx
+// filename - frontend/src/pages/ForgotPassword.jsx
 
 import React, { useState } from "react";
 import { EmailField, NewPasswordField } from "../components/Fields";

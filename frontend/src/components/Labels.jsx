@@ -1,4 +1,4 @@
-// src/components/Labels.jsx
+// filename - frontend/src/components/Labels.jsx
 
 import React from "react";
 

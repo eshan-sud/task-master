@@ -1,4 +1,4 @@
-// src/components/Layout.jsx
+// filename - frontend/src/components/Layout.jsx
 
 import React, { useContext } from "react";
 

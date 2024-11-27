@@ -1,4 +1,4 @@
-// src/components/Home/Features.jsx
+// filename - frontend/src/components/home/Features.jsx
 
 import React from "react";
 import {

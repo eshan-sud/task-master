@@ -1,4 +1,4 @@
-// src/components/profile/AvatarProfile.jsx
+// filename - frontend/src/components/profile/AvatarProfile.jsx
 
 import React, { useState } from "react";
 import toast from "react-hot-toast";

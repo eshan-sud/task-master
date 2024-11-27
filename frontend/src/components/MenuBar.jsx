@@ -1,4 +1,4 @@
-// src/components/MenuBar.jsx
+// filename - frontend/src/components/MenuBar.jsx
 
 import React from "react";
 

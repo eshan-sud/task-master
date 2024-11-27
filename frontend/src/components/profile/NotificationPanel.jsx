@@ -1,4 +1,4 @@
-// src/components/profile/NotificationPanel.jsx
+// filename - frontend/src/components/profile/NotificationPanel.jsx
 
 import React from "react";
 

@@ -1,4 +1,4 @@
-// src/Profile.jsx
+// filename - frontend/src/pages/Profile.jsx
 
 import React from "react";
 import { useRememberMe } from "../utils/RememberMeContext.js";

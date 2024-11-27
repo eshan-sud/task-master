@@ -1,4 +1,4 @@
-// src/components/profile/UserNavbar.jsx
+// filename - frontend/src/components/profile/UserNavbar.jsx
 
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";

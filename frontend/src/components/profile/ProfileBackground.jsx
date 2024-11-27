@@ -1,4 +1,4 @@
-// src/components/profile/ProfileBackground.jsx
+// filename - frontend/src/components/profile/ProfileBackground.jsx
 
 import React from "react";
 

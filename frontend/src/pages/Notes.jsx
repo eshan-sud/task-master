@@ -1,4 +1,4 @@
-// src/Notes.jsx
+// filename - frontend/src/pages/Notes.jsx
 
 import React from "react";
 

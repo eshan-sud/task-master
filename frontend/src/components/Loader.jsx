@@ -1,4 +1,4 @@
-// src/components/Loader.jsx
+// filename - frontend/src/components/Loader.jsx
 
 import React from "react";
 

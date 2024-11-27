@@ -1,4 +1,4 @@
-// src/components/home/Footer.jsx
+// filename - frontend/src/components/home/Footer.jsx
 
 import React from "react";
 

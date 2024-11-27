@@ -1,4 +1,4 @@
-// src/components/Messages.jsx
+// filename - frontend/src/components/Messages.jsx
 
 import React, { useEffect, useState } from "react";
 import { useRememberMe } from "../utils/RememberMeContext.js";

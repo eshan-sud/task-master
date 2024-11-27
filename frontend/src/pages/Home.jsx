@@ -1,4 +1,4 @@
-// src/Home.jsx
+// filename - frontend/src/pages/Home.jsx
 
 import React from "react";
 import { Introduction } from "../components/home/Introduction.jsx";

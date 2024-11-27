@@ -1,4 +1,4 @@
-// src/components/profile/Teams.jsx
+// filename - frontend/src/components/profile/Teams.jsx
 
 import React from "react";
 

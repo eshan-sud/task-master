@@ -1,4 +1,4 @@
-// src/components/ModeSwitch.jsx
+// filename - frontend/src/components/ModeSwitch.jsx
 
 import React from "react";
 

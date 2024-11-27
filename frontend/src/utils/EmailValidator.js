@@ -1,4 +1,4 @@
-// src/utils/EmailValidator.js
+// filename - frontend/src/utils/EmailValidator.js
 
 import React, { useState, useEffect } from "react";
 
