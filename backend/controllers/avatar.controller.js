@@ -1,4 +1,4 @@
-// filename - controllers/avatar.controller.js
+// filename - backend/controllers/avatar.controller.js
 
 const fs = require("fs");
 const path = require("path");

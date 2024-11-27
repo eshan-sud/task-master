@@ -1,4 +1,4 @@
-// filename - utils/auth.utils.js
+// filename - backend/utils/auth.utils.js
 
 const jwt = require("jsonwebtoken");
 const secret = process.env.JWT_SECRET;

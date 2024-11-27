@@ -1,4 +1,4 @@
-// filename - routes/avatar.route.js
+// filename - backend/routes/avatar.route.js
 
 const express = require("express");
 const multer = require("multer");

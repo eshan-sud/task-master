@@ -1,4 +1,4 @@
-// filename - server.js
+// filename - backend/server.js
 
 require("dotenv").config();
 const express = require("express");

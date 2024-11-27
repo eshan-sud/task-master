@@ -1,3 +1,5 @@
+// filename - frontend/public/assets/data/data.js
+
     { icon: <FaTasks className="text-4xl text-blue-500" />, title: "CRUD & Sorting Tasks", description: "Create, read, update, and delete tasks with advanced sorting options." },
     { icon: <FaTrash className="text-4xl text-red-500" />, title: "Recycle Bin", description: "Restore deleted tasks from the recycle bin within 30 days." },
     { icon: <FaCalendarAlt className="text-4xl text-yellow-500" />, title: "Calendar Integration", description: "Sync tasks with your calendar and set reminders." },

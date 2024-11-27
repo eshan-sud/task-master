@@ -4,41 +4,93 @@ Task Master is a powerful task management web application that allows users to e
 
 ## Features
 
-- **Create, Read, Update, Delete (CRUD) Tasks**: Easily manage your tasks.
-- **Search & Sort**: Filter tasks based on various criteria such as due date, priority, status, etc.
-- **Archive Tasks**: Archive completed tasks for future reference.
-- **Recycle Bin**: Deleted tasks are stored for 30 days before permanent deletion.
-- **Task Completion**: Checkmark tasks as completed.
-- **Calendar & Google Maps Integration**: Sync tasks with your calendar and set location-based reminders using Google Maps.
-  [x] **Login/Signup**: User authentication to create personal accounts.
-- **Notifications**: Get notified via email, push, and desktop notifications.
-- **Progress Tracking**: Track task completion progress.
-- **Priority Levels**: Set priority levels for tasks with default and customizable settings.
-- **Voice Commands**: Control and manage tasks using voice commands.
-- **Dark Mode**: Toggle between light and dark themes.
-- **Offline Mode**: Access and manage tasks offline.
-- **Attachment Upload**: Attach files and documents to tasks.
-- **Location-Based Reminders**: Get reminders based on your location.
-- **Task Sharing/Collaboration**: Collaborate and share tasks with others.
-- **Time Tracking**: Track the time spent on each task.
-- **Export/Import**: Export or import tasks in CSV or Excel formats.
-- **In-App Chat**: Communicate with team members via the in-app chat.
-- **Voice Memos**: Record and attach voice memos to tasks.
-- **Custom Sound Effects**: Set custom sounds for different actions.
-- **Task Categories**: Organize tasks into default or custom categories.
-- **Chatbot for Landing Page**: Provide a chatbot interface on the landing page.
-- **Captcha on Forms**: Add Captcha to all forms for added security.
-- **Password Reset**: Using OTP sent to an email.
+### Task Management
 
-### Special Features for Organizations
+- CRUD Tasks: Create, Read, Update, Delete tasks.
+- Task Completion: Checkmark tasks as completed.
+- Progress Tracking: Track task completion progress.
+- Priority Levels: Set priority levels for tasks (with default and customizable settings).
+- Time Tracking: Track the time spent on each task.
+- Task Categories: Organize tasks into default or custom categories.
+- Real-Time Task Allotment: Allocate tasks in real-time.
+- Task Sharing/Collaboration: Collaborate and share tasks with others.
+- Task Archive: Archive completed tasks for future reference.
+- Recycle Bin: Deleted tasks are stored for 30 days before permanent deletion.
+- Check Marking: Mark tasks as completed or in progress.
 
-- **Real-Time Task Allotment**: Allocate tasks in real-time.
-- **Point System**: Award points for task completion.
-- **Leaderboard**: View rankings for individuals or teams based on task completion.
+### Search & Organisation
 
-### Available Scripts
+- Search & Sort: Filter tasks based on various criteria (due date, priority, status, etc.).
+- Export/Import: Export or import tasks in CSV or Excel formats.
+- Location-Based Reminders: Get reminders based on your location.
+- Calendar & Google Maps Integration: Sync tasks with your calendar and set location-based reminders using Google Maps.
 
-In the project directory, you can run:
+### User Authentication & Security
+
+- [x] Login/Signup: User authentication to create personal accounts.
+- [x] Password Reset (OTP): Reset password using OTP sent to email.
+- Email Verification: Verify email after registration (with a unique token).
+- Token Refresh: Implement JWT refresh tokens for secure, continuous sessions.
+- Logout Everywhere: Log out from all devices simultaneously.
+- Session Expiry: Expire tokens after a set duration and prompt re-login.
+- Captcha on Forms: Add Captcha to all forms for added security.
+- Rate Limiting: Prevent brute-force attacks on login or OTP endpoints.
+- Encryption: Encrypt sensitive user data and use HTTPS to secure communications.
+- Audit Logging: Track and log sensitive actions like logins and profile updates.
+
+### User Interface & Experience
+
+- Dark Mode: Toggle between light and dark themes.
+- Offline Mode: Access and manage tasks offline.
+- Custom Sound Effects: Set custom sounds for different actions.
+- Voice Commands: Control and manage tasks using voice commands.
+- Voice Memos: Record and attach voice memos to tasks.
+- In-App Chat: Communicate with team members via the in-app chat.
+- Chatbot (Landing Page): Provide a chatbot interface on the landing page.
+
+### Notifications:
+
+- Email Notifications: Notify users about password resets, profile updates, etc.
+- Push Notifications: Real-time updates and alerts.
+- Desktop Notifications: Notifications on desktop for task updates, reminders, etc.
+- In-app Notifications: For real-time alerts within the app (optional).
+
+### Gamification & Productivity
+
+- Point System: Award points for task completion.
+- Leaderboard: View rankings for individuals or teams based on task completion.
+
+### Collaboration & Sharing
+
+- Task Sharing/Collaboration: Collaborate and share tasks with others.
+- In-App Chat: Communicate with team members directly in the app.
+
+### Task Customization & Personalization
+
+- Task Categories: Organize tasks into default or custom categories.
+- Custom Sound Effects: Set personalized sounds for various task actions.
+
+### Additional Enhancements
+
+- Progress Tracking: Monitor the progress of task completion over time.
+- Attachment Upload: Attach files or documents to tasks.
+- Leaderboard: View rankings for task completion across teams or individuals.
+- Voice Memos: Attach voice recordings to tasks for additional context.
+
+### Security Features
+
+- Rate Limiting: Prevent brute-force attacks.
+- Encryption: Encrypt sensitive data and enforce HTTPS.
+- Audit Logging: Log user actions for debugging and tracking.
+
+### Authentication Enhancements
+
+- Email Verification: Verify email after registration.
+- JWT Token Refresh: Secure user sessions by allowing token refresh.
+- Logout Everywhere: Log users out from all devices at once.
+- Session Expiry: Expire user tokens after a set duration.
+
+### (Available Scripts - For devs)
 
 #### `npm start`
 
@@ -67,15 +119,8 @@ Your app is ready to be deployed!
 
 If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Deployment
-
-For more information on deploying the app, refer to [Create React App Deployment](https://facebook.github.io/create-react-app/docs/deployment).
+<!-- ## Deployment
+For more information on deploying the app, refer to [Create React App Deployment](https://facebook.github.io/create-react-app/docs/deployment). -->
 
 ## License
 

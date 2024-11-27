@@ -1,4 +1,4 @@
-// filename - controllers/userauth.controller.js
+// filename - backend/controllers/userauth.controller.js
 
 const User = require("../models/user.model");
 const OTP = require("../models/user.OTP");

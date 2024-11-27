@@ -1,4 +1,4 @@
-// filename - models/user.otp.js
+// filename - backend/models/user.otp.js
 
 const mongoose = require("mongoose");
 

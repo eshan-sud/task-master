@@ -1,4 +1,4 @@
-// filename - utils/dbConnection.js
+// filename - backend/utils/dbConnection.js
 
 const mongoose = require("mongoose");
 

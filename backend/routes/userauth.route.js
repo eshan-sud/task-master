@@ -1,4 +1,4 @@
-// filename - routes/userauth.route.js
+// filename - backend/routes/userauth.route.js
 
 const express = require("express");
 const authenticate = require("../middleware/auth");
@@ -11,6 +11,11 @@ const {
   handleVerifyOTP,
   handleResetPassword,
 } = require("../controllers/userauth.controller");
+const {
+  handleGetTasks,
+  handleAddTask,
+  handleUpdateTask,
+} = require("../controllers/tasks.controller");
 
 const router = express.Router();
 
@@ -24,6 +29,8 @@ router.post("/verifyOTP", handleVerifyOTP);
 router.put("/resetPassword", handleResetPassword);
 
 // Tasks
-// router.get("/getTasks", authenticate, handleGetTasks);
+router.get("/getTasks", authenticate, handleGetTasks);
+router.post("/addTask", authenticate, handleAddTask);
+router.post("/updateTask", authenticate, handleUpdateTask);
 
 module.exports = router;
