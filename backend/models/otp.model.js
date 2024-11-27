@@ -1,4 +1,4 @@
-// filename - backend/models/user.otp.js
+// filename - backend/models/otp.model.js
 
 const mongoose = require("mongoose");
 
@@ -13,6 +13,7 @@ const otpSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   createdAt: {
     type: Date,
     default: Date.now,

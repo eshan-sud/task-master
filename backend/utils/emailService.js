@@ -11,27 +11,55 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-/**
- * Sends an OTP email to the specified user.
- * @param {string} email - Recipient's email address.
- * @param {string} otp - The OTP to be sent.
- */
-const sendOTPEmail = async (email, otp) => {
+const mailOptions = {
+  from: process.env.GMAIL_ID,
+  to: email,
+  subject: "",
+  text: "",
+};
+
+const sendEmail = async (to, subject, text) => {
   const mailOptions = {
     from: process.env.GMAIL_ID,
-    to: email,
-    subject: "Your OTP Code",
-    text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
+    to,
+    subject,
+    text,
   };
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("OTP email sent successfully!");
+    console.log(`Email sent to ${to} with subject "${subject}"`);
+    return true;
   } catch (error) {
-    console.error("Failed to send OTP email:", error);
-    throw new Error("Could not send OTP email");
+    console.error("Error sending email:", error);
+    throw new Error("Could not send email");
   }
-  return true;
 };
 
-module.exports = { sendOTPEmail };
+const generateVerificationEmail = async (userEmail) => {
+  try {
+    const otp = generateRandomValue();
+    const verificationUrl = `http://localhost:3000/verify-account?otp=${otp}&email=${userEmail}`;
+    mailOptions[subject] = "Account Verification | Task Master";
+    mailOptions[
+      text
+    ] = `Hello,\n\nYour OTP for account verification is: ${otp}\n\nPlease click the following link to verify your account:\n\n${verificationUrl}\n\nThis link will expire in 10 minutes.`;
+
+    // Store OTP in memory (or a database in production)
+    userOtpStore[userEmail] = otp;
+
+    // Send the OTP to the user's email
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`Verification email sent to ${userEmail}`);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+
+    console.log("Verification email sent.");
+  } catch (error) {
+    console.error("Error generating or sending verification email:", error);
+  }
+};
+
+module.exports = { sendEmail };

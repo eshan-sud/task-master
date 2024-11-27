@@ -2,11 +2,17 @@
 
 require("dotenv").config();
 const User = require("../models/user.model");
-const OTP = require("../models/user.OTP");
+const OTP = require("../models/otp.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { sendOTPEmail } = require("../utils/emailService");
+const { sendEmail } = require("../utils/emailService");
 const { setUser, getUser } = require("../utils/auth.utils");
+
+import {
+  verifyCaptcha,
+  verifyUser,
+  generateRandomValue,
+} from "./../utils/auth.utils";
 
 const handleLoginAuth = async (req, res) => {
   try {
@@ -29,36 +35,6 @@ const handleLoginAuth = async (req, res) => {
   } catch (error) {
     console.error("Error occurred during Login:", error);
     return res.status(500).json({ error: "Internal server error" });
-  }
-};
-
-const verifyCaptcha = async (captchaToken) => {
-  try {
-    const GOOGLE_RECAPTCHA_SECRET_KEY = process.env.GOOGLE_RECAPTCHA_SECRET_KEY;
-
-    // Make sure secret & token are available
-    if (!GOOGLE_RECAPTCHA_SECRET_KEY || !captchaToken) {
-      throw new Error("Missing required parameters: secret or captcha token.");
-    }
-
-    const response = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          secret: GOOGLE_RECAPTCHA_SECRET_KEY,
-          response: captchaToken,
-        }),
-      }
-    );
-    const data = await response.json();
-    return data.success;
-  } catch (error) {
-    console.error("Error verifying CAPTCHA:", error);
-    return false;
   }
 };
 
@@ -142,7 +118,7 @@ const handleGenerateOTP = async (req, res) => {
     // Remove any existing OTPs for this email
     await OTP.deleteMany({ email });
     // Generate a 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otp = generateRandomValue();
     // Hash the OTP for security
     const hashedOTP = await bcrypt.hash(otp.toString(), 10);
     // Store the new OTP in the database
@@ -156,7 +132,11 @@ const handleGenerateOTP = async (req, res) => {
     }
     console.log(`New OTP stored successfully for ${email}`);
     // Send OTP via email
-    const emailSent = await sendOTPEmail(email, otp);
+    const emailSent = await sendEmail(
+      email,
+      "OTP Verification  | Task Master",
+      `Your OTP is ${otp}. It will expire in 5 minutes.`
+    );
     if (!emailSent) {
       return res.status(500).json({ error: "Failed to send OTP email" });
     }
@@ -209,6 +189,29 @@ const handleResetPassword = async (req, res) => {
   } catch (error) {
     console.error("Error resetting password:", error);
     return res.status(500).json({ error: "Error resetting password" });
+  }
+};
+
+const handleAccountVerification = async (req, res) => {
+  try {
+    const { email, otp } = res.body;
+    if (!email || !otp) {
+      return res.status(400).json({ error: "Email and OTP are required" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const verification = await verifyUser();
+    if (!verification) {
+      return res.status(500).json({ error: "Account verification failed" });
+    }
+    // Add verified account in database
+    await user.save();
+    return res.status(200).json({ message: "Account verified successfully!" });
+  } catch (error) {
+    console.error("Error verifying account:", error);
+    return res.status(500).json({ error: "Account verification failed" });
   }
 };
 
