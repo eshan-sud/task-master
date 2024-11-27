@@ -12,6 +12,7 @@ import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
 
 const RegisterForm = () => {
+  const siteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -38,7 +39,11 @@ const RegisterForm = () => {
     // console.log(registerDetails);
     try {
       if (!captchaToken) {
-        toast.error("Please complete the CAPTCHA.");
+        toast.error("Please complete the CAPTCHA");
+        return;
+      }
+      if (!firstName || !lastName || !email || !password || !gender) {
+        toast.error("All fields are required");
         return;
       }
       const response = await fetch(endpoints.registerAuth, {
@@ -62,8 +67,6 @@ const RegisterForm = () => {
       toast.error(error);
     }
   };
-
-  const siteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
 
   return (
     <>
