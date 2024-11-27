@@ -2,6 +2,10 @@
 
 import React from "react";
 
+// import { GOOGLE_RECAPTCHA_SECRET_KEY } from ".env";
+// import ReCAPTCHA from "react-google-recaptcha";
+// <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+
 export const FeedbackForm = () => {
   return (
     <div class="bg-white border border-slate-200 grid grid-cols-6 gap-2 rounded-xl p-2 text-sm">

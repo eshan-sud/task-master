@@ -14,6 +14,13 @@ import { Field, EmailField } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
 
+// Add this on 3-4 failed login attempts - maybe put the no. of failed attempts in cache storage or session storage?
+// import ReCAPTCHA from "react-google-recaptcha";
+// import GOOGLE_RECAPTCHA_SITE_KEY from process.env.GOOGLE_RECAPTCHA_SITE_KEY;
+// <span>
+//   <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+// </span>;
+
 const LoginForm = () => {
   const Navigate = useNavigate();
   const { login } = useContext(AuthContext);

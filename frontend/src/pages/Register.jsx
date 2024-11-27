@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { endpoints } from "../ApiEndpoints.js";
 
@@ -17,6 +18,7 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const registerDetails = {
     firstName,
@@ -24,12 +26,21 @@ const RegisterForm = () => {
     email,
     password,
     gender,
+    captchaToken,
+  };
+
+  const handleCaptchaChange = (value) => {
+    setCaptchaToken(value);
   };
 
   const handleRegister = async (event) => {
     event.preventDefault();
     // console.log(registerDetails);
     try {
+      if (!captchaToken) {
+        toast.error("Please complete the CAPTCHA.");
+        return;
+      }
       const response = await fetch(endpoints.registerAuth, {
         method: "POST",
         headers: {
@@ -51,6 +62,8 @@ const RegisterForm = () => {
       toast.error(error);
     }
   };
+
+  const siteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
 
   return (
     <>
@@ -86,6 +99,13 @@ const RegisterForm = () => {
           setValue={setPassword}
         />
         <GenderInput gender={gender} setGender={setGender} />
+        <span className="flex justify-center items-center py-2">
+          <ReCAPTCHA
+            className="w-full max-w-xs"
+            sitekey={siteKey}
+            onChange={handleCaptchaChange}
+          />
+        </span>
         <SubmitButton />
       </form>
       <span className="text-lg font-semibold text-center mt-[1.6rem]">
