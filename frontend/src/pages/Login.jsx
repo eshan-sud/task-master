@@ -37,7 +37,6 @@ const LoginForm = () => {
   };
   const handleLogin = async (event) => {
     event.preventDefault();
-    // console.log(logindetails);
     try {
       const response = await fetch(endpoints.loginAuth, {
         method: "POST",
@@ -47,21 +46,14 @@ const LoginForm = () => {
         body: JSON.stringify(logindetails),
         credentials: "include",
       });
-
       const message = await response.json();
-
       if (response.ok) {
-        // console.log(message.user);
         const storage = isRememberMe
           ? window.localStorage
           : window.sessionStorage;
         storage.setItem("token", message.token);
-        storage.setItem(
-          "fullName",
-          `${message.user.firstName} ${message.user.lastName}`
-        );
-        storage.setItem("email", message.user.email);
-
+        storage.setItem("fullName", `${message.firstName} ${message.lastName}`);
+        storage.setItem("email", message.email);
         login();
         toast.success(message.message);
         Navigate("/", { replace: true });

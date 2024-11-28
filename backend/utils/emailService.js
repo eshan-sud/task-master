@@ -60,6 +60,7 @@ const sendAccountVerificationEmail = async (otp, email) => {
 
     // Send the OTP to the user's email
     if (await sendEmail(mailOptions)) {
+      sendAccountVerifiedEmail(email);
       return res.status(200).json({ message: "Verification email sent" });
     }
     console.log(`Verification email sent to ${email}`);

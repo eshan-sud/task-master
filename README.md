@@ -37,6 +37,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>User Authentication & Security</strong></summary>
 
 - [x] **Login/Register:** User authentication to create personal accounts.
+- [x] **Remember Me:** Remember me feature to reduce the number of times the user has to login back into their account.
 - [Next] **Update/Delete:** Accounts updation & deletion.
 - [x] **Password Reset (OTP):** Reset password using OTP sent to email.
 - [Current] **Account Verification:** Verify account after registration (with a unique OTP) through email communication.

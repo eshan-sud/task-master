@@ -41,7 +41,13 @@ const handleLoginAuth = async (req, res) => {
     }
     const token = setUser(user);
     res.cookie("token", token, { httpOnly: true, secure: true });
-    return res.status(200).json({ message: "Login successful", token, user });
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    });
   } catch (error) {
     console.error("Error occurred during Login:", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -121,7 +127,7 @@ const handleUserExists = async (req, res) => {
 
 const handleSendOTP = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, purpose } = req.body;
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
@@ -133,7 +139,7 @@ const handleSendOTP = async (req, res) => {
       email,
       otp: encryptedOTP,
       createdAt: Date.now(),
-      // purpsoe: "OTP VERIFICATION",
+      purpose: purpose,
     });
     if (!otpRecord) {
       return res.status(500).json({ error: "Failed to store OTP in database" });
@@ -160,12 +166,16 @@ const handleVerifyOTP = async (req, res) => {
       return res.status(404).json({ error: "OTP not found" });
     }
     const isMatch = compareOTP(otp, otpRecord.otp);
-    console.log(isMatch);
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid OTP" });
     }
     await OTP.deleteOne({ email });
-    return res.status(200).json({ message: "OTP verified successfully" });
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: "5m",
+    });
+    return res
+      .status(200)
+      .json({ message: "OTP verified successfully", token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Error verifying OTP" });
@@ -174,20 +184,28 @@ const handleVerifyOTP = async (req, res) => {
 
 const handleResetPassword = async (req, res) => {
   try {
-    const { email, newPassword } = req.body;
-    if (!email || !newPassword) {
-      return res
-        .status(400)
-        .json({ error: "Email and New Password are required" });
+    const { email, newPassword, token } = req.body;
+    if (!email || !newPassword || !token) {
+      return res.status(400).json({
+        error: "Email, New Password, and token are required",
+      });
     }
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    await user.save();
-    return res.status(200).json({ message: "Password reset successfully!" });
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+      if (decoded.email !== email) {
+        return res.status(400).json({ error: "Invalid Token" });
+      }
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+      return res.status(200).json({ message: "Password reset successfully!" });
+    });
   } catch (error) {
     console.error("Error resetting password:", error);
     return res.status(500).json({ error: "Error resetting password" });
