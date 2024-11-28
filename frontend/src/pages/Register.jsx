@@ -93,7 +93,7 @@ const RegisterForm = () => {
           name="Email"
           email={email}
           setEmail={setEmail}
-          autoFocus={true}
+          autoFocus={false}
         />
         <Field
           type="password"

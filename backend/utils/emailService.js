@@ -13,22 +13,17 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: process.env.GMAIL_ID,
-  to: email,
+  to: "",
   subject: "",
   text: "",
 };
 
-const sendEmail = async (to, subject, text) => {
-  const mailOptions = {
-    from: process.env.GMAIL_ID,
-    to,
-    subject,
-    text,
-  };
-
+const sendEmail = async (mailOptions) => {
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`Email sent to ${to} with subject "${subject}"`);
+    console.log(
+      `Email sent to ${mailOptions["to"]} with subject "${mailOptions["subject"]}"`
+    );
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
@@ -36,30 +31,62 @@ const sendEmail = async (to, subject, text) => {
   }
 };
 
-const generateVerificationEmail = async (userEmail) => {
+const sendTaskNotificationEmail = async (req, res) => {};
+
+const sendPasswordChangedEmail = async (req, res) => {};
+
+const sendOtpVerificationEmail = async (otp, email) => {
   try {
-    const otp = generateRandomValue();
-    const verificationUrl = `http://localhost:3000/verify-account?otp=${otp}&email=${userEmail}`;
-    mailOptions[subject] = "Account Verification | Task Master";
+    mailOptions["to"] = email;
+    mailOptions["subject"] = "Password Reset | Task Master";
     mailOptions[
-      text
-    ] = `Hello,\n\nYour OTP for account verification is: ${otp}\n\nPlease click the following link to verify your account:\n\n${verificationUrl}\n\nThis link will expire in 10 minutes.`;
-
-    // Store OTP in memory (or a database in production)
-    userOtpStore[userEmail] = otp;
-
+      "text"
+    ] = `Hello,\n\nYour OTP for password reset is: ${otp}\n\nThis link will expire in 5 minutes.`;
+    // console.log(mailOptions);
     // Send the OTP to the user's email
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Verification email sent to ${userEmail}`);
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
-
-    console.log("Verification email sent.");
+    return await sendEmail(mailOptions);
   } catch (error) {
-    console.error("Error generating or sending verification email:", error);
+    return false;
   }
 };
 
-module.exports = { sendEmail };
+const sendAccountVerificationEmail = async (otp, email) => {
+  try {
+    const verificationUrl = `http://localhost:3000/verify-account?otp=${otp}&email=${email}`;
+    mailOptions[subject] = "Account Verification | Task Master";
+    mailOptions[
+      text
+    ] = `Hello,\n\nYour OTP for account verification is: ${otp}\n\nPlease click the following link to verify your account:\n\n${verificationUrl}\n\nThis link will expire in 5 minutes.`;
+
+    // Send the OTP to the user's email
+    if (await sendEmail(mailOptions)) {
+      return res.status(200).json({ message: "Verification email sent" });
+    }
+    console.log(`Verification email sent to ${email}`);
+  } catch (error) {
+    console.error("Error sending verification email:", error);
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+const sendAccountVerifiedEmail = async (email) => {
+  try {
+    mailOptions[subject] = "Account Verification | Task Master";
+    mailOptions[text] = `Hello,\n\nYour account has been verified.`;
+    if (await sendEmail(mailOptions)) {
+      return res.status(200).json({ message: "Verification email sent" });
+    }
+    console.log(`Account Verified email sent to ${email}`);
+  } catch (error) {
+    console.error("Error sending account verified email:", error);
+    return res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+module.exports = {
+  sendTaskNotificationEmail,
+  sendPasswordChangedEmail,
+  sendOtpVerificationEmail,
+  sendAccountVerificationEmail,
+  sendAccountVerifiedEmail,
+};

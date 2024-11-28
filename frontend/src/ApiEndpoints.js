@@ -9,16 +9,18 @@ export const endpoints = {
   logoutAuth: `${baseURL}auth/logout`,
   registerAuth: `${baseURL}auth/register`,
   userExists: `${baseURL}auth/userExists`,
-  generateOTP: `${baseURL}auth/generateOTP`,
-  verifyOTP: `${baseURL}auth/verifyOTP`,
   resetPassword: `${baseURL}auth/resetPassword`,
 
-  // Tasks
+  // OTP Endpoints
+  sendOTP: `${baseURL}auth/sendOTP`,
+  verifyOTP: `${baseURL}auth/verifyOTP`,
+
+  // Tasks Endpoints
   getTasks: `${baseURL}tasks/getTasks`,
   updateTask: `${baseURL}tasks/patchTask`,
   delelteTask: `${baseURL}tasks/deleteTask`,
 
-  // Search
+  // Search Endpoint
   // userSearch: `${baseURL}auth/userSearch`,
 
   // Avatar Endpoints

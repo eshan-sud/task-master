@@ -2,24 +2,8 @@
 
 const Task = require("../models/tasks.model");
 
-// Get all tasks for a specific user
-const handleGetTasks = async (req, res) => {
-  try {
-    const { email } = req.body;
-    if (!email) {
-      return res.status(400).json({ error: "Email is required" });
-    }
-
-    const tasks = await Task.find({ email });
-    return res.status(200).json(tasks);
-  } catch (error) {
-    console.error("Error fetching tasks:", error);
-    return res.status(500).json({ error: "Something went wrong!" });
-  }
-};
-
-// Add a new task
-const handleAddTask = async (req, res) => {
+// (Create) Create a new task
+const handleCreateTask = async (req, res) => {
   try {
     const { email, category, text } = req.body;
 
@@ -37,7 +21,23 @@ const handleAddTask = async (req, res) => {
   }
 };
 
-// Update an existing task
+// (Read) Get all tasks for a specific user
+const handleGetTasks = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const tasks = await Task.find({ email });
+    return res.status(200).json(tasks);
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    return res.status(500).json({ error: "Something went wrong!" });
+  }
+};
+
+// (Update) Update an existing task
 const handleUpdateTask = async (req, res) => {
   try {
     const { taskId, text, category, completed } = req.body;
@@ -65,7 +65,7 @@ const handleUpdateTask = async (req, res) => {
   }
 };
 
-// Delete a task
+// (Delete) Delete a task
 const handleDeleteTask = async (req, res) => {
   try {
     const { taskId } = req.body;
@@ -88,8 +88,8 @@ const handleDeleteTask = async (req, res) => {
 };
 
 module.exports = {
+  handleCreateTask,
   handleGetTasks,
-  handleAddTask,
   handleUpdateTask,
   handleDeleteTask,
 };

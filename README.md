@@ -36,9 +36,10 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>User Authentication & Security</strong></summary>
 
-- [x] **Login/Signup:** User authentication to create personal accounts.
+- [x] **Login/Register:** User authentication to create personal accounts.
+- [Next] **Update/Delete:** Accounts updation & deletion.
 - [x] **Password Reset (OTP):** Reset password using OTP sent to email.
-- **Email Verification:** Verify email after registration (with a unique token).
+- [Current] **Account Verification:** Verify account after registration (with a unique OTP) through email communication.
 - **Token Refresh:** Implement JWT refresh tokens for secure, continuous sessions.
 - **Logout Everywhere:** Log out from all devices simultaneously.
 - **Session Expiry:** Expire tokens after a set duration and prompt re-login.

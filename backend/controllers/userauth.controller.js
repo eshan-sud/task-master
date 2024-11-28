@@ -5,14 +5,24 @@ const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { sendEmail } = require("../utils/emailService");
-const { setUser, getUser } = require("../utils/auth.utils");
-
-import {
+const {
+  sendTaskNotificationEmail,
+  sendPasswordChangedEmail,
+  sendOtpVerificationEmail,
+  sendAccountVerificationEmail,
+} = require("../utils/emailService");
+const {
+  setUser,
+  getUser,
   verifyCaptcha,
   verifyUser,
-  generateRandomValue,
-} from "./../utils/auth.utils";
+} = require("../utils/auth.utils");
+
+const {
+  encryptOTP,
+  generateOTP,
+  compareOTP,
+} = require("../utils/otp.utils.js");
 
 const handleLoginAuth = async (req, res) => {
   try {
@@ -109,35 +119,27 @@ const handleUserExists = async (req, res) => {
   }
 };
 
-const handleGenerateOTP = async (req, res) => {
+const handleSendOTP = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
-    // Remove any existing OTPs for this email
+    // Remove any existing OTPs for this email - for the purpose of OTP verification ONLY
     await OTP.deleteMany({ email });
-    // Generate a 6-digit OTP
-    const otp = generateRandomValue();
-    // Hash the OTP for security
-    const hashedOTP = await bcrypt.hash(otp.toString(), 10);
-    // Store the new OTP in the database
-    const otpRecord = await OTP.create({
+    const otp = generateOTP();
+    const encryptedOTP = encryptOTP(otp);
+    const otpRecord = OTP.create({
       email,
-      otp: hashedOTP,
+      otp: encryptedOTP,
       createdAt: Date.now(),
+      // purpsoe: "OTP VERIFICATION",
     });
     if (!otpRecord) {
       return res.status(500).json({ error: "Failed to store OTP in database" });
     }
     console.log(`New OTP stored successfully for ${email}`);
-    // Send OTP via email
-    const emailSent = await sendEmail(
-      email,
-      "OTP Verification  | Task Master",
-      `Your OTP is ${otp}. It will expire in 5 minutes.`
-    );
-    if (!emailSent) {
+    if (!(await sendOtpVerificationEmail(otp, email))) {
       return res.status(500).json({ error: "Failed to send OTP email" });
     }
     return res.status(200).json({ message: "OTP sent to email" });
@@ -157,8 +159,8 @@ const handleVerifyOTP = async (req, res) => {
     if (!otpRecord) {
       return res.status(404).json({ error: "OTP not found" });
     }
-    const isMatch = await bcrypt.compare(otp.toString(), otpRecord.otp);
-    console.log(otpRecord.otp);
+    const isMatch = compareOTP(otp, otpRecord.otp);
+    console.log(isMatch);
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid OTP" });
     }
@@ -192,35 +194,12 @@ const handleResetPassword = async (req, res) => {
   }
 };
 
-const handleAccountVerification = async (req, res) => {
-  try {
-    const { email, otp } = res.body;
-    if (!email || !otp) {
-      return res.status(400).json({ error: "Email and OTP are required" });
-    }
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    const verification = await verifyUser();
-    if (!verification) {
-      return res.status(500).json({ error: "Account verification failed" });
-    }
-    // Add verified account in database
-    await user.save();
-    return res.status(200).json({ message: "Account verified successfully!" });
-  } catch (error) {
-    console.error("Error verifying account:", error);
-    return res.status(500).json({ error: "Account verification failed" });
-  }
-};
-
 module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
   handleUserExists,
-  handleGenerateOTP,
+  handleSendOTP,
   handleVerifyOTP,
   handleResetPassword,
 };
