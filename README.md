@@ -12,11 +12,11 @@ This application is ideal for individuals, teams, or organisations looking for a
 - **CRUD Tasks:** Create, Read, Update, Delete tasks.
 - **Task Completion:** Checkmark tasks as completed.
 - **Progress Tracking:** Track task completion progress.
-- **Priority Levels:** Set priority levels for tasks (with default and customizable settings).
+- **Priority Levels:** Set priority levels for tasks (with default & customizable settings).
 - **Time Tracking:** Track the time spent on each task.
 - **Task Categories:** Organize tasks into default or custom categories.
 - **Real-Time Task Allotment:** Allocate tasks in real-time.
-- **Task Sharing/Collaboration:** Collaborate and share tasks with others.
+- **Task Sharing/Collaboration:** Collaborate & share tasks with others.
 - **Task Archive:** Archive completed tasks for future reference.
 - **Recycle Bin:** Deleted tasks are stored for 30 days before permanent deletion.
 - **Check Marking:** Mark tasks as completed or in progress.
@@ -29,7 +29,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - **Search & Sort:** Filter tasks based on various criteria (due date, priority, status, etc.).
 - **Export/Import:** Export or import tasks in CSV or Excel formats.
 - **Location-Based Reminders:** Get reminders based on your location.
-- **Calendar & Google Maps Integration:** Sync tasks with your calendar and set location-based reminders using Google Maps.
+- **Calendar & Google Maps Integration:** Sync tasks with your calendar & set location-based reminders using Google Maps.
 
 </details>
 
@@ -41,24 +41,25 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [Next] **Update/Delete:** Accounts updation & deletion.
 - [x] **Password Reset (OTP):** Reset password using OTP sent to email.
 - [Current] **Account Verification:** Verify account after registration (with a unique OTP) through email communication.
+- [x] **Avatar Upload/Delte:**Add & delete avatar to user account.
 - **Token Refresh:** Implement JWT refresh tokens for secure, continuous sessions.
 - **Logout Everywhere:** Log out from all devices simultaneously.
-- **Session Expiry:** Expire tokens after a set duration and prompt re-login.
+- **Session Expiry:** Expire tokens after a set duration & prompt re-login.
 - [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
 - **Rate Limiting:** Prevent brute-force attacks on login or OTP endpoints.
 - **Encryption:** Encrypt sensitive user data & use HTTPS to secure communications.
-- **Audit Logging:** Track and log sensitive actions like logins & profile updates.
+- **Audit Logging:** Track & log sensitive actions like logins & profile updates.
 
 </details>
 
 <details open>
   <summary><strong>User Interface & Experience</strong></summary>
 
-- **Dark Mode:** Toggle between light and dark themes.
-- **Offline Mode:** Access and manage tasks offline.
+- **Dark Mode:** Toggle between light & dark themes.
+- **Offline Mode:** Access & manage tasks offline.
 - **Custom Sound Effects:** Set custom sounds for different actions.
-- **Voice Commands:** Control and manage tasks using voice commands.
-- **Voice Memos:** Record and attach voice memos to tasks.
+- **Voice Commands:** Control & manage tasks using voice commands.
+- **Voice Memos:** Record & attach voice memos to tasks.
 - **In-App Chat:** Communicate with team members via the in-app chat.
 - **Chatbot (Landing Page):** Provide a chatbot interface on the landing page.
 
@@ -68,7 +69,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>Notifications</strong></summary>
 
 - **Email Notifications:** Notify users about password resets, profile updates, etc.
-- **Push Notifications:** Real-time updates and alerts.
+- **Push Notifications:** Real-time updates & alerts.
 - **Desktop Notifications:** Notifications on desktop for task updates, reminders, etc.
 - **In-app Notifications:** For real-time alerts within the app (optional).
 </details>
@@ -84,7 +85,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Collaboration & Sharing</strong></summary>
 
-- **Task Sharing/Collaboration:** Collaborate and share tasks with others.
+- **Task Sharing/Collaboration:** Collaborate & share tasks with others.
 - **In-App Chat:** Communicate with team members directly in the app.
 
 </details>
@@ -110,8 +111,8 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>Security Features</strong></summary>
 
 - **Rate Limiting:** Prevent brute-force attacks.
-- **Encryption:** Encrypt sensitive data and enforce HTTPS.
-- **Audit Logging:** Log user actions for debugging and tracking.
+- **Encryption:** Encrypt sensitive data & enforce HTTPS.
+- **Audit Logging:** Log user actions for debugging & tracking.
 
 </details>
 
@@ -157,7 +158,7 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 Builds the app for production to the `build` folder.
 
 > Correctly bundles React in production mode & optimises the build for the best performance.
-> The build is minified and the filenames include the hashes
+> The build is minified & the filenames include the hashes
 
 </details>
 <details>

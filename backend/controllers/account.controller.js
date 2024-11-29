@@ -24,7 +24,7 @@ const verifyAccount = async (req, res) => {
     // Mark account as verified
     await User.updateOne({ email }, { verified: true });
     await OTP.deleteOne({ email });
-    // await sendAccountVerificationEmail(otp, email)
+    await sendAccountVerificationEmail(otp, email);
     sendAccountVerifiedEmail(email);
     return res.send("Your account has been verified successfully!");
   } catch (error) {

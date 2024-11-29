@@ -6,7 +6,8 @@ const { verifyAccount } = require("../controllers/account.controller");
 const router = express.Router();
 
 // Email Verification
-// router.post("/send-verification", sendVerificationEmail);
-router.get("/verify-account", verifyAccount);
+router.get("/verifyAccount", verifyAccount);
+// router.delete("/delete", authenticate, deleteAccount);
+// router.put("/update", authenticate, updateAccount);
 
 module.exports = router;

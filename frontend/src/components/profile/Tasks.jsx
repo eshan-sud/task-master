@@ -88,7 +88,7 @@ export const NoteContainer = () => {
     setNewContent("");
 
     try {
-      const response = await fetch(endpoints.addNote, {
+      const response = await fetch(endpoints.getTasks, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -158,7 +158,7 @@ export const NoteContainer = () => {
         <AddButton onClick={addNote} />
       </div>
       <div className="relative h-screen">
-        {notes.map((note) => (
+        {/* {notes.map((note) => (
           <DraggableCard
             key={note.id}
             id={note.id}
@@ -169,7 +169,7 @@ export const NoteContainer = () => {
             onArchive={handleArchive}
             onSend={handleSend}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );

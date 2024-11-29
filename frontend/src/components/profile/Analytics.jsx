@@ -33,24 +33,19 @@ const getTaskData = (startDate, endDate) => {
 export const Analytics = () => {
   const [startDate, setStartDate] = useState(subDays(new Date(), 7));
   const [endDate, setEndDate] = useState(new Date());
-
   const filteredData = getTaskData(startDate, endDate);
   const totalTasks = filteredData.length;
   const completedTasks = filteredData.filter((task) => task.completed).length;
   const completionRatio = completedTasks / totalTasks || 0;
-
   const getRating = () => {
     if (completionRatio >= 0.8) return "Good";
     if (completionRatio >= 0.5) return "Can Do Better";
     return "Bad";
   };
-
   const rating = getRating();
-
   return (
     <div className="max-w-4xl mx-auto p-4 font-sans">
       <h1 className="text-2xl font-semibold mb-4">Analytics</h1>
-
       <div className="mb-4">
         <h2 className="text-xl font-semibold">Select Date Range</h2>
         <div className="flex gap-4">
@@ -74,7 +69,6 @@ export const Analytics = () => {
           </div>
         </div>
       </div>
-
       <div className="mb-8">
         <h2 className="text-xl font-semibold">Task Completion Overview</h2>
         <BarChart
@@ -92,7 +86,6 @@ export const Analytics = () => {
           <Bar dataKey="completed" fill="#82ca9d" />
         </BarChart>
       </div>
-
       <div className="mb-8">
         <h2 className="text-xl font-semibold">Completion Ratio</h2>
         <PieChart width={400} height={400}>
@@ -118,7 +111,6 @@ export const Analytics = () => {
           </Pie>
         </PieChart>
       </div>
-
       <div className="text-center mt-8">
         <h2 className="text-2xl font-semibold">Your Rating: {rating}</h2>
       </div>
