@@ -33,7 +33,7 @@ export const Settings = () => {
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
-  const handleSaveSettings = async () => {
+  const handleSaveSettings = async (email) => {
     try {
       const response = await fetch(endpoints.saveAccountSettings, {
         method: "POST",
@@ -41,7 +41,7 @@ export const Settings = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: storage.getItem("email"),
+          email: email,
           ...settings,
           darkMode: isDarkMode,
         }),
@@ -58,14 +58,14 @@ export const Settings = () => {
     }
   };
 
-  const handleDeleteAccount = async () => {
+  const handlePasswordChange = async (email, newPassword) => {
     try {
-      const response = await fetch(endpoints.deleteAccount, {
-        method: "DELETE",
+      const response = await fetch(endpoints.changePassword, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: storage.getItem("email") }),
+        body: JSON.stringify({ email: email, password: newPassword }),
         credentials: "include",
       });
       const message = await response.json();
@@ -80,10 +80,33 @@ export const Settings = () => {
     }
   };
 
-  const handleExportData = async () => {
+  const handleDeleteAccount = async (email) => {
+    try {
+      const response = await fetch(endpoints.deleteAccount, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+        credentials: "include",
+      });
+      const message = await response.json();
+      if (response.ok) {
+        toast.success(message.message);
+        logout();
+      } else {
+        toast.error(message.error);
+      }
+    } catch (error) {
+      toast.error("Failed to delete account. Please try again.");
+    }
+  };
+
+  const handleExportData = async (email) => {
     try {
       const response = await fetch(endpoints.exportData, {
         method: "GET",
+        body: JSON.stringify({ email: email }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -106,6 +129,7 @@ export const Settings = () => {
       toast.error("Error exporting data. Please try again.");
     }
   };
+
   return (
     <Background>
       <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
@@ -115,19 +139,31 @@ export const Settings = () => {
         <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
           Profile Settings
         </h2>
-        <label className="block mb-4">
-          <span className="text-gray-900 dark:text-gray-100">Display Name</span>
+        <span>
+          <label
+            for="display-name"
+            className="text-gray-900 dark:text-gray-100 block mb-4"
+          >
+            Display Name
+          </label>
           <input
+            id="display-name"
             type="text"
             value={settings.displayName}
             onChange={(e) =>
               setSettings({ ...settings, displayName: e.target.value })
             }
+            style={{
+              minWidth: "200px",
+              maxWidth: "500px",
+            }}
             className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
-        </label>
-        <label className="block mb-4">
-          <span className="text-gray-900 dark:text-gray-100">Bio</span>
+        </span>
+        <span>
+          <label className="block mb-4">
+            <span className="text-gray-900 dark:text-gray-100">Bio</span>
+          </label>
           <textarea
             placeholder="add a bio"
             value={settings.bio}
@@ -139,8 +175,24 @@ export const Settings = () => {
             }}
             minLength="10"
             maxLength="255"
+            style={{
+              minWidth: "200px",
+              maxWidth: "500px",
+              minHeight: "100px",
+              maxHeight: "300px",
+            }}
             className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           ></textarea>
+        </span>
+      </div>
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+          Account Settings
+        </h2>
+        <label className="flex items-center space-x-3 mb-4">
+          <span className="text-gray-900 dark:text-gray-100">
+            Change Password
+          </span>
         </label>
       </div>
       <div className="mb-8">
