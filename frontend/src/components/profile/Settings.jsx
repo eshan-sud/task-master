@@ -7,26 +7,59 @@ import { useRememberMe } from "../../utils/RememberMeContext.js";
 import { Background } from "./Background.jsx";
 
 export const Settings = () => {
-  const { isRememberMe, setIsRememberMe } = useRememberMe();
+  const { isRememberMe } = useRememberMe();
+  const storage = isRememberMe ? window.localStorage : window.sessionStorage;
   const [isDarkMode, setIsDarkMode] = useState(
     () => localStorage.getItem("darkMode") === "true"
   );
   const [isVerified, setIsVerified] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(storage.getItem("email"));
+  const [newPassword, setNewPassword] = useState("");
+  const [settings, setSettings] = useState({
+    accountVisibility: "public",
+    activityStatus: true,
+    emailNotifications: true,
+    pushNotifications: true,
+    preferredLanguage: "en",
+    timeZone: "GMT",
+    displayName: storage.getItem("fullName") || "",
+    bio: "",
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
-  const handleVerification = async () => {
-    if (!isVerified) {
-      const storage = isRememberMe
-        ? window.localStorage
-        : window.sessionStorage;
-      const response = await fetch(endpoints.verifyAccount, {
+  const handleSaveSettings = async () => {
+    try {
+      const response = await fetch(endpoints.saveAccountSettings, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: storage.getItem("email"),
+          ...settings,
+          darkMode: isDarkMode,
+        }),
+        credentials: "include",
+      });
+      const message = await response.json();
+      if (response.ok) {
+        toast.success(message.message);
+      } else {
+        toast.error(message.error);
+      }
+    } catch (error) {
+      toast.error("Failed to save settings. Please try again.");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await fetch(endpoints.deleteAccount, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -35,151 +68,205 @@ export const Settings = () => {
       });
       const message = await response.json();
       if (response.ok) {
-        setIsVerified(true);
         toast.success(message.message);
+        // Perform logout or redirect to login
       } else {
         toast.error(message.error);
       }
+    } catch (error) {
+      toast.error("Failed to delete account. Please try again.");
     }
   };
 
-  const handleEmailChange = (e) => {
-    e.preventDefault();
-    // Logic to update email (send API request)
-    console.log("Updated Email:", email);
-    setEmail("");
-  };
-
-  const handlePasswordChange = (e) => {
-    e.preventDefault();
-    // Logic to update password (send API request)
-    console.log("Updated Password:", password);
-    setPassword("");
-  };
-
-  const handleSaveSettings = async () => {
-    const storage = isRememberMe ? window.localStorage : window.sessionStorage;
-    const userSettings = {
-      email: storage.getItem("email"),
-      darkMode: isDarkMode,
-      rememberMe: isRememberMe,
-    };
-
-    const response = await fetch(endpoints.saveAccountSettings, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userSettings),
-      credentials: "include",
-    });
-    const message = await response.json();
-    if (response.ok) {
-      toast.success(message.message);
-    } else {
-      toast.error(message.error);
+  const handleExportData = async () => {
+    try {
+      const response = await fetch(endpoints.exportData, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "user_data.json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        toast.success("Data exported successfully.");
+      } else {
+        toast.error("Failed to export data.");
+      }
+    } catch (error) {
+      toast.error("Error exporting data. Please try again.");
     }
   };
-
   return (
     <Background>
       <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         Settings
       </h1>
-
       <div className="profile-details mb-8">
-        <h1 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
+        <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
           Profile Settings
-        </h1>
-        <p className="text-lg text-gray-900 dark:text-gray-100">
-          <strong>Name:</strong> John Doe
-        </p>
-        <p className="text-lg text-gray-900 dark:text-gray-100">
-          <strong>Email:</strong> user@example.com
-        </p>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          Account Verification
         </h2>
-        <button
-          disabled={isVerified}
-          onClick={handleVerification}
-          className={`px-4 py-2 text-white rounded-md ${
-            isVerified
-              ? "bg-gray-500 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
-          }`}
-        >
-          {isVerified ? "Verified ✅" : "Verify Account"}
-        </button>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          Update Email
-        </h2>
-        <form onSubmit={handleEmailChange}>
+        <label className="block mb-4">
+          <span className="text-gray-900 dark:text-gray-100">Display Name</span>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 mb-4 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-            placeholder="Enter new email"
+            type="text"
+            value={settings.displayName}
+            onChange={(e) =>
+              setSettings({ ...settings, displayName: e.target.value })
+            }
+            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Update Email
-          </button>
-        </form>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          Update Password
-        </h2>
-        <form onSubmit={handlePasswordChange}>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 mb-4 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-            placeholder="Enter new password"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Update Password
-          </button>
-        </form>
-      </div>
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          Appearance
-        </h2>
-        <label className="flex items-center space-x-3">
-          <span className="text-gray-900 dark:text-gray-100">Dark Mode</span>
-          <input
-            type="checkbox"
-            checked={isDarkMode}
-            onChange={() => setIsDarkMode(!isDarkMode)}
-            className="toggle-checkbox"
-          />
+        </label>
+        <label className="block mb-4">
+          <span className="text-gray-900 dark:text-gray-100">Bio</span>
+          <textarea
+            placeholder="add a bio"
+            value={settings.bio}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value.length <= 255) {
+                setSettings({ ...settings, bio: value });
+              }
+            }}
+            minLength="10"
+            maxLength="255"
+            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          ></textarea>
         </label>
       </div>
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
-          Save settings
+          Preferences
         </h2>
+        <label className="flex items-center space-x-3 mb-4">
+          <span className="text-gray-900 dark:text-gray-100">
+            Account Visibility
+          </span>
+          <select
+            value={settings.accountVisibility}
+            onChange={(e) =>
+              setSettings({ ...settings, accountVisibility: e.target.value })
+            }
+            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          >
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+        </label>
+        <span className="flex items-center space-x-3 mb-4">
+          <label
+            for="activity-status"
+            className="text-gray-900 dark:text-gray-100"
+          >
+            Activity Status
+          </label>
+          <input
+            type="checkbox"
+            id="activity-status"
+            checked={settings.activityStatus}
+            onChange={(e) =>
+              setSettings({ ...settings, activityStatus: e.target.checked })
+            }
+            className="toggle-checkbox"
+          />
+        </span>
+        <span className="flex items-center space-x-3 mb-4">
+          <label
+            for="activity-status"
+            className="text-gray-900 dark:text-gray-100"
+          >
+            Email Notifications
+          </label>
+          <input
+            type="checkbox"
+            checked={settings.emailNotifications}
+            onChange={(e) =>
+              setSettings({ ...settings, emailNotifications: e.target.checked })
+            }
+            className="toggle-checkbox"
+          />
+        </span>
+        <span className="flex items-center space-x-3 mb-4">
+          <label
+            for="activity-status"
+            className="text-gray-900 dark:text-gray-100"
+          >
+            Push Notifications
+          </label>
+          <input
+            type="checkbox"
+            checked={settings.pushNotifications}
+            onChange={(e) =>
+              setSettings({ ...settings, pushNotifications: e.target.checked })
+            }
+            className="toggle-checkbox"
+          />
+        </span>
+        <span className="flex items-center space-x-3 mb-4">
+          <label
+            for="preferred-language"
+            className="text-gray-900 dark:text-gray-100"
+          >
+            Preferred Language
+          </label>
+          <select
+            id="preferred-language"
+            value={settings.preferredLanguage}
+            onChange={(e) =>
+              setSettings({ ...settings, preferredLanguage: e.target.value })
+            }
+            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          >
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+          </select>
+        </span>
+        <span className="flex items-center space-x-3 mb-4">
+          <label for="timezone" className="text-gray-900 dark:text-gray-100">
+            Time Zone
+          </label>
+          <select
+            id="timezone"
+            value={settings.timeZone}
+            onChange={(e) =>
+              setSettings({ ...settings, timeZone: e.target.value })
+            }
+            className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          >
+            <option value="GMT">GMT</option>
+            <option value="EST">EST</option>
+            <option value="PST">PST</option>
+          </select>
+        </span>
+      </div>
+      <div className="mb-8">
+        <button
+          onClick={handleExportData}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-4"
+        >
+          Export Data
+        </button>
+        <button
+          onClick={handleDeleteAccount}
+          className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+        >
+          Delete Account
+        </button>
+      </div>
+      <div className="mb-8">
         <button
           onClick={handleSaveSettings}
           className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
         >
-          Save
+          Save Settings
         </button>
       </div>
     </Background>
