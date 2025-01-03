@@ -16,7 +16,6 @@ const Logout = ({ toggleLogoutModal }) => {
   const { isRememberMe } = useRememberMe();
   const handleLogout = async (event) => {
     event.preventDefault();
-
     try {
       const response = await fetch(endpoints.logoutAuth, {
         method: "GET",

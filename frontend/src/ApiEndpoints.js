@@ -15,6 +15,8 @@ export const endpoints = {
   verifyAccount: `${baseURL}account/verifyAccount`, // GET
   deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
   updateAccount: `${baseURL}account/updateAccount`, // PUT
+  saveAccountSettings: `${baseURL}account/saveAccountSettings`, // POST
+  exportData: `${baseURL}account/exportData`, // POST
 
   // OTP Endpoints
   sendOTP: `${baseURL}auth/sendOTP`, // POST
@@ -23,8 +25,9 @@ export const endpoints = {
   // Tasks Endpoints
   createTask: `${baseURL}tasks.createTask`, // POST
   getTasks: `${baseURL}tasks/getTasks`, // GET
-  updateTask: `${baseURL}tasks/patchTask`, // PUT
+  updateTask: `${baseURL}tasks/updateTask`, // PUT
   deleteTask: `${baseURL}tasks/deleteTask`, // DELETE
+  archiveTask: `${baseURL}tasks/archiveTask`, // GET
 
   // Search Endpoint
   userSearch: `${baseURL}search/userSearch`, // GET

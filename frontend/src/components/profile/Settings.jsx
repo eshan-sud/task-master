@@ -1,10 +1,11 @@
 // filename - frontend/src/components/profile/Settings.jsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { endpoints } from "../../ApiEndpoints.js";
 import toast from "react-hot-toast";
 import { useRememberMe } from "../../utils/RememberMeContext.js";
 import { Background } from "./Background.jsx";
+import AuthContext from "../../utils/AuthContext.js";
 
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();
@@ -25,6 +26,7 @@ export const Settings = () => {
     displayName: storage.getItem("fullName") || "",
     bio: "",
   });
+  const { logout } = useContext(AuthContext);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);
@@ -69,7 +71,7 @@ export const Settings = () => {
       const message = await response.json();
       if (response.ok) {
         toast.success(message.message);
-        // Perform logout or redirect to login
+        logout();
       } else {
         toast.error(message.error);
       }
@@ -92,7 +94,7 @@ export const Settings = () => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "user_data.json";
+        a.download = `${storage.getItem("fullName")}.json`;
         document.body.appendChild(a);
         a.click();
         a.remove();
