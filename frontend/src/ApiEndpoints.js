@@ -8,13 +8,13 @@ export const endpoints = {
   loginAuth: `${baseURL}auth/login`, // POST
   logoutAuth: `${baseURL}auth/logout`, // GET
   registerAuth: `${baseURL}auth/register`, // POST
-  userExists: `${baseURL}auth/userExists`, // POST
+  checkUserExists: `${baseURL}auth/checkUserExists`, // POST
   resetPassword: `${baseURL}auth/resetPassword`, // PUT
 
   // Account Endpoints
-  verifyAccount: `${baseURL}account/verify`, // GET
-  // deleteAccount: `${baseURL}account/delete` // DELETE
-  // updateAccount: `${baseURL}account/update` // PUT
+  verifyAccount: `${baseURL}account/verifyAccount`, // GET
+  deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
+  updateAccount: `${baseURL}account/updateAccount`, // PUT
 
   // OTP Endpoints
   sendOTP: `${baseURL}auth/sendOTP`, // POST
@@ -22,12 +22,12 @@ export const endpoints = {
 
   // Tasks Endpoints
   createTask: `${baseURL}tasks.createTask`, // POST
-  getTasks: `${baseURL}tasks/getTasks`, //
-  updateTask: `${baseURL}tasks/patchTask`, //
-  delelteTask: `${baseURL}tasks/deleteTask`, //
+  getTasks: `${baseURL}tasks/getTasks`, // GET
+  updateTask: `${baseURL}tasks/patchTask`, // PUT
+  deleteTask: `${baseURL}tasks/deleteTask`, // DELETE
 
   // Search Endpoint
-  // userSearch: `${baseURL}search/userSearch`, //
+  userSearch: `${baseURL}search/userSearch`, // GET
 
   // Avatar Endpoints
   getUserAvatar: `${baseURL}avatar/getUserAvatar`, //GET

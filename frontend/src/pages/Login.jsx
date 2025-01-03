@@ -21,6 +21,8 @@ import { FormContainer } from "../components/FormContainer";
 //   <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
 // </span>;
 
+const checkVerification = (email) => {};
+
 const LoginForm = () => {
   const Navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -56,6 +58,7 @@ const LoginForm = () => {
         storage.setItem("email", message.email);
         login();
         toast.success(message.message);
+        checkVerification(email);
         Navigate("/", { replace: true });
       } else {
         toast.error(message.error);

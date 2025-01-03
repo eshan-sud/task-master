@@ -1,6 +1,7 @@
 // filename - frontend/src/components/profile/Analytics.jsx
 
 import React, { useState } from "react";
+import { Background } from "./Background.jsx";
 import {
   BarChart,
   Bar,

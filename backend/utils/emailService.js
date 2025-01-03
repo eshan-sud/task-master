@@ -52,12 +52,11 @@ const sendOtpVerificationEmail = async (otp, email) => {
 
 const sendAccountVerificationEmail = async (otp, email) => {
   try {
-    const verificationUrl = `http://localhost:3000/verify-account?otp=${otp}&email=${email}`;
+    const verificationUrl = `http://localhost:3000/verify-account?email=${email}`;
     mailOptions[subject] = "Account Verification | Task Master";
     mailOptions[
       text
     ] = `Hello,\n\nYour OTP for account verification is: ${otp}\n\nPlease click the following link to verify your account:\n\n${verificationUrl}\n\nThis link will expire in 5 minutes.`;
-
     // Send the OTP to the user's email
     if (await sendEmail(mailOptions)) {
       sendAccountVerifiedEmail(email);

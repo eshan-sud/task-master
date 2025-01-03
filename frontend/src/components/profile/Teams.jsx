@@ -1,6 +1,7 @@
 // filename - frontend/src/components/profile/Teams.jsx
 
 import React from "react";
+import { Background } from "./Background.jsx";
 
 export const Teams = () => {
   return (

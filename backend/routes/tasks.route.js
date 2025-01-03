@@ -12,9 +12,9 @@ const {
 const router = express.Router();
 
 // Tasks
-router.post("/createTask", authenticate, handleCreateTask); // Create
-router.get("/getTasks", authenticate, handleGetTasks); // Read
-router.put("/updateTask", authenticate, handleUpdateTask); // Update
-router.delete("/deleteTask", authenticate, handleDeleteTask); // Delete
+router.post("/createTask", authenticate, handleCreateTask);
+router.get("/getTasks", authenticate, handleGetTasks);
+router.patch("/updateTask", authenticate, handleUpdateTask);
+router.delete("/deleteTask", authenticate, handleDeleteTask);
 
 module.exports = router;

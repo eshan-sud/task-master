@@ -3,7 +3,8 @@
 import React from "react";
 import { useRememberMe } from "../utils/RememberMeContext.js";
 
-import { NoteContainer } from "../components/profile/Tasks";
+import { Background } from "../components/profile/Background.jsx";
+import { NoteContainer } from "../components/profile/Tasks.jsx";
 import {
   AddButton,
   SendButton,
@@ -11,7 +12,7 @@ import {
   BackToTopButton,
   ArchiveButton,
   AddNew,
-} from "../components/Buttons";
+} from "../components/Buttons.jsx";
 
 export const Profile = () => {
   const { isRememberMe } = useRememberMe();
@@ -25,8 +26,8 @@ export const Profile = () => {
   // const pinnedCards = [];
 
   return (
-    <div className="relative min-h-screen p-10 bg-green-200 rounded-[64px]">
-      <div className="profile-details mb-8">
+    <Background>
+      <div className="profile-details mb-8 text-gray-900 dark:text-gray-100">
         <h1 className="text-2xl font-bold mb-2"> Profile </h1>
         <p className="text-lg">
           <strong> Name: </strong> {storage.getItem("fullName")}
@@ -48,7 +49,7 @@ export const Profile = () => {
         <AddButton name="Task" color="green" />
       </div>
 
-      <div className="pinnedTasks">
+      <div className="pinnedTasks text-gray-900 dark:text-gray-100">
         <h2 className="text-xl font-bold mb-4"> Pinned Tasks </h2>
         <div>
           {/* {pinnedCards.map((card) => (
@@ -57,7 +58,7 @@ export const Profile = () => {
         </div>
       </div>
 
-      <div className="tasks">
+      <div className="tasks text-gray-900 dark:text-gray-100">
         <h2 className="text-xl font-bold mb-4"> Current Tasks </h2>
         <div>
           {/* {cards.map((card) => (
@@ -67,6 +68,6 @@ export const Profile = () => {
         </div>
       </div>
       <BackToTopButton />
-    </div>
+    </Background>
   );
 };

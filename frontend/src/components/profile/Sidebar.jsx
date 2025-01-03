@@ -34,7 +34,7 @@ export const Sidebar = () => {
   };
 
   const toggleSidebar = (event) => {
-    event.stopPropagation(); // Prevent click event from propagating to document
+    event.stopPropagation();
     setIsOpen(!isOpen);
   };
 

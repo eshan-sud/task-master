@@ -108,7 +108,7 @@ const handleLogoutAuth = async (req, res) => {
   }
 };
 
-const handleUserExists = async (req, res) => {
+const handleCheckUserExists = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
@@ -216,7 +216,7 @@ module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
-  handleUserExists,
+  handleCheckUserExists,
   handleSendOTP,
   handleVerifyOTP,
   handleResetPassword,

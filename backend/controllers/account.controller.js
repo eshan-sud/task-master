@@ -33,27 +33,56 @@ const verifyAccount = async (req, res) => {
   }
 };
 
-// const handleAccountVerification = async (req, res) => {
-//   try {
-//     const { email, otp } = res.body;
-//     if (!email || !otp) {
-//       return res.status(400).json({ error: "Email and OTP are required" });
-//     }
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-//     const verification = await verifyUser();
-//     if (!verification) {
-//       return res.status(500).json({ error: "Account verification failed" });
-//     }
-//     // Add verified account in database
-//     await user.save();
-//     return res.status(200).json({ message: "Account verified successfully!" });
-//   } catch (error) {
-//     console.error("Error verifying account:", error);
-//     return res.status(500).json({ error: "Account verification failed" });
-//   }
-// };
+const updateAccount = async (req, res) => {
+  const { email, updateData } = req.body;
+  if (!email || !updateData) {
+    return res.status(400).send("Email and update data is required");
+  }
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $set: updateData },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
+    }
+    return res.status(200).json({ message: "Account updated successfully" });
+  } catch (error) {
+    console.error("Error updating account:", error);
+    return res.status(500).send("Something went wrong");
+  }
+};
 
-module.exports = { verifyAccount };
+const deleteAccount = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).send("Email is required");
+  }
+  try {
+    const deletedUser = await User.findOneAndDelete({ email });
+    if (!deletedUser) {
+      return res.status(404).send("User not found");
+    }
+    return res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    return res.status(500).send("Something went wrong");
+  }
+};
+
+const getSettings = async (req, res) => {
+  const { email } = req.body;
+};
+
+const updateSettings = async (req, res) => {
+  const { email } = req.body;
+};
+
+module.exports = {
+  verifyAccount,
+  deleteAccount,
+  updateAccount,
+  getSettings,
+  updateSettings,
+};

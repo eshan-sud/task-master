@@ -1,6 +1,7 @@
 // filename - frontend/src/components/profile/Dashboard.jsx
 
 import React, { useState } from "react";
+import { Background } from "./Background.jsx";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -30,7 +31,6 @@ export const Dashboard = () => {
   return (
     <div className="max-w-2xl mx-auto p-5">
       <h1 className="text-3xl font-bold text-gray-800 mb-5">Dashboard</h1>
-
       <div className="mb-5">
         <h2 className="text-2xl font-semibold text-gray-700 mb-3">
           Tasks Due Today: {tasksDueToday.length}
