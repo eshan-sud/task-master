@@ -2,6 +2,18 @@
 
 import React from "react";
 
+export const DefaultLabel = ({ title, htmlFor, children }) => {
+  return (
+    <label
+      title={title}
+      htmlFor={htmlFor}
+      className="text-gray-900 dark:text-gray-100 mb-4"
+    >
+      {children}
+    </label>
+  );
+};
+
 export const CircularLabel = ({ title, htmlFor, children }) => {
   return (
     <label

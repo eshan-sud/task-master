@@ -93,7 +93,6 @@ export const BackToTopButton = () => {
   const handleBackToTop = () => {
     window.scrollTo(0, 0);
   };
-
   return (
     <button
       type="button"
@@ -286,13 +285,13 @@ export const AddButton = ({ name, color }) => {
   );
 };
 
-export const SubmitButton = () => {
+export const SubmitButton = ({ title = "Submit" }) => {
   return (
     <button
       type="submit"
-      className="w-full px-6 py-3 rounded bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
+      className="w-full px-6 py-3 m-2 rounded bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
     >
-      Submit
+      {title}
     </button>
   );
 };
@@ -354,9 +353,9 @@ export const GoBackButton2 = () => {
   return (
     <button
       type="button"
-      class="bg-white text-center w-48 rounded-2xl h-14 relative font-sans text-black text-xl font-semibold group"
+      className="bg-white text-center w-48 rounded-2xl h-14 relative font-sans text-black text-xl font-semibold group"
     >
-      <div class="bg-green-400 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
+      <div className="bg-green-400 rounded-xl h-12 w-1/4 flex items-center justify-center absolute left-1 top-[4px] group-hover:w-[184px] z-10 duration-500">
         <svg
           width="25px"
           height="25px"
@@ -373,7 +372,7 @@ export const GoBackButton2 = () => {
           ></path>
         </svg>
       </div>
-      <p class="translate-x-2">Go Back</p>
+      <p className="translate-x-2">Go Back</p>
     </button>
   );
 };

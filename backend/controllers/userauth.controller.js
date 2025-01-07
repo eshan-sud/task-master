@@ -169,7 +169,7 @@ const handleVerifyOTP = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid OTP" });
     }
-    await OTP.deleteOne({ email });
+    await OTP.deleteOne({ email }); // Remove OTP after successful verification
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "5m",
     });

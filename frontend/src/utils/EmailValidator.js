@@ -8,31 +8,31 @@ export const isValidEmail = (email) => {
 };
 
 export const EmailValidator = ({ children, setEmail, email }) => {
-  const [isValid, setIsValid] = useState(true);
-  const [isEmpty, setIsEmpty] = useState(true);
+  const [isvalid, setIsvalid] = useState(true);
+  const [isempty, setIsempty] = useState(true);
 
   useEffect(() => {
     if (email === "") {
-      setIsEmpty(true);
-      setIsValid(true);
+      setIsempty(true);
+      setIsvalid(true);
       return;
     }
-    setIsEmpty(false);
-    setIsValid(isValidEmail(email));
+    setIsempty(false);
+    setIsvalid(isValidEmail(email));
   }, [email]);
 
   const clonedChild = React.cloneElement(children, {
     value: email,
     onChange: (event) => setEmail(event.target.value),
-    isValid,
-    isEmpty,
+    isvalid: isvalid.toString(),
+    isempty: isempty.toString(),
     className: `${children.props.className || ""}`,
   });
 
   return (
     <div>
       {clonedChild}
-      {!isEmpty && !isValid && (
+      {!isempty && !isvalid && (
         <span className="text-red-500 text-sm">Invalid email address</span>
       )}
     </div>

@@ -257,7 +257,7 @@ export const NewPasswordField = ({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChange={(event) => onChange(event.target.value)}
-        className={`peer border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none bg-[#F3F3F3] rounded-[10px] transition-all duration-500 focus:bg-white ${className} ${
+        className={`border-gray-300 dark:border-gray-600 peer border-2 w-full h-[2.5em] pt-6 pb-3 pl-[0.8em] outline-none bg-[#F3F3F3] dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-[10px] transition-all duration-500 ${
           isFocused
             ? value === ""
               ? "border-[#4A9DEC] shadow-[0px_0px_0px_7px_rgba(74,157,236,0.2)]"
