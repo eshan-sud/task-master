@@ -51,7 +51,8 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] **Login/Register:** User authentication to create personal accounts.
 - [x] **Remember Me:** Remember me feature to reduce the number of times the user has to login back into their account.
 - [Next] **Update/Delete:** Accounts updation & deletion.
-- [x] **Password Change (OTP):** Change password using OTP sent to email.
+- [x] **Password Change using OTP:** Change account password using OTP sent to email.
+- [x] **Password Change while logged in:** Change account password using Settings page.
 - [Current] **Account Verification:** Verify account after registration through email.
 - [x] **Avatar Upload/Delte:**Add & delete avatar to user account.
 - [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
