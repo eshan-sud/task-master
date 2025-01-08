@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/verifyAccount", verifyAccount);
 router.delete("/deleteAccount", authenticate, deleteAccount);
 router.patch("/updateAccount", authenticate, updateAccount);
-router.post("/updateSettings", authenticate, updateSettings);
+router.patch("/updateSettings", authenticate, updateSettings);
 router.post("/exportData", authenticate, exportData);
 router.patch("/changePassword", authenticate, changePassword);
 

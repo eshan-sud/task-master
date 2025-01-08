@@ -50,12 +50,12 @@ This application is ideal for individuals, teams, or organisations looking for a
 
 - [x] **Login/Register:** User authentication to create personal accounts.
 - [x] **Remember Me:** Remember me feature to reduce the number of times the user has to login back into their account.
-- [Next] **Update/Delete:** Accounts updation & deletion.
 - [x] **Password Change using OTP:** Change account password using OTP sent to email.
 - [x] **Password Change while logged in:** Change account password using Settings page.
-- [Current] **Account Verification:** Verify account after registration through email.
 - [x] **Avatar Upload/Delte:**Add & delete avatar to user account.
 - [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
+- [Next] **Update/Delete:** Accounts updation & deletion.
+- [Current] **Account Verification:** Verify account after registration through email.
 - [Current] **Settings:** Able to set account settings & more for more personalisation.
 
 </details>
@@ -66,6 +66,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - **Dark Mode:** Toggle between light & dark themes.
 - **Offline Mode:** Access & manage tasks offline.
 - **Offline Sync:** Able to sync tasks automatically when back online.
+- **Multi-Language Support:** Add support for multiple languages.
 - **Chatbot (Landing Page):** Provide a chatbot interface on the landing page.
 
 </details>

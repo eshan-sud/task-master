@@ -78,7 +78,20 @@ const getSettings = async (req, res) => {
 };
 
 const updateSettings = async (req, res) => {
-  const { email } = req.body;
+  const { email, ...settings } = req.body;
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      { settings },
+      { new: true, runValidators: true }
+    );
+
+    if (!user) return res.status(404).send("User not found");
+    res.status(200).send({ message: "Settings saved successfully", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
 };
 
 const exportData = async (req, res) => {

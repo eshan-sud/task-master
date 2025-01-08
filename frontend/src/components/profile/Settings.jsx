@@ -10,6 +10,28 @@ import { DefaultLabel } from "../Labels.jsx";
 import { NewPasswordField } from "../Fields.jsx";
 import { SubmitButton } from "../Buttons.jsx";
 
+const Verified = () => {
+  return (
+    <div style={{ display: "flex", alignItems: "center", color: "gray" }}>
+      <span>Verified</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+        stroke="green"
+        style={{
+          width: "16px",
+          height: "16px",
+          marginLeft: "4px",
+        }}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+  );
+};
+
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
@@ -36,6 +58,29 @@ export const Settings = () => {
     document.documentElement.classList.toggle("dark", isDarkMode);
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
+
+  const handleVerify = async (email) => {
+    try {
+      const response = await fetch(endpoints.verifyAccount, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+        credentials: "include",
+      });
+      const message = await response.json();
+      if (response.ok) {
+        toast.success(message.message);
+      } else {
+        toast.error(message.error);
+      }
+    } catch (error) {
+      toast.error("Failed to Verify Account. Please try again.");
+    }
+  };
 
   const handleSaveSettings = async (email) => {
     try {
@@ -150,7 +195,21 @@ export const Settings = () => {
         <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
           Settings
         </h1>
-        <div className="profile-details mb-8">
+        <form
+          onSubmit={handleVerify}
+          className="flex items-center space-x-3 mb-4"
+        >
+          <DefaultLabel
+            title="account verification"
+            htmlFor="account-verification"
+          >
+            Account Verification
+          </DefaultLabel>
+          <span>
+            {/* { verified ? <SubmitButton title="Verify" /> : <Verified /> } */}
+          </span>
+        </form>
+        <span className="profile-details mb-8">
           <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
             Profile Settings
           </h2>
@@ -197,7 +256,7 @@ export const Settings = () => {
               className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             ></textarea>
           </span>
-        </div>
+        </span>
         <form onSubmit={handleChangePassword} className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
             Account Settings
@@ -228,7 +287,7 @@ export const Settings = () => {
             </div>
           </span>
         </form>
-        <div className="mb-8">
+        <span className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
             Preferences
           </h2>
@@ -345,8 +404,8 @@ export const Settings = () => {
               <option value="PST">PST</option>
             </select>
           </span>
-        </div>
-        <div className="mb-8">
+        </span>
+        <span className="mb-8">
           <button
             onClick={handleExportData}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-4"
@@ -359,15 +418,15 @@ export const Settings = () => {
           >
             Delete Account
           </button>
-        </div>
-        <div className="mb-8">
+        </span>
+        <span className="mb-8">
           <button
             onClick={handleSaveSettings}
             className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
           >
             Save Settings
           </button>
-        </div>
+        </span>
       </div>
     </Background>
   );
