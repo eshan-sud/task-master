@@ -8,6 +8,7 @@ import { Background } from "./Background.jsx";
 import AuthContext from "../../utils/AuthContext.js";
 import { DefaultLabel } from "../Labels.jsx";
 import { NewPasswordField } from "../Fields.jsx";
+import { SubmitButton } from "../Buttons.jsx";
 
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();
@@ -61,7 +62,7 @@ export const Settings = () => {
     }
   };
 
-  const handlePasswordChange = async (email, newPassword) => {
+  const handleChangePassword = async (email, newPassword) => {
     try {
       const response = await fetch(endpoints.changePassword, {
         method: "PATCH",
@@ -187,30 +188,36 @@ export const Settings = () => {
             ></textarea>
           </span>
         </div>
-        <div className="mb-8">
+        <form onSubmit={handleChangePassword} className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
             Account Settings
           </h2>
-          <DefaultLabel title="change password" htmlFor="change-password">
-            Change Password
-          </DefaultLabel>
-          <div id="changePassword" className="flex items-center space-x-3 mb-4">
-            <NewPasswordField
-              type="password"
-              name="New Password"
-              value={newPassword}
-              onChange={setNewPassword}
-              autoFocus={false}
-            />
-            <NewPasswordField
-              type="password"
-              name="New Confirmed Password"
-              value={newConfirmedPassword}
-              onChange={setNewConfirmedPassword}
-              autoFocus={false}
-            />
-          </div>
-        </div>
+          <span className="flex items-center space-x-3 mb-4">
+            <DefaultLabel title="change password" htmlFor="change-password">
+              Change Password
+            </DefaultLabel>
+            <div className="flex items-center space-x-3 mb-4">
+              <NewPasswordField
+                id="change-password"
+                type="password"
+                name="New Password"
+                value={newPassword}
+                onChange={setNewPassword}
+                autoFocus={false}
+              />
+              <NewPasswordField
+                type="password"
+                name="New Confirmed Password"
+                value={newConfirmedPassword}
+                onChange={setNewConfirmedPassword}
+                autoFocus={false}
+              />
+              <span className="items-center">
+                <SubmitButton />
+              </span>
+            </div>
+          </span>
+        </form>
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
             Preferences
