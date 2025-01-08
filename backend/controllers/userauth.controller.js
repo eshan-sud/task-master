@@ -125,6 +125,36 @@ const handleCheckUserExists = async (req, res) => {
   }
 };
 
+const handleResetPassword = async (req, res) => {
+  try {
+    const { email, newPassword, token } = req.body;
+    if (!email || !newPassword || !token) {
+      return res.status(400).json({
+        error: "Email, New Password, and token are required",
+      });
+    }
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+      if (decoded.email !== email) {
+        return res.status(400).json({ error: "Invalid Token" });
+      }
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+      return res.status(200).json({ message: "Password reset successfully!" });
+    });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    return res.status(500).json({ error: "Error resetting password" });
+  }
+};
+
 const handleSendOTP = async (req, res) => {
   try {
     const { email, purpose } = req.body;
@@ -182,42 +212,12 @@ const handleVerifyOTP = async (req, res) => {
   }
 };
 
-const handleResetPassword = async (req, res) => {
-  try {
-    const { email, newPassword, token } = req.body;
-    if (!email || !newPassword || !token) {
-      return res.status(400).json({
-        error: "Email, New Password, and token are required",
-      });
-    }
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ error: "Invalid or expired token" });
-      }
-      if (decoded.email !== email) {
-        return res.status(400).json({ error: "Invalid Token" });
-      }
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedPassword;
-      await user.save();
-      return res.status(200).json({ message: "Password reset successfully!" });
-    });
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    return res.status(500).json({ error: "Error resetting password" });
-  }
-};
-
 module.exports = {
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
   handleCheckUserExists,
+  handleResetPassword,
   handleSendOTP,
   handleVerifyOTP,
-  handleResetPassword,
 };

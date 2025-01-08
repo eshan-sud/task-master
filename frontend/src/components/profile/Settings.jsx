@@ -62,14 +62,23 @@ export const Settings = () => {
     }
   };
 
-  const handleChangePassword = async (email, newPassword) => {
+  const handleChangePassword = async (event) => {
+    event.preventDefault();
+    if (!newPassword) {
+      toast.error("Passwords not given!");
+      return;
+    }
+    if (newPassword !== newConfirmedPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
     try {
       const response = await fetch(endpoints.changePassword, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email, password: newPassword }),
+        body: JSON.stringify({ email: email, newPassword: newPassword }),
         credentials: "include",
       });
       const message = await response.json();
@@ -80,6 +89,7 @@ export const Settings = () => {
         toast.error(message.error);
       }
     } catch (error) {
+      console.log(error);
       toast.error("Failed to delete account. Please try again.");
     }
   };

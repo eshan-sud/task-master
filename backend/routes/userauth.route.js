@@ -7,9 +7,9 @@ const {
   handleRegisterAuth,
   handleLogoutAuth,
   handleCheckUserExists,
+  handleResetPassword,
   handleSendOTP,
   handleVerifyOTP,
-  handleResetPassword,
 } = require("../controllers/userauth.controller");
 
 const router = express.Router();
@@ -19,8 +19,9 @@ router.post("/login", handleLoginAuth);
 router.get("/logout", handleLogoutAuth);
 router.post("/register", handleRegisterAuth);
 router.post("/checkUserExists", handleCheckUserExists);
+router.patch("/resetPassword", handleResetPassword);
+// OTP
 router.post("/sendOTP", handleSendOTP);
 router.post("/verifyOTP", handleVerifyOTP);
-router.put("/resetPassword", handleResetPassword);
 
 module.exports = router;

@@ -1,7 +1,9 @@
 // filename - backend/controllers/account.controller.js
 
-const OTP = require("../models/otp.model");
 const User = require("../models/user.model");
+const OTP = require("../models/otp.model");
+const bcrypt = require("bcryptjs");
+
 const {
   sendAccountVerificationEmail,
   sendAccountVerifiedEmail,
@@ -79,10 +81,36 @@ const updateSettings = async (req, res) => {
   const { email } = req.body;
 };
 
+const exportData = async (req, res) => {
+  const { email } = req.body;
+};
+
+const changePassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+  if (!email || !newPassword) {
+    return res.status(400).send("Email and New password are required");
+  }
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    return res.status(500).send("Internal server error!");
+  }
+};
+
 module.exports = {
   verifyAccount,
   deleteAccount,
   updateAccount,
   getSettings,
   updateSettings,
+  exportData,
+  changePassword,
 };

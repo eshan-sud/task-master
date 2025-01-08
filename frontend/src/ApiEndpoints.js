@@ -9,18 +9,18 @@ export const endpoints = {
   logoutAuth: `${baseURL}auth/logout`, // GET
   registerAuth: `${baseURL}auth/register`, // POST
   checkUserExists: `${baseURL}auth/checkUserExists`, // POST
-  resetPassword: `${baseURL}auth/resetPassword`, // PUT
+  resetPassword: `${baseURL}auth/resetPassword`, // PATCH
+  // OTP Endpoints
+  sendOTP: `${baseURL}auth/sendOTP`, // POST
+  verifyOTP: `${baseURL}auth/verifyOTP`, // POST
 
   // Account Endpoints
   verifyAccount: `${baseURL}account/verifyAccount`, // GET
   deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
   updateAccount: `${baseURL}account/updateAccount`, // PUT
-  saveAccountSettings: `${baseURL}account/saveAccountSettings`, // POST
+  updateSettings: `${baseURL}account/updateSettings`, // POST
   exportData: `${baseURL}account/exportData`, // POST
-
-  // OTP Endpoints
-  sendOTP: `${baseURL}auth/sendOTP`, // POST
-  verifyOTP: `${baseURL}auth/verifyOTP`, // POST
+  changePassword: `${baseURL}account/changePassword`, // PATCH
 
   // Tasks Endpoints
   createTask: `${baseURL}tasks.createTask`, // POST

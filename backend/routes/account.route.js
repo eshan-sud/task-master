@@ -6,6 +6,9 @@ const {
   verifyAccount,
   deleteAccount,
   updateAccount,
+  updateSettings,
+  exportData,
+  changePassword,
 } = require("../controllers/account.controller");
 
 const router = express.Router();
@@ -14,5 +17,8 @@ const router = express.Router();
 router.get("/verifyAccount", verifyAccount);
 router.delete("/deleteAccount", authenticate, deleteAccount);
 router.patch("/updateAccount", authenticate, updateAccount);
+router.post("/updateSettings", authenticate, updateSettings);
+router.post("/exportData", authenticate, exportData);
+router.patch("/changePassword", authenticate, changePassword);
 
 module.exports = router;

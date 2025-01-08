@@ -196,7 +196,7 @@ const ResetPasswordForm = ({
     const spinnerId = showSpinnerToast(); // Show spinner toast
     try {
       const response = await fetch(endpoints.resetPassword, {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, newPassword, token: resetToken }),
       });
