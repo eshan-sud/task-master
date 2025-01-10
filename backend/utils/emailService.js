@@ -35,17 +35,28 @@ const sendTaskNotificationEmail = async (req, res) => {};
 
 const sendPasswordChangedEmail = async (req, res) => {};
 
-const sendOtpVerificationEmail = async (otp, email) => {
+const sendOtpVerificationEmail = async (otp, email, purpose) => {
   try {
+    let subject = "";
+    let text = "";
+
+    if (purpose === "password_reset") {
+      subject = "Password Reset | Task Master";
+      text = `Hello,\n\nYour OTP for password reset is: ${otp}\n\nThis OTP will expire in 5 minutes.`;
+    } else if (purpose === "account_verification") {
+      subject = "Account Verification | Task Master";
+      text = `Hello,\n\nYour OTP for account verification is: ${otp}\n\nThis OTP will expire in 5 minutes.`;
+    } else {
+      return false; // Invalid purpose
+    }
     mailOptions["to"] = email;
-    mailOptions["subject"] = "Password Reset | Task Master";
-    mailOptions[
-      "text"
-    ] = `Hello,\n\nYour OTP for password reset is: ${otp}\n\nThis link will expire in 5 minutes.`;
-    // console.log(mailOptions);
+    mailOptions["subject"] = subject;
+    mailOptions["text"] = text;
+    console.log(mailOptions);
     // Send the OTP to the user's email
     return await sendEmail(mailOptions);
   } catch (error) {
+    console.log(error);
     return false;
   }
 };

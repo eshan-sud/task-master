@@ -20,7 +20,7 @@ const otpSchema = new mongoose.Schema({
   },
   purpose: {
     type: String,
-    required: true,
+    required: true, // Either "password_reset" or "account_verification"
   },
 });
 

@@ -15,7 +15,8 @@ export const endpoints = {
   verifyOTP: `${baseURL}auth/verifyOTP`, // POST
 
   // Account Endpoints
-  verifyAccount: `${baseURL}account/verifyAccount`, // GET
+  // sendOTPForVerification: `${baseURL}auth/sendOTPForVerification`, // POST
+  verifyAccount: `${baseURL}account/verifyAccount`, // POST
   deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
   updateAccount: `${baseURL}account/updateAccount`, // PATCH
   updateSettings: `${baseURL}account/updateSettings`, // PATCH

@@ -37,7 +37,7 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
       const otpResponse = await fetch(endpoints.sendOTP, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, purpose: "PASSWORD RESET VERIFICATION" }),
+        body: JSON.stringify({ email, purpose: "password_reset" }),
       });
       toast.dismiss(spinnerId); // Dismiss spinner toast
       if (!otpResponse.ok) {
@@ -71,7 +71,7 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
   );
 };
 
-const OTPVerificationForm = ({ email, setStep }) => {
+export const OTPVerificationForm = ({ email, setStep }) => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
 

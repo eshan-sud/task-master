@@ -285,11 +285,23 @@ export const AddButton = ({ name, color }) => {
   );
 };
 
+export const DisabledButton = ({ title = "Disabled" }) => {
+  return (
+    <button
+      disabled
+      type="submit"
+      className="w-full px-4 py-2 m-2 rounded-md bg-gray-400 text-gray-700 text-sm font-semibold transition-colors cursor-not-allowed"
+    >
+      {title}
+    </button>
+  );
+};
+
 export const SubmitButton = ({ title = "Submit" }) => {
   return (
     <button
       type="submit"
-      className="w-full px-6 py-3 m-2 rounded bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors"
+      className="w-full px-4 py-2 m-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
     >
       {title}
     </button>

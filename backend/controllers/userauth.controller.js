@@ -169,13 +169,13 @@ const handleSendOTP = async (req, res) => {
       email,
       otp: encryptedOTP,
       createdAt: Date.now(),
-      purpose: purpose,
+      purpose: purpose, // Either "password_reset" or "account_verification"
     });
     if (!otpRecord) {
       return res.status(500).json({ error: "Failed to store OTP in database" });
     }
-    console.log(`New OTP stored successfully for ${email}`);
-    if (!(await sendOtpVerificationEmail(otp, email))) {
+    // console.log(`New OTP stored successfully for ${email}`);
+    if (!(await sendOtpVerificationEmail(otp, email, purpose))) {
       return res.status(500).json({ error: "Failed to send OTP email" });
     }
     return res.status(200).json({ message: "OTP sent to email" });

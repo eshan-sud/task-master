@@ -66,7 +66,6 @@ export const AvatarPopup = ({
 
 const ChangeAvatar = ({ togglePopup, fetchUserAvatar }) => {
   const [file, setFile] = useState(null);
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -77,10 +76,8 @@ const ChangeAvatar = ({ togglePopup, fetchUserAvatar }) => {
       toast.error("Please select an image file.");
       return;
     }
-
     const formData = new FormData();
     formData.append("avatar", file);
-
     try {
       const response = await fetch(endpoints.uploadAvatar, {
         method: "POST",

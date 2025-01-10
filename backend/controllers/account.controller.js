@@ -9,10 +9,12 @@ const {
   sendAccountVerifiedEmail,
 } = require("../utils/emailService");
 
+const sendOTPForVerification = async (req, res) => {};
+
 const verifyAccount = async (req, res) => {
-  const { otp, email } = req.query;
-  if (!otp || !email) {
-    return res.status(400).send("Invalid OTP or email");
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    return res.status(400).send("Email and OTP are required!");
   }
   try {
     const otpRecord = await OTP.findOne({ email });
@@ -26,7 +28,6 @@ const verifyAccount = async (req, res) => {
     // Mark account as verified
     await User.updateOne({ email }, { verified: true });
     await OTP.deleteOne({ email });
-    await sendAccountVerificationEmail(otp, email);
     sendAccountVerifiedEmail(email);
     return res.send("Your account has been verified successfully!");
   } catch (error) {
@@ -119,6 +120,7 @@ const changePassword = async (req, res) => {
 };
 
 module.exports = {
+  sendOTPForVerification,
   verifyAccount,
   deleteAccount,
   updateAccount,
