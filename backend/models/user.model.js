@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, required: true },
     password: { type: String, required: true },
     avatar: { type: String, default: null },
-    verified: { type: String, default: false },
+    isVerified: { type: String, default: false },
     settings: {
       darkMode: { type: Boolean, default: false },
       accountVisibility: {

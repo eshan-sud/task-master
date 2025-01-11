@@ -3,13 +3,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { endpoints } from "../../ApiEndpoints.js";
 import toast from "react-hot-toast";
-import { useRememberMe } from "../../utils/RememberMeContext.js";
 import { Background } from "./Background.jsx";
-import AuthContext from "../../utils/AuthContext.js";
 import { DefaultLabel } from "../Labels.jsx";
 import { NewPasswordField } from "../Fields.jsx";
 import { DisabledButton, SubmitButton } from "../Buttons.jsx";
-import { OTPPopup } from "./OTPPopup.jsx";
+import { OTPPopup } from "../Popups.jsx";
+import { showSpinnerToast } from "../Elements.jsx";
+import { useRememberMe } from "../../utils/RememberMeContext.js";
+import AuthContext from "../../utils/AuthContext.js";
 
 const Verified = () => {
   return (
@@ -39,7 +40,6 @@ export const Settings = () => {
   const [isDarkMode, setIsDarkMode] = useState(
     () => localStorage.getItem("darkMode") === "true"
   );
-  const [isVerified, setIsVerified] = useState(false);
   const [email, setEmail] = useState(storage.getItem("email"));
   const [newPassword, setNewPassword] = useState("");
   const [newConfirmedPassword, setNewConfirmedPassword] = useState("");
@@ -55,62 +55,73 @@ export const Settings = () => {
   });
   const [showOTPPopup, setShowOTPPopup] = useState(false);
   const { logout } = useContext(AuthContext);
+  const [isVerified, setIsVerified] = useState("false");
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);
     localStorage.setItem("darkMode", isDarkMode);
   }, [isDarkMode]);
 
-  const handleSendOTP = async (event) => {
-    event.preventDefault();
-    setShowOTPPopup(true);
+  useEffect(() => {
+    getVerificationStatus();
+  }, [isVerified]);
+
+  const getVerificationStatus = async () => {
     try {
-      const response = await fetch(endpoints.sendOTP, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          body: JSON.stringify({ email, purpose: "account_verification" }),
+      const response = await fetch(
+        `${endpoints.getVerificationStatus}?email=${encodeURIComponent(
+          email
+        )}&purpose=account_verification`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
           credentials: "include",
-        },
-      });
-      const result = await response.json();
-      if (result.ok) {
-        toast.success(result.message);
-      } else {
-        toast.error(result.error);
+        }
+      );
+      if (!response.ok) {
+        toast.error("Error fetching verification status!");
+        return;
       }
+      const data = await response.json();
+      setIsVerified(data.isVerified);
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong!");
     }
   };
 
-  const handleVerify = async (event) => {
+  const handleSendOTP = async (event) => {
     event.preventDefault();
+    setShowOTPPopup(true);
+    const spinnerId = showSpinnerToast();
     try {
-      const response = await fetch(endpoints.verifyAccount, {
+      const response = await fetch(endpoints.sendOTP, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
+          purpose: "account_verification",
         }),
         credentials: "include",
       });
-      const message = await response.json();
+      toast.dismiss(spinnerId);
       if (response.ok) {
-        toast.success(message.message);
+        toast.success("OTP Sent");
       } else {
-        toast.error(message.error);
+        toast.error("Error sending OTP!");
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to Verify Account. Please try again.");
+      toast.dismiss(spinnerId);
+      toast.error("Something went wrong!");
     }
   };
 
-  const handleSaveSettings = async (email) => {
+  const handleSaveSettings = async (event) => {
+    event.preventDefault();
+    const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(endpoints.saveAccountSettings, {
         method: "POST",
@@ -124,6 +135,7 @@ export const Settings = () => {
         }),
         credentials: "include",
       });
+      toast.dismiss(spinnerId);
       const message = await response.json();
       if (response.ok) {
         toast.success(message.message);
@@ -131,6 +143,7 @@ export const Settings = () => {
         toast.error(message.error);
       }
     } catch (error) {
+      toast.dismiss(spinnerId);
       toast.error("Failed to save settings. Please try again.");
     }
   };
@@ -145,6 +158,7 @@ export const Settings = () => {
       toast.error("Passwords do not match!");
       return;
     }
+    const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(endpoints.changePassword, {
         method: "PATCH",
@@ -154,6 +168,7 @@ export const Settings = () => {
         body: JSON.stringify({ email: email, newPassword: newPassword }),
         credentials: "include",
       });
+      toast.dismiss(spinnerId);
       const message = await response.json();
       if (response.ok) {
         toast.success(message.message);
@@ -162,12 +177,14 @@ export const Settings = () => {
         toast.error(message.error);
       }
     } catch (error) {
-      console.log(error);
+      toast.dismiss(spinnerId);
       toast.error("Failed to delete account. Please try again.");
     }
   };
 
-  const handleDeleteAccount = async (email) => {
+  const handleDeleteAccount = async (event) => {
+    event.preventDefault();
+    const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(endpoints.deleteAccount, {
         method: "DELETE",
@@ -177,6 +194,7 @@ export const Settings = () => {
         body: JSON.stringify({ email: email }),
         credentials: "include",
       });
+      toast.dismiss(spinnerId);
       const message = await response.json();
       if (response.ok) {
         toast.success(message.message);
@@ -185,11 +203,14 @@ export const Settings = () => {
         toast.error(message.error);
       }
     } catch (error) {
+      toast.dismiss(spinnerId);
       toast.error("Failed to delete account. Please try again.");
     }
   };
 
-  const handleExportData = async (email) => {
+  const handleExportData = async (event) => {
+    event.preventDefault();
+    const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(endpoints.exportData, {
         method: "GET",
@@ -199,6 +220,7 @@ export const Settings = () => {
         },
         credentials: "include",
       });
+      toast.dismiss(spinnerId);
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -213,6 +235,7 @@ export const Settings = () => {
         toast.error("Failed to export data.");
       }
     } catch (error) {
+      toast.dismiss(spinnerId);
       toast.error("Error exporting data. Please try again.");
     }
   };
@@ -220,13 +243,14 @@ export const Settings = () => {
   return (
     <Background>
       <>
-        {showOTPPopup ? (
+        {showOTPPopup && (
           <OTPPopup
             email={email}
-            onClose={setShowOTPPopup(false)}
-            // onVerified={setIsVerified(true)}
+            onClose={(value) => setShowOTPPopup(value)}
+            onVerified={(value) => setIsVerified(value)}
+            purpose="account_verification"
           />
-        ) : null}
+        )}
         <div className="min-h-screen p-8">
           <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
             Settings
@@ -242,7 +266,7 @@ export const Settings = () => {
               Account Verification
             </DefaultLabel>
             <span>
-              {isVerified ? (
+              {isVerified === "true" ? (
                 <DisabledButton title="Verified" />
               ) : (
                 <SubmitButton title="Verify" />

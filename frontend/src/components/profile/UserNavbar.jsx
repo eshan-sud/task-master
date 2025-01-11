@@ -8,7 +8,7 @@ import { useRememberMe } from "../../utils/RememberMeContext.js";
 import { SearchField } from "../Fields.jsx";
 import { NotificationPanel } from "./NotificationPanel.jsx";
 import { NotificationButton, LightDarkModeButton } from "../Buttons.jsx";
-import { AvatarPopup } from "./AvatarPopup.jsx";
+import { AvatarPopup } from "../Popups.jsx";
 
 import { endpoints } from "../../ApiEndpoints";
 

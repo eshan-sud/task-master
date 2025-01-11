@@ -10,6 +10,7 @@ const {
   handleResetPassword,
   handleSendOTP,
   handleVerifyOTP,
+  handleVerificationStatus,
 } = require("../controllers/userauth.controller");
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.get("/logout", handleLogoutAuth);
 router.post("/register", handleRegisterAuth);
 router.post("/checkUserExists", handleCheckUserExists);
 router.patch("/resetPassword", handleResetPassword);
+router.get("/getVerificationStatus", handleVerificationStatus);
 // OTP
 router.post("/sendOTP", handleSendOTP);
 router.post("/verifyOTP", handleVerifyOTP);

@@ -10,6 +10,7 @@ export const endpoints = {
   registerAuth: `${baseURL}auth/register`, // POST
   checkUserExists: `${baseURL}auth/checkUserExists`, // POST
   resetPassword: `${baseURL}auth/resetPassword`, // PATCH
+  getVerificationStatus: `${baseURL}auth/getVerificationStatus`, // GET
   // OTP Endpoints
   sendOTP: `${baseURL}auth/sendOTP`, // POST
   verifyOTP: `${baseURL}auth/verifyOTP`, // POST

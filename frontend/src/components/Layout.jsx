@@ -1,15 +1,12 @@
 // filename - frontend/src/components/Layout.jsx
 
 import React, { useContext } from "react";
-
 import { Navbar } from "./home/Navbar.jsx";
 import { HomeBackground } from "./home/HomeBackground.jsx";
 import { Footer } from "./home/Footer.jsx";
-
 import { UserNavbar } from "./profile/UserNavbar.jsx";
 import { Sidebar } from "./profile/Sidebar.jsx";
-
-import { WelcomeMessage } from "./Messages.jsx";
+import { WelcomePopup } from "../components/Popups.jsx";
 
 import AuthContext from "../utils/AuthContext.js";
 import LightModeContext from "../utils/LightModeContext.js";
@@ -33,7 +30,7 @@ export const Layout = ({ children }) => {
             LightModeContext={LightModeContext}
             toggleLightMode={toggleLightMode}
           />
-          <WelcomeMessage LightModeContext={LightModeContext} />
+          <WelcomePopup LightModeContext={LightModeContext} />
           <Sidebar LightModeContext={LightModeContext} />
           <div className="ml-16 mt-16 p-8">{children}</div>
         </>

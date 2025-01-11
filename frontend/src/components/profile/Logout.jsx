@@ -3,12 +3,10 @@
 import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { ExitMessage } from "../../components/Popups.jsx";
 import AuthContext from "../../utils/AuthContext";
 import { useRememberMe } from "../../utils/RememberMeContext.js";
-
 import { endpoints } from "../../ApiEndpoints";
-
-import { YesNoMessage } from "../Messages";
 
 const Logout = ({ toggleLogoutModal }) => {
   const navigate = useNavigate();
@@ -17,6 +15,7 @@ const Logout = ({ toggleLogoutModal }) => {
   const handleLogout = async (event) => {
     event.preventDefault();
     try {
+      // FOR FUTURE UPDATE : Make it so the login tracks the sessions & hence users can logout from all devices all at once
       const response = await fetch(endpoints.logoutAuth, {
         method: "GET",
         headers: {
@@ -26,7 +25,6 @@ const Logout = ({ toggleLogoutModal }) => {
       });
       const message = await response.json();
       if (response.ok) {
-        // console.log(message.user);
         const storage = isRememberMe
           ? window.localStorage
           : window.sessionStorage;
@@ -42,7 +40,7 @@ const Logout = ({ toggleLogoutModal }) => {
     }
   };
   return (
-    <YesNoMessage
+    <ExitMessage
       heading="Logout"
       message="Are you sure you want to logout?"
       onClose={toggleLogoutModal}

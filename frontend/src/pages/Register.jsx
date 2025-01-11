@@ -10,6 +10,7 @@ import { endpoints } from "../ApiEndpoints.js";
 import { Field, EmailField, GenderInput } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
+import { showSpinnerToast } from "../components/Elements.jsx";
 
 const RegisterForm = () => {
   const siteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
@@ -36,7 +37,7 @@ const RegisterForm = () => {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    // console.log(registerDetails);
+    const spinnerId = showSpinnerToast();
     try {
       if (!captchaToken) {
         toast.error("Please complete the CAPTCHA");
@@ -54,9 +55,8 @@ const RegisterForm = () => {
         body: JSON.stringify(registerDetails),
         credentials: "include",
       });
-
+      toast.dismiss(spinnerId);
       const message = await response.json();
-      // console.log(message);
       if (response.ok) {
         toast.success(message.message);
         navigate("/login", { replace: true });
@@ -64,6 +64,7 @@ const RegisterForm = () => {
         toast.error(message.error);
       }
     } catch (error) {
+      toast.dismiss(spinnerId);
       toast.error(error);
     }
   };

@@ -9,8 +9,6 @@ const {
   sendAccountVerifiedEmail,
 } = require("../utils/emailService");
 
-const sendOTPForVerification = async (req, res) => {};
-
 const verifyAccount = async (req, res) => {
   const { email, otp } = req.body;
   if (!email || !otp) {
@@ -120,7 +118,6 @@ const changePassword = async (req, res) => {
 };
 
 module.exports = {
-  sendOTPForVerification,
   verifyAccount,
   deleteAccount,
   updateAccount,

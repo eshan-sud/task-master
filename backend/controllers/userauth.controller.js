@@ -9,7 +9,7 @@ const {
   sendTaskNotificationEmail,
   sendPasswordChangedEmail,
   sendOtpVerificationEmail,
-  sendAccountVerificationEmail,
+  sendAccountVerifiedEmail,
 } = require("../utils/emailService");
 const {
   setUser,
@@ -187,9 +187,11 @@ const handleSendOTP = async (req, res) => {
 
 const handleVerifyOTP = async (req, res) => {
   try {
-    const { email, otp } = req.body;
-    if (!email || !otp) {
-      return res.status(400).json({ error: "Email and OTP are required" });
+    const { email, otp, purpose } = req.body;
+    if (!email || !otp || !purpose) {
+      return res
+        .status(400)
+        .json({ error: "Email, OTP, and purpose are required" });
     }
     const otpRecord = await OTP.findOne({ email });
     if (!otpRecord) {
@@ -200,15 +202,60 @@ const handleVerifyOTP = async (req, res) => {
       return res.status(400).json({ error: "Invalid OTP" });
     }
     await OTP.deleteOne({ email }); // Remove OTP after successful verification
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: "5m",
-    });
-    return res
-      .status(200)
-      .json({ message: "OTP verified successfully", token });
+    if (purpose === "account_verification") {
+      // Update the user's verification status
+      const user = await User.findOneAndUpdate(
+        { email },
+        { isVerified: true },
+        { new: true }
+      );
+      if (!user) {
+        return res.status(404).json({ error: "User not found!" });
+      }
+      if (!(await sendAccountVerifiedEmail(email))) {
+        return res
+          .status(500)
+          .json({ error: "Failed to send account verifid email!" });
+      }
+      return res.status(200).json({
+        isVerified: user.isVerified,
+        message: "Account verified email sent to user!",
+      });
+    } else if (purpose === "password_reset") {
+      // Generate a temporary token for password reset
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        expiresIn: "5m",
+      });
+
+      return res.status(200).json({
+        message: "OTP verified successfully. Proceed with password reset.",
+        token,
+      });
+    } else {
+      return res.status(400).json({ error: "Invalid purpose" });
+    }
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Error verifying OTP" });
+  }
+};
+
+const handleVerificationStatus = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required!" });
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    return res.status(200).json({ isVerified: user.isVerified });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Error fetching verification status" });
   }
 };
 
@@ -220,4 +267,5 @@ module.exports = {
   handleResetPassword,
   handleSendOTP,
   handleVerifyOTP,
+  handleVerificationStatus,
 };
