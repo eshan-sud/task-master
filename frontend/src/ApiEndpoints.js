@@ -11,12 +11,13 @@ export const endpoints = {
   checkUserExists: `${baseURL}auth/checkUserExists`, // POST
   resetPassword: `${baseURL}auth/resetPassword`, // PATCH
   getVerificationStatus: `${baseURL}auth/getVerificationStatus`, // GET
+  refreshToken: `${baseURL}auth/refreshToken`, // GET // To refresh token
   // OTP Endpoints
   sendOTP: `${baseURL}auth/sendOTP`, // POST
   verifyOTP: `${baseURL}auth/verifyOTP`, // POST
 
   // Account Endpoints
-  getBio: `${baseURL}account/getBio`, // GET
+  getProfile: `${baseURL}account/getProfile`, // GET
   changePassword: `${baseURL}account/changePassword`, // PATCH
   deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
   updateProfile: `${baseURL}account/updateProfile`, // PATCH

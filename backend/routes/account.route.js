@@ -3,7 +3,7 @@
 const express = require("express");
 const authenticate = require("../middleware/auth");
 const {
-  handleGetBio,
+  handleGetProfile,
   handleChangePassword,
   handleDeleteAccount,
   handleUpdateProfile,
@@ -14,7 +14,7 @@ const {
 const router = express.Router();
 
 // Email Verification
-router.get("/getBio", authenticate, handleGetBio);
+router.get("/getProfile", authenticate, handleGetProfile);
 router.patch("/changePassword", authenticate, handleChangePassword);
 router.delete("/deleteAccount", authenticate, handleDeleteAccount);
 router.patch("/updateProfile", authenticate, handleUpdateProfile);

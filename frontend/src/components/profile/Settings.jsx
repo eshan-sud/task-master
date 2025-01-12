@@ -19,8 +19,7 @@ export const Settings = () => {
     () => localStorage.getItem("darkMode") === "true"
   );
   const [email, setEmail] = useState(storage.getItem("email"));
-  const [firstName, setFirstName] = useState(storage.getItem("firstName"));
-  const [lastName, setLastName] = useState(storage.getItem("lastName"));
+  const [fullName, setFullName] = useState(storage.getItem("fullName"));
   const [bio, setBio] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newConfirmedPassword, setNewConfirmedPassword] = useState("");
@@ -31,8 +30,6 @@ export const Settings = () => {
     pushNotifications: true,
     preferredLanguage: "en",
     timeZone: "GMT",
-    displayName: storage.getItem("fullName") || "",
-    bio: "",
   });
   const [showOTPPopup, setShowOTPPopup] = useState(false);
   const [showDeleteConfirmationPopup, setShowDeleteConfirmationPopup] =
@@ -50,7 +47,7 @@ export const Settings = () => {
   }, [isVerified]);
 
   useEffect(() => {
-    getBio();
+    getProfile();
   }, [bio]);
 
   const getVerificationStatus = async () => {
@@ -78,10 +75,10 @@ export const Settings = () => {
     }
   };
 
-  const getBio = async () => {
+  const getProfile = async () => {
     try {
       const response = await fetch(
-        `${endpoints.getBio}?email=${encodeURIComponent(email)}`,
+        `${endpoints.getProfile}?email=${encodeURIComponent(email)}`,
         {
           method: "GET",
           headers: {
@@ -95,7 +92,9 @@ export const Settings = () => {
         return;
       }
       const data = await response.json();
+      setFullName(data.fullName);
       setBio(data.bio);
+      storage.setItem("fullName", data.fullName);
     } catch (error) {
       toast.error("Something went wrong!");
     }
@@ -251,15 +250,15 @@ export const Settings = () => {
     }
   };
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = async (event) => {
+    event.preventDefault();
     const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(endpoints.updateProfile, {
         method: "PATCH",
         body: JSON.stringify({
           email: email,
-          firstName: firstName,
-          lastName: lastName,
+          fullName: fullName,
           bio: bio,
         }),
         headers: {
@@ -269,12 +268,11 @@ export const Settings = () => {
       });
       toast.dismiss(spinnerId);
       if (response.ok) {
-        toast.success("Data exported successfully.");
+        toast.success("Updated profile successfully.");
       } else {
-        toast.error("Failed to export data!");
+        toast.error("Failed to update profile!");
       }
     } catch (error) {
-      // console.log(error);
       toast.dismiss(spinnerId);
       toast.error("Something went Wrong!");
     }
@@ -325,16 +323,17 @@ export const Settings = () => {
               Profile Settings
             </h2>
             <span className="flex items-center space-x-3 mb-4">
-              <DefaultLabel title="display name" htmlFor="display-name">
-                Display Name
+              <DefaultLabel title="ful name" htmlFor="full-name">
+                Full Name
               </DefaultLabel>
               <input
-                id="display-name"
+                id="full-name"
                 type="text"
-                value={settings.displayName}
-                onChange={(e) =>
-                  setSettings({ ...settings, displayName: e.target.value })
-                }
+                value={fullName}
+                onChange={(event) => {
+                  localStorage.setItem("fullName", event.target.value);
+                  setFullName(event.target.value);
+                }}
                 style={{
                   minWidth: "200px",
                   maxWidth: "500px",
@@ -349,11 +348,11 @@ export const Settings = () => {
               <textarea
                 id="bio"
                 placeholder="add a bio"
-                value={settings.bio}
-                onChange={(e) => {
-                  const value = e.target.value;
+                value={bio || ""}
+                onChange={(event) => {
+                  const value = event.target.value;
                   if (value.length <= 255) {
-                    setSettings({ ...settings, bio: value });
+                    setBio(value);
                   }
                 }}
                 minLength="10"

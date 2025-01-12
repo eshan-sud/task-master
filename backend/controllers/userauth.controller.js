@@ -24,6 +24,8 @@ const {
   compareOTP,
 } = require("../utils/otp.utils.js");
 
+const handleRefreshToken = async (req, res) => {};
+
 const handleLoginAuth = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -257,6 +259,7 @@ const handleVerificationStatus = async (req, res) => {
 };
 
 module.exports = {
+  handleRefreshToken,
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,

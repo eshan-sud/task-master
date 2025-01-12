@@ -9,7 +9,7 @@ const {
   sendPasswordChangedEmail,
 } = require("../utils/emailService");
 
-const handleGetBio = async (req, res) => {
+const handleGetProfile = async (req, res) => {
   const { email } = req.query;
   if (!email) {
     return res.status(400).send("Email is required!");
@@ -19,7 +19,9 @@ const handleGetBio = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found!" });
     }
-    return res.status(200).json({ bio: user.bio });
+    return res
+      .status(200)
+      .json({ fullName: user.firstName + " " + user.lastName, bio: user.bio });
   } catch (error) {
     return res.status(500).send("Something went wrong!");
   }
@@ -63,22 +65,25 @@ const handleDeleteAccount = async (req, res) => {
 };
 
 const handleUpdateProfile = async (req, res) => {
-  const { email, firstName, lastName, bio } = req.body;
-  if (!email || !userName || !bio) {
+  const { email, fullName, bio } = req.body;
+  if (!email || !fullName) {
     return res
       .status(400)
-      .send("Email, updated user name and updated bio are required!");
+      .send("Email and updated user name are required, (bio is optional)!");
   }
   try {
+    const nameParts = fullName.trim().split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
     const updatedUser = await User.findOneAndUpdate(
       { email },
-      { firstName: firstName, lastName: lastName, bio: bio },
+      { firstName, lastName, bio },
       { new: true }
     );
     if (!updatedUser) {
       return res.status(404).send("User not found!");
     }
-    return res.status(200).json({ message: "Account updated successfully" });
+    return res.status(200).json({ message: "Profile updated successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Something went wrong!");
@@ -111,7 +116,7 @@ const exportData = async (req, res) => {
 };
 
 module.exports = {
-  handleGetBio,
+  handleGetProfile,
   handleChangePassword,
   handleDeleteAccount,
   handleUpdateProfile,

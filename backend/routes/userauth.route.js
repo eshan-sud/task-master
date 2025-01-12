@@ -3,6 +3,7 @@
 const express = require("express");
 // const authenticate = require("../middleware/auth");
 const {
+  handleRefreshToken,
   handleLoginAuth,
   handleRegisterAuth,
   handleLogoutAuth,
@@ -11,12 +12,12 @@ const {
   handleSendOTP,
   handleVerifyOTP,
   handleVerificationStatus,
-  handleAccountDeletion,
 } = require("../controllers/userauth.controller");
 
 const router = express.Router();
 
 // Auth
+router.get("/refreshToken", handleRefreshToken);
 router.post("/login", handleLoginAuth);
 router.get("/logout", handleLogoutAuth);
 router.post("/register", handleRegisterAuth);
