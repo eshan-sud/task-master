@@ -4,7 +4,46 @@ const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
 const bcrypt = require("bcryptjs");
 
-const { sendAccountDeletionEmail } = require("../utils/emailService");
+const {
+  sendAccountDeletionEmail,
+  sendPasswordChangedEmail,
+} = require("../utils/emailService");
+
+const handleGetBio = async (req, res) => {
+  const { email } = req.query;
+  if (!email) {
+    return res.status(400).send("Email is required!");
+  }
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    return res.status(200).json({ bio: user.bio });
+  } catch (error) {
+    return res.status(500).send("Something went wrong!");
+  }
+};
+
+const handleChangePassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+  if (!email || !newPassword) {
+    return res.status(400).send("Email and New password are required!");
+  }
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found!" });
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    sendPasswordChangedEmail(email);
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    return res.status(500).send("Something went wrong!");
+  }
+};
 
 const handleDeleteAccount = async (req, res) => {
   try {
@@ -23,24 +62,26 @@ const handleDeleteAccount = async (req, res) => {
   }
 };
 
-const updateAccount = async (req, res) => {
-  const { email, updateData } = req.body;
-  if (!email || !updateData) {
-    return res.status(400).send("Email and update data is required");
+const handleUpdateProfile = async (req, res) => {
+  const { email, firstName, lastName, bio } = req.body;
+  if (!email || !userName || !bio) {
+    return res
+      .status(400)
+      .send("Email, updated user name and updated bio are required!");
   }
   try {
     const updatedUser = await User.findOneAndUpdate(
       { email },
-      { $set: updateData },
+      { firstName: firstName, lastName: lastName, bio: bio },
       { new: true }
     );
     if (!updatedUser) {
-      return res.status(404).send("User not found");
+      return res.status(404).send("User not found!");
     }
     return res.status(200).json({ message: "Account updated successfully" });
   } catch (error) {
-    console.error("Error updating account:", error);
-    return res.status(500).send("Something went wrong");
+    console.error(error);
+    return res.status(500).send("Something went wrong!");
   }
 };
 
@@ -69,31 +110,12 @@ const exportData = async (req, res) => {
   const { email } = req.body;
 };
 
-const changePassword = async (req, res) => {
-  const { email, newPassword } = req.body;
-  if (!email || !newPassword) {
-    return res.status(400).send("Email and New password are required");
-  }
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    await user.save();
-    return res.status(200).json({ message: "Password updated successfully" });
-  } catch (error) {
-    console.error("Error updating password:", error);
-    return res.status(500).send("Internal server error!");
-  }
-};
-
 module.exports = {
+  handleGetBio,
+  handleChangePassword,
   handleDeleteAccount,
-  updateAccount,
+  handleUpdateProfile,
   getSettings,
   updateSettings,
   exportData,
-  changePassword,
 };

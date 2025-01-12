@@ -42,19 +42,6 @@ const sendTaskNotificationEmail = async (email) => {
   // }
 };
 
-const sendPasswordChangedEmail = async (email) => {
-  try {
-    mailOptions["to"] = email;
-    mailOptions["subject"] = "Incomplete Task | Task Master";
-    mailOptions[
-      "text"
-    ] = `Hello,\n\n Your account password has been changed successfully.`;
-    return await sendEmail(mailOptions);
-  } catch (error) {
-    return res.status(500).json({ error: "Something went wrong!" });
-  }
-};
-
 const sendOtpVerificationEmail = async (otp, email, purpose) => {
   try {
     let subject = "";
@@ -104,10 +91,23 @@ const sendAccountDeletionEmail = async (email) => {
   }
 };
 
+const sendPasswordChangedEmail = async (email) => {
+  try {
+    mailOptions["to"] = email;
+    mailOptions["subject"] = "Incomplete Task | Task Master";
+    mailOptions[
+      "text"
+    ] = `Hello,\n\n Your account password has been changed successfully.`;
+    return await sendEmail(mailOptions);
+  } catch (error) {
+    return res.status(500).json({ error: "Something went wrong!" });
+  }
+};
+
 module.exports = {
   sendTaskNotificationEmail,
-  sendPasswordChangedEmail,
   sendOtpVerificationEmail,
   sendAccountVerifiedEmail,
   sendAccountDeletionEmail,
+  sendPasswordChangedEmail,
 };

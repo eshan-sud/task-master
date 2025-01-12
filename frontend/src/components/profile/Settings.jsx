@@ -19,6 +19,9 @@ export const Settings = () => {
     () => localStorage.getItem("darkMode") === "true"
   );
   const [email, setEmail] = useState(storage.getItem("email"));
+  const [firstName, setFirstName] = useState(storage.getItem("firstName"));
+  const [lastName, setLastName] = useState(storage.getItem("lastName"));
+  const [bio, setBio] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newConfirmedPassword, setNewConfirmedPassword] = useState("");
   const [settings, setSettings] = useState({
@@ -46,6 +49,10 @@ export const Settings = () => {
     getVerificationStatus();
   }, [isVerified]);
 
+  useEffect(() => {
+    getBio();
+  }, [bio]);
+
   const getVerificationStatus = async () => {
     try {
       const response = await fetch(
@@ -66,6 +73,29 @@ export const Settings = () => {
       }
       const data = await response.json();
       setIsVerified(data.isVerified);
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
+
+  const getBio = async () => {
+    try {
+      const response = await fetch(
+        `${endpoints.getBio}?email=${encodeURIComponent(email)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        toast.error("Error fetching verification status!");
+        return;
+      }
+      const data = await response.json();
+      setBio(data.bio);
     } catch (error) {
       toast.error("Something went wrong!");
     }
@@ -162,7 +192,7 @@ export const Settings = () => {
     }
   };
 
-  const deleteAccount = async () => {
+  const handleDeleteAccount = async () => {
     const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(
@@ -187,11 +217,6 @@ export const Settings = () => {
       toast.dismiss(spinnerId);
       toast.error("Failed to delete account. Please try again.");
     }
-  };
-
-  const handleDeleteAccount = async (event) => {
-    event.preventDefault();
-    setShowDeleteConfirmationPopup(true);
   };
 
   const handleExportData = async (event) => {
@@ -226,6 +251,35 @@ export const Settings = () => {
     }
   };
 
+  const handleUpdateProfile = async () => {
+    const spinnerId = showSpinnerToast();
+    try {
+      const response = await fetch(endpoints.updateProfile, {
+        method: "PATCH",
+        body: JSON.stringify({
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          bio: bio,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      toast.dismiss(spinnerId);
+      if (response.ok) {
+        toast.success("Data exported successfully.");
+      } else {
+        toast.error("Failed to export data!");
+      }
+    } catch (error) {
+      // console.log(error);
+      toast.dismiss(spinnerId);
+      toast.error("Something went Wrong!");
+    }
+  };
+
   return (
     <Background>
       <>
@@ -241,7 +295,7 @@ export const Settings = () => {
           <DeleteConfirmation
             type="Account"
             onClose={(value) => setShowDeleteConfirmationPopup(value)}
-            onDelete={deleteAccount}
+            onDelete={handleDeleteAccount}
           />
         )}
         <div className="min-h-screen p-8">
@@ -266,7 +320,7 @@ export const Settings = () => {
               )}
             </span>
           </form>
-          <span className="profile-details mb-8">
+          <form onSubmit={handleUpdateProfile} className="profile-details mb-8">
             <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
               Profile Settings
             </h2>
@@ -313,7 +367,10 @@ export const Settings = () => {
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               ></textarea>
             </span>
-          </span>
+            <span className="flex">
+              <SubmitButton />
+            </span>
+          </form>
           <form onSubmit={handleChangePassword} className="mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
               Account Settings
@@ -477,7 +534,12 @@ export const Settings = () => {
                 Export Data
               </button>
             </form>
-            <form onSubmit={handleDeleteAccount}>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                setShowDeleteConfirmationPopup(true);
+              }}
+            >
               <button
                 type="submit"
                 className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"

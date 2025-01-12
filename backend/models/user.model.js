@@ -20,10 +20,10 @@ const userSchema = new mongoose.Schema(
         default: "public",
       },
       activityStatus: { type: Boolean, default: true },
-      emailNotifications: { type: Boolean, default: true },
-      pushNotifications: { type: Boolean, default: true },
+      emailNotifications: { type: Boolean, default: true }, // If off, no task-related notifications emails wil be sent
+      pushNotifications: { type: Boolean, default: true }, // If off, no task-related notifications push notifications wil be sent
       preferredLanguage: { type: String, default: "en" },
-      timeZone: { type: String, default: "GMT" },
+      timeZone: { type: String, default: "GMT" }, // Used to assign tasks & send notifications about them to user
     },
   },
   { timestamps: true }
