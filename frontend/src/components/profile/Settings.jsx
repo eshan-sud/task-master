@@ -7,32 +7,10 @@ import { Background } from "./Background.jsx";
 import { DefaultLabel } from "../Labels.jsx";
 import { NewPasswordField } from "../Fields.jsx";
 import { DisabledButton, SubmitButton } from "../Buttons.jsx";
-import { OTPPopup } from "../Popups.jsx";
+import { OTPPopup, DeleteConfirmation } from "../Popups.jsx";
 import { showSpinnerToast } from "../Elements.jsx";
 import { useRememberMe } from "../../utils/RememberMeContext.js";
 import AuthContext from "../../utils/AuthContext.js";
-
-const Verified = () => {
-  return (
-    <div style={{ display: "flex", alignItems: "center", color: "gray" }}>
-      <span>Verified</span>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="2"
-        stroke="green"
-        style={{
-          width: "16px",
-          height: "16px",
-          marginLeft: "4px",
-        }}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-      </svg>
-    </div>
-  );
-};
 
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();
@@ -54,6 +32,8 @@ export const Settings = () => {
     bio: "",
   });
   const [showOTPPopup, setShowOTPPopup] = useState(false);
+  const [showDeleteConfirmationPopup, setShowDeleteConfirmationPopup] =
+    useState(false);
   const { logout } = useContext(AuthContext);
   const [isVerified, setIsVerified] = useState("false");
 
@@ -182,18 +162,19 @@ export const Settings = () => {
     }
   };
 
-  const handleDeleteAccount = async (event) => {
-    event.preventDefault();
+  const deleteAccount = async () => {
     const spinnerId = showSpinnerToast();
     try {
-      const response = await fetch(endpoints.deleteAccount, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email }),
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${endpoints.deleteAccount}?email=${encodeURIComponent(email)}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
       toast.dismiss(spinnerId);
       const message = await response.json();
       if (response.ok) {
@@ -206,6 +187,11 @@ export const Settings = () => {
       toast.dismiss(spinnerId);
       toast.error("Failed to delete account. Please try again.");
     }
+  };
+
+  const handleDeleteAccount = async (event) => {
+    event.preventDefault();
+    setShowDeleteConfirmationPopup(true);
   };
 
   const handleExportData = async (event) => {
@@ -249,6 +235,13 @@ export const Settings = () => {
             onClose={(value) => setShowOTPPopup(value)}
             onVerified={(value) => setIsVerified(value)}
             purpose="account_verification"
+          />
+        )}
+        {showDeleteConfirmationPopup && (
+          <DeleteConfirmation
+            type="Account"
+            onClose={(value) => setShowDeleteConfirmationPopup(value)}
+            onDelete={deleteAccount}
           />
         )}
         <div className="min-h-screen p-8">
@@ -476,18 +469,22 @@ export const Settings = () => {
             </span>
           </span>
           <span className="mb-8">
-            <button
-              onClick={handleExportData}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-4"
-            >
-              Export Data
-            </button>
-            <button
-              onClick={handleDeleteAccount}
-              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-            >
-              Delete Account
-            </button>
+            <form onSubmit={handleExportData}>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-4"
+              >
+                Export Data
+              </button>
+            </form>
+            <form onSubmit={handleDeleteAccount}>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              >
+                Delete Account
+              </button>
+            </form>
           </span>
           <span className="mb-8">
             <button

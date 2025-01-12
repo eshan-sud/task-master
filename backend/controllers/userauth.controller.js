@@ -5,9 +5,9 @@ const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+// sendTaskNotificationEmail,
+// sendPasswordChangedEmail,
 const {
-  sendTaskNotificationEmail,
-  sendPasswordChangedEmail,
   sendOtpVerificationEmail,
   sendAccountVerifiedEmail,
 } = require("../utils/emailService");
@@ -252,10 +252,7 @@ const handleVerificationStatus = async (req, res) => {
     }
     return res.status(200).json({ isVerified: user.isVerified });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: "Error fetching verification status" });
+    return res.status(500).json({ error: "Something went wrong!" });
   }
 };
 

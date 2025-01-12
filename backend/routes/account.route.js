@@ -3,8 +3,7 @@
 const express = require("express");
 const authenticate = require("../middleware/auth");
 const {
-  verifyAccount,
-  deleteAccount,
+  handleDeleteAccount,
   updateAccount,
   updateSettings,
   exportData,
@@ -14,8 +13,7 @@ const {
 const router = express.Router();
 
 // Email Verification
-router.post("/verifyAccount", authenticate, verifyAccount);
-router.delete("/deleteAccount", authenticate, deleteAccount);
+router.delete("/deleteAccount", authenticate, handleDeleteAccount);
 router.patch("/updateAccount", authenticate, updateAccount);
 router.patch("/updateSettings", authenticate, updateSettings);
 router.post("/exportData", authenticate, exportData);

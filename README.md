@@ -54,7 +54,8 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] **Password Change while logged in:** Change account password using Settings page.
 - [x] **Avatar Upload/Delte:**Add & delete avatar to user account.
 - [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
-- [Current] **Update/Delete:** Accounts updation & deletion.
+- [Current] **Account Update:** Account updation.
+- [x] **Account Delete:** Acccount deletion.
 - [x] **Account Verification:** Verify account after registration through email.
 - [Current] **Settings:** Able to set account settings & more for more personalisation.
 

@@ -59,7 +59,13 @@ export const WelcomePopup = () => {
   );
 };
 
-export const ExitMessage = ({ heading, message, onClose, onNo, onYes }) => {
+export const ConfirmationPopup = ({
+  heading,
+  message,
+  onClose,
+  onNo,
+  onYes,
+}) => {
   return (
     <PopupContainer onClose={onClose}>
       <CloseButton onClose={onClose} />
@@ -311,5 +317,28 @@ export const OTPVerificationForm = ({ email, onVerified, purpose }) => {
         <SubmitButton title="Verify" />
       </div>
     </form>
+  );
+};
+
+export const DeleteConfirmation = ({ type, onClose, onDelete }) => {
+  const handleConfirmDelete = () => {
+    if (onDelete) onDelete();
+    if (onClose) onClose(false);
+  };
+
+  const handleCancelDelete = () => {
+    if (onClose) onClose(false);
+  };
+
+  return (
+    <PopupContainer onClose={() => onClose(false)}>
+      <ConfirmationPopup
+        heading={`Delete ${type}?`}
+        message={`Are you sure you want to delete this ${type}? This action cannot be undone.`}
+        onClose={handleCancelDelete}
+        onNo={handleCancelDelete}
+        onYes={handleConfirmDelete}
+      />
+    </PopupContainer>
   );
 };

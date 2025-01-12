@@ -4,32 +4,21 @@ const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
 const bcrypt = require("bcryptjs");
 
-const {
-  sendAccountVerificationEmail,
-  sendAccountVerifiedEmail,
-} = require("../utils/emailService");
+const { sendAccountDeletionEmail } = require("../utils/emailService");
 
-const verifyAccount = async (req, res) => {
-  const { email, otp } = req.body;
-  if (!email || !otp) {
-    return res.status(400).send("Email and OTP are required!");
-  }
+const handleDeleteAccount = async (req, res) => {
   try {
-    const otpRecord = await OTP.findOne({ email });
-    if (!otpRecord) {
-      return res.status(400).send("OTP expired or not found");
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required!" });
     }
-    const isValid = await bcrypt.compare(otp, otpRecord.otp);
-    if (!isValid) {
-      return res.status(400).send("Invalid OTP");
+    const deletedUser = await User.findOneAndDelete({ email });
+    if (!deletedUser) {
+      return res.status(404).send("User not found");
     }
-    // Mark account as verified
-    await User.updateOne({ email }, { verified: true });
-    await OTP.deleteOne({ email });
-    sendAccountVerifiedEmail(email);
-    return res.send("Your account has been verified successfully!");
+    await sendAccountDeletionEmail(email);
+    return res.status(200).json({ message: "Account successfully deleted" });
   } catch (error) {
-    console.error("Error verifying account:", error);
     return res.status(500).send("Something went wrong");
   }
 };
@@ -51,23 +40,6 @@ const updateAccount = async (req, res) => {
     return res.status(200).json({ message: "Account updated successfully" });
   } catch (error) {
     console.error("Error updating account:", error);
-    return res.status(500).send("Something went wrong");
-  }
-};
-
-const deleteAccount = async (req, res) => {
-  const { email } = req.body;
-  if (!email) {
-    return res.status(400).send("Email is required");
-  }
-  try {
-    const deletedUser = await User.findOneAndDelete({ email });
-    if (!deletedUser) {
-      return res.status(404).send("User not found");
-    }
-    return res.status(200).json({ message: "Account deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting account:", error);
     return res.status(500).send("Something went wrong");
   }
 };
@@ -118,8 +90,7 @@ const changePassword = async (req, res) => {
 };
 
 module.exports = {
-  verifyAccount,
-  deleteAccount,
+  handleDeleteAccount,
   updateAccount,
   getSettings,
   updateSettings,

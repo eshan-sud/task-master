@@ -11,6 +11,7 @@ const {
   handleSendOTP,
   handleVerifyOTP,
   handleVerificationStatus,
+  handleAccountDeletion,
 } = require("../controllers/userauth.controller");
 
 const router = express.Router();

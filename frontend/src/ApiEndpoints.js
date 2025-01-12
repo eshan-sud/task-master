@@ -9,15 +9,13 @@ export const endpoints = {
   logoutAuth: `${baseURL}auth/logout`, // GET
   registerAuth: `${baseURL}auth/register`, // POST
   checkUserExists: `${baseURL}auth/checkUserExists`, // POST
-  resetPassword: `${baseURL}auth/resetPassword`, // PATCH
+  resetPassword: `${baseURL}auth/resetPassword`, // PATCH // Maybe change this to Account Ednpoints
   getVerificationStatus: `${baseURL}auth/getVerificationStatus`, // GET
   // OTP Endpoints
   sendOTP: `${baseURL}auth/sendOTP`, // POST
   verifyOTP: `${baseURL}auth/verifyOTP`, // POST
 
   // Account Endpoints
-  // sendOTPForVerification: `${baseURL}auth/sendOTPForVerification`, // POST
-  verifyAccount: `${baseURL}account/verifyAccount`, // POST
   deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
   updateAccount: `${baseURL}account/updateAccount`, // PATCH
   updateSettings: `${baseURL}account/updateSettings`, // PATCH

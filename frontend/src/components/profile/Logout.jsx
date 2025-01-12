@@ -3,7 +3,7 @@
 import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { ExitMessage } from "../../components/Popups.jsx";
+import { ConfirmationPopup  } from "../../components/Popups.jsx";
 import AuthContext from "../../utils/AuthContext";
 import { useRememberMe } from "../../utils/RememberMeContext.js";
 import { endpoints } from "../../ApiEndpoints";
@@ -40,7 +40,7 @@ const Logout = ({ toggleLogoutModal }) => {
     }
   };
   return (
-    <ExitMessage
+    <ConfirmationPopup 
       heading="Logout"
       message="Are you sure you want to logout?"
       onClose={toggleLogoutModal}

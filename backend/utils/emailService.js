@@ -31,9 +31,29 @@ const sendEmail = async (mailOptions) => {
   }
 };
 
-const sendTaskNotificationEmail = async (req, res) => {};
+const sendTaskNotificationEmail = async (email) => {
+  // try {
+  //   mailOptions["to"] = email;
+  //   mailOptions["subject"] = "Incomplete Task | Task Master";
+  //   mailOptions["text"] = `Hello, ${email}\n\n.`;
+  //   return await sendEmail(mailOptions);
+  // } catch (error) {
+  //   return res.status(500).json({ error: "Something went wrong!" });
+  // }
+};
 
-const sendPasswordChangedEmail = async (req, res) => {};
+const sendPasswordChangedEmail = async (email) => {
+  try {
+    mailOptions["to"] = email;
+    mailOptions["subject"] = "Incomplete Task | Task Master";
+    mailOptions[
+      "text"
+    ] = `Hello,\n\n Your account password has been changed successfully.`;
+    return await sendEmail(mailOptions);
+  } catch (error) {
+    return res.status(500).json({ error: "Something went wrong!" });
+  }
+};
 
 const sendOtpVerificationEmail = async (otp, email, purpose) => {
   try {
@@ -54,7 +74,7 @@ const sendOtpVerificationEmail = async (otp, email, purpose) => {
     mailOptions["text"] = text;
     return await sendEmail(mailOptions);
   } catch (error) {
-    return false;
+    return { error: "Something went wrong!" };
   }
 };
 
@@ -67,7 +87,20 @@ const sendAccountVerifiedEmail = async (email) => {
     ] = `Hello, ${email}\n\nYour account has been successfully verified.`;
     return await sendEmail(mailOptions);
   } catch (error) {
-    return res.status(500).json({ error: "Something went wrong" });
+    return { error: "Something went wrong!" };
+  }
+};
+
+const sendAccountDeletionEmail = async (email) => {
+  try {
+    mailOptions["to"] = email;
+    mailOptions["subject"] = "Account Deleted | Task Master";
+    mailOptions[
+      "text"
+    ] = `Hello, ${email}\n\nYour account has been successfully Deleted.`;
+    return await sendEmail(mailOptions);
+  } catch (error) {
+    return { error: "Something went wrong!" };
   }
 };
 
@@ -76,4 +109,5 @@ module.exports = {
   sendPasswordChangedEmail,
   sendOtpVerificationEmail,
   sendAccountVerifiedEmail,
+  sendAccountDeletionEmail,
 };
