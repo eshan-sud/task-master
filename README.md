@@ -9,7 +9,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Task Management</strong></summary>
     
-- [Next] **CRUD Tasks:** Create, Read, Update, Delete tasks.
+- [Current] **CRUD Tasks:** Create, Read, Update, Delete tasks.
 - [] **Task Completion:** Mark Tasks as Completed or In-Progress.
 - [] **Task Dependencies/Subtasks:** Add support for tasks dependent on other tasks/Ability to break down a larger tasks into smaller, more manageble tasks.
 - [] **Recurring Tasks:** Allow tasks to repeat on a schedule (daily, weekly, etc).
@@ -39,8 +39,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>Search & Organisation</strong></summary>
 
 - [] **Search & Sort:** Filter tasks based on various criteria (due date, priority, status, etc.).
-- [] **Tagging System:** For searching easily
-- [] **Export/Import Data:** Export or import tasks in CSV or Excel formats.
+- [] **Tagging System:** For easiar searching.
 - [] **Calendar Integration:** Sync tasks with your calendar.
 
 </details>
@@ -54,10 +53,12 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] **Password Change while logged in:** Change account password using Settings page.
 - [x] **Avatar Upload/Delte:**Add & delete avatar to user account.
 - [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
-- [Current] **Account Update:** Account updation.
+- [x] **Profile Update:** Profile name & bio updation.
+- [x] **Settings Update:** Account settings updation.
 - [x] **Account Delete:** Acccount deletion.
 - [x] **Account Verification:** Verify account after registration through email.
-- [Current] **Settings:** Able to set account settings & more for more personalisation.
+- [x] **Settings:** Able to set account settings & more for more personalisation.
+- [] **Export Data:** Able to export their own data in a PDF/CSV/Excel format. (Optional)
 
 </details>
 
@@ -75,13 +76,13 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Notifications</strong></summary>
 
-- [] **Email Notifications:** Notify users about password changes, profile updates, etc.
-- [] **Push Notifications:** Real-time updates & alerts.
-- [] **Desktop Notifications:** Notifications on desktop for task updates, reminders, etc.
-- [] **In-app Notifications:** For real-time alerts within the app (optional).
+- [] **Email Notifications:** Email notifications about password changes, profile updates, or task updates, etc.
+- [] **Push Notifications:** Real-time updates & alerts for tasks updates, reminders, etc.
+- [] **Desktop Notifications:** Dektop notifications for task updates, reminders, etc.
+- [] **In-app Notifications:** For real-time alerts within the app (while inside the application).
 - [] **Location-based Reminders Notifications:** Get reminders based on your location using client location.
 - [] **Missed Task Notifications:** Notify users about overdue tasks.
-- [] **Customisable Notifications:** Users may choose how & when they want to be notified (eg, via push, email, or desktop).
+- [] **Customisable Task Reminder:** Users may choose how & when they want to be notified (eg, via push, email, or desktop).
 
 </details>
 
@@ -91,7 +92,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] **Real-Time Task Allotment:** Allocate tasks to teams in real-time.
 - [] **Task Sharing/Collaboration:** Collaborate & share tasks with others.
 - [] **Role-Based Access Control:** Implement roles (eg, admin, viewer) for shared tasks or team collaboration.
-- [] **Task Comments/Mentions:** Ability to mention @username for effective communication / to put comments on tasks
+- [] **Task Comments/Mentions:** Ability to mention @username for effective communication / to put comments on tasks.
 - [] **In-App Chat:** Communicate with team members directly in the app. (Optional : Real-Time in-app Chat app)
 
 </details>

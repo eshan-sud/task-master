@@ -90,29 +90,64 @@ const handleUpdateProfile = async (req, res) => {
   }
 };
 
-const getSettings = async (req, res) => {
-  const { email } = req.body;
+const handleGetUserSettings = async (req, res) => {
+  const { email } = req.query;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required!" });
+  }
+  try {
+    const userSettings = await User.findOne({ email }, "settings");
+    if (!userSettings) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    res.status(200).json({ data: userSettings });
+  } catch (error) {
+    res.status(500).json({ message: "Server error!" });
+  }
 };
 
-const updateSettings = async (req, res) => {
-  const { email, ...settings } = req.body;
+const handleUpdateSettings = async (req, res) => {
+  const { email, darkMode, ...settings } = req.body;
+  if (!email) {
+    return res.status(400).send("Email is required");
+  }
   try {
+    const updatedData = { darkMode, ...settings };
     const user = await User.findOneAndUpdate(
       { email },
-      { settings },
-      { new: true, runValidators: true }
+      { $set: { settings: updatedData } },
+      {
+        new: true,
+        runValidators: true,
+      }
     );
-
-    if (!user) return res.status(404).send("User not found");
-    res.status(200).send({ message: "Settings saved successfully", user });
+    if (!user) return res.status(404).send("User not found!");
+    res.status(200).send({ message: "Settings saved successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
+    if (error.name === "ValidationError") {
+      return res.status(400).send({
+        message: "Validation error!",
+      });
+    }
+    res.status(500).send("Internal server error!");
   }
 };
 
 const exportData = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.query;
+  if (!email) {
+    return res.status(400).json({ message: "Email is required!" });
+  }
+  try {
+    const userSettings = await User.findOne({ email }, "settings");
+    if (!userSettings) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+    // FIND OTHER DATA & SEND IT IN A PDF
+    // res.status(200).json({ settings: userSettings });
+  } catch (error) {
+    res.status(500).json({ message: "Server error!" });
+  }
 };
 
 module.exports = {
@@ -120,7 +155,7 @@ module.exports = {
   handleChangePassword,
   handleDeleteAccount,
   handleUpdateProfile,
-  getSettings,
-  updateSettings,
+  handleGetUserSettings,
+  handleUpdateSettings,
   exportData,
 };

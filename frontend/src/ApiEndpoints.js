@@ -21,6 +21,7 @@ export const endpoints = {
   changePassword: `${baseURL}account/changePassword`, // PATCH
   deleteAccount: `${baseURL}account/deleteAccount`, // DELETE
   updateProfile: `${baseURL}account/updateProfile`, // PATCH
+  getUserSettings: `${baseURL}account/getUserSettings`, // GET
   updateSettings: `${baseURL}account/updateSettings`, // PATCH
   exportData: `${baseURL}account/exportData`, // POST
 

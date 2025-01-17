@@ -15,14 +15,14 @@ import AuthContext from "../../utils/AuthContext.js";
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
-  const [isDarkMode, setIsDarkMode] = useState(
-    () => localStorage.getItem("darkMode") === "true"
-  );
-  const [email, setEmail] = useState(storage.getItem("email"));
+  const [email, _] = useState(storage.getItem("email"));
   const [fullName, setFullName] = useState(storage.getItem("fullName"));
   const [bio, setBio] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newConfirmedPassword, setNewConfirmedPassword] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") || false
+  );
   const [settings, setSettings] = useState({
     accountVisibility: "public",
     activityStatus: true,
@@ -31,15 +31,15 @@ export const Settings = () => {
     preferredLanguage: "en",
     timeZone: "GMT",
   });
+  const [isVerified, setIsVerified] = useState("false");
   const [showOTPPopup, setShowOTPPopup] = useState(false);
   const [showDeleteConfirmationPopup, setShowDeleteConfirmationPopup] =
     useState(false);
   const { logout } = useContext(AuthContext);
-  const [isVerified, setIsVerified] = useState("false");
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);
-    localStorage.setItem("darkMode", isDarkMode);
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
   useEffect(() => {
@@ -48,7 +48,39 @@ export const Settings = () => {
 
   useEffect(() => {
     getProfile();
-  }, [bio]);
+    if (email) getUserSettings();
+  }, []);
+
+  const getUserSettings = async () => {
+    try {
+      const response = await fetch(
+        `${endpoints.getUserSettings}?email=${encodeURIComponent(email)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      if (!response.ok) {
+        toast.error("Error fetching user preferences!");
+        return;
+      }
+      const fetchedSettings = (await response.json()).data.settings;
+      setIsDarkMode(fetchedSettings.darkMode);
+      setSettings({
+        accountVisibility: fetchedSettings.accountVisibility ?? "public",
+        activityStatus: fetchedSettings.activityStatus ?? true,
+        emailNotifications: fetchedSettings.emailNotifications ?? true,
+        pushNotifications: fetchedSettings.pushNotifications ?? true,
+        preferredLanguage: fetchedSettings.preferredLanguage ?? "en",
+        timeZone: fetchedSettings.timeZone ?? "GMT",
+      });
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
 
   const getVerificationStatus = async () => {
     try {
@@ -92,8 +124,8 @@ export const Settings = () => {
         return;
       }
       const data = await response.json();
-      setFullName(data.fullName);
-      setBio(data.bio);
+      setFullName(data.fullName || "");
+      setBio(data.bio || "");
       storage.setItem("fullName", data.fullName);
     } catch (error) {
       toast.error("Something went wrong!");
@@ -128,19 +160,18 @@ export const Settings = () => {
     }
   };
 
-  const handleSaveSettings = async (event) => {
+  const handleUpdateSettings = async (event) => {
     event.preventDefault();
     const spinnerId = showSpinnerToast();
     try {
-      const response = await fetch(endpoints.saveAccountSettings, {
-        method: "POST",
+      const response = await fetch(endpoints.updateSettings, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
           ...settings,
-          darkMode: isDarkMode,
         }),
         credentials: "include",
       });
@@ -318,7 +349,10 @@ export const Settings = () => {
               )}
             </span>
           </form>
-          <form onSubmit={handleUpdateProfile} className="profile-details mb-8">
+          <form
+            onSubmit={handleUpdateProfile}
+            className="flex flex-col items-start text-nowrap mb-4"
+          >
             <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
               Profile Settings
             </h2>
@@ -331,8 +365,9 @@ export const Settings = () => {
                 type="text"
                 value={fullName}
                 onChange={(event) => {
-                  localStorage.setItem("fullName", event.target.value);
-                  setFullName(event.target.value);
+                  const value = event.target.value;
+                  setFullName(value);
+                  storage.setItem("fullName", value);
                 }}
                 style={{
                   minWidth: "200px",
@@ -347,26 +382,20 @@ export const Settings = () => {
               </DefaultLabel>
               <textarea
                 id="bio"
-                placeholder="add a bio"
-                value={bio || ""}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  if (value.length <= 255) {
-                    setBio(value);
-                  }
-                }}
-                minLength="10"
-                maxLength="255"
+                placeholder="add a bio (max 128 characters)"
+                value={bio}
+                onChange={(event) => setBio(event.target.value)}
+                maxLength="128"
                 style={{
                   minWidth: "200px",
                   maxWidth: "500px",
                   minHeight: "100px",
-                  maxHeight: "300px",
+                  maxHeight: "100px",
                 }}
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               ></textarea>
             </span>
-            <span className="flex">
+            <span>
               <SubmitButton />
             </span>
           </form>
@@ -400,14 +429,14 @@ export const Settings = () => {
               </div>
             </span>
           </form>
-          <span className="mb-8">
+          <form onSubmit={handleUpdateSettings} className="mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
               Preferences
             </h2>
             <label className="flex items-center space-x-3 mb-4">
               <span className="text-gray-900 dark:text-gray-100"></span>
             </label>
-            <span className="flex items-center space-x-3 mb-4">
+            <span className="flex space-x-3 mb-4">
               <DefaultLabel
                 title="account visibility"
                 htmlFor="account-visibility"
@@ -417,11 +446,12 @@ export const Settings = () => {
               <select
                 id="account-visibility"
                 value={settings.accountVisibility}
-                onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    accountVisibility: e.target.value,
-                  })
+                onChange={(event) =>
+                  setSettings((prevSettings) => ({
+                    darkMode: isDarkMode,
+                    ...prevSettings,
+                    accountVisibility: event.target.value,
+                  }))
                 }
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
@@ -429,7 +459,7 @@ export const Settings = () => {
                 <option value="private">Private</option>
               </select>
             </span>
-            <span className="flex items-center space-x-3 mb-4">
+            <span className="flex space-x-3 mb-4">
               <DefaultLabel title="activity status" htmlFor="activity-status">
                 Activity Status
               </DefaultLabel>
@@ -437,13 +467,17 @@ export const Settings = () => {
                 id="activity-status"
                 type="checkbox"
                 checked={settings.activityStatus}
-                onChange={(e) =>
-                  setSettings({ ...settings, activityStatus: e.target.checked })
+                onChange={(event) =>
+                  setSettings((prevSettings) => ({
+                    darkMode: isDarkMode,
+                    ...prevSettings,
+                    activityStatus: event.target.checked,
+                  }))
                 }
                 className="toggle-checkbox"
               />
             </span>
-            <span className="flex items-center space-x-3 mb-4">
+            <span className="flex space-x-3 mb-4">
               <DefaultLabel
                 title="email notifications"
                 htmlFor="email-notifications"
@@ -454,16 +488,17 @@ export const Settings = () => {
                 id="email-notifications"
                 type="checkbox"
                 checked={settings.emailNotifications}
-                onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    emailNotifications: e.target.checked,
-                  })
+                onChange={(event) =>
+                  setSettings((prevSettings) => ({
+                    darkMode: isDarkMode,
+                    ...prevSettings,
+                    emailNotifications: event.target.checked,
+                  }))
                 }
                 className="toggle-checkbox"
               />
             </span>
-            <span className="flex items-center space-x-3 mb-4">
+            <span className="flex space-x-3 mb-4">
               <DefaultLabel
                 title="push notifications"
                 htmlFor="push-notifications"
@@ -474,16 +509,17 @@ export const Settings = () => {
                 id="push-notifications"
                 type="checkbox"
                 checked={settings.pushNotifications}
-                onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    pushNotifications: e.target.checked,
-                  })
+                onChange={(event) =>
+                  setSettings((prevSettings) => ({
+                    darkMode: isDarkMode,
+                    ...prevSettings,
+                    pushNotifications: event.target.checked,
+                  }))
                 }
                 className="toggle-checkbox"
               />
             </span>
-            <span className="flex items-center space-x-3 mb-4">
+            <span className="flex space-x-3 mb-4">
               <DefaultLabel
                 title="preferred language"
                 htmlFor="preferred-language"
@@ -492,12 +528,13 @@ export const Settings = () => {
               </DefaultLabel>
               <select
                 id="preferred-language"
-                value={settings.preferredLanguage}
-                onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    preferredLanguage: e.target.value,
-                  })
+                value={settings.preferredLanguage || "en"}
+                onChange={(event) =>
+                  setSettings((prevSettings) => ({
+                    darkMode: isDarkMode,
+                    ...prevSettings,
+                    preferredLanguage: event.target.value,
+                  }))
                 }
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
@@ -506,15 +543,19 @@ export const Settings = () => {
                 <option value="fr">French</option>
               </select>
             </span>
-            <span className="flex items-center space-x-3 mb-4">
+            <span className="flex space-x-3 mb-4">
               <DefaultLabel title="timezone" htmlFor="timezone">
                 Timezone
               </DefaultLabel>
               <select
                 id="timezone"
                 value={settings.timeZone}
-                onChange={(e) =>
-                  setSettings({ ...settings, timeZone: e.target.value })
+                onChange={(event) =>
+                  setSettings((prevSettings) => ({
+                    darkMode: isDarkMode,
+                    ...prevSettings,
+                    timeZone: event.target.value,
+                  }))
                 }
                 className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
@@ -523,37 +564,21 @@ export const Settings = () => {
                 <option value="PST">PST</option>
               </select>
             </span>
-          </span>
-          <span className="mb-8">
-            <form onSubmit={handleExportData}>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mr-4"
-              >
-                Export Data
-              </button>
+            <SubmitButton title="Save Settings" colour="green" />
+          </form>
+          <span className="flex">
+            <form onSubmit={handleExportData} className="">
+              <SubmitButton title="Export Data" />
             </form>
             <form
               onSubmit={(event) => {
                 event.preventDefault();
                 setShowDeleteConfirmationPopup(true);
               }}
+              className="mb-8"
             >
-              <button
-                type="submit"
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-              >
-                Delete Account
-              </button>
+              <SubmitButton title="Delete Account" colour="red" />
             </form>
-          </span>
-          <span className="mb-8">
-            <button
-              onClick={handleSaveSettings}
-              className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-            >
-              Save Settings
-            </button>
           </span>
         </div>
       </>

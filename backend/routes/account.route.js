@@ -7,7 +7,8 @@ const {
   handleChangePassword,
   handleDeleteAccount,
   handleUpdateProfile,
-  updateSettings,
+  handleGetUserSettings,
+  handleUpdateSettings,
   exportData,
 } = require("../controllers/account.controller");
 
@@ -18,7 +19,8 @@ router.get("/getProfile", authenticate, handleGetProfile);
 router.patch("/changePassword", authenticate, handleChangePassword);
 router.delete("/deleteAccount", authenticate, handleDeleteAccount);
 router.patch("/updateProfile", authenticate, handleUpdateProfile);
-router.patch("/updateSettings", authenticate, updateSettings);
+router.get("/getUserSettings", authenticate, handleGetUserSettings);
+router.patch("/updateSettings", authenticate, handleUpdateSettings);
 router.post("/exportData", authenticate, exportData);
 
 module.exports = router;

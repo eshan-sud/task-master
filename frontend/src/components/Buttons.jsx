@@ -297,11 +297,24 @@ export const DisabledButton = ({ title = "Disabled" }) => {
   );
 };
 
-export const SubmitButton = ({ title = "Submit" }) => {
+export const SubmitButton = ({ title = "Submit", colour = "blue" }) => {
   return (
     <button
       type="submit"
-      className="w-full px-4 py-2 m-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors"
+      // className={`"w-full px-4 py-2 m-2 rounded-md bg-${colour}-600 hover:bg-${colour}-700 text-white text-sm font-semibold transition-colors`}
+      className={`"w-full px-4 py-2 m-2 rounded-md bg-${
+        colour === "red"
+          ? "red-600"
+          : colour === "blue"
+          ? "blue-600"
+          : "green-600"
+      } hover:bg-${
+        colour === "red"
+          ? "red-700"
+          : colour === "blue"
+          ? "blue-700"
+          : "green-700"
+      } text-white text-sm font-semibold transition-colors`}
     >
       {title}
     </button>
