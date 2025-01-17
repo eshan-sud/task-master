@@ -58,6 +58,7 @@ export const PreviousButton = () => {
     </button>
   );
 };
+
 export const NextButton = () => {
   return (
     <button type="button">
@@ -267,20 +268,49 @@ export const SendButton = () => {
   );
 };
 
-export const AddButton = ({ name, color }) => {
+function CheckColour(colour, intensity) {
+  const colourMap = {
+    red: "red",
+    blue: "blue",
+    green: "green",
+  };
+  return colourMap[colour]
+    ? `${colourMap[colour]}-${intensity}`
+    : `black-${intensity}`;
+}
+
+export const AddButton = ({ name, colour }) => {
+  const backgroundColour = `${colour}-700`;
+  const buttonBorderColour = CheckColour(colour, "600");
+  const hoverBackgroundColour = CheckColour(colour, "600");
+  const activeBorderColour = CheckColour(colour, "800");
+  const activeBackgroundColour = CheckColour(colour, "700");
   return (
     <button
       type="button"
-      className={`group button relative w-44 h-10 cursor-pointer flex items-center border border-${color}-600 bg-${color}-700 rounded-xl overflow-hidden transition-all duration-300 hover:bg-${color}-600 active:border-${color}-800 active:bg-${color}-700`}
+      className={`group button relative w-44 h-10 cursor-pointer flex items-center border border-${buttonBorderColour} bg-${backgroundColour} rounded-xl overflow-hidden transition-all duration-300 hover:bg-${hoverBackgroundColour} active:border-${activeBorderColour} active:bg-${activeBackgroundColour}`}
     >
       <span className="group-hover:text-transparent transform translate-x-8 text-white font-semibold transition-all duration-300">
-        Add {name}
+        {name}
       </span>
       <span
-        className={`group-hover:translate-x-0 group-hover:w-full absolute transform translate-x-[140px] h-full w-10 bg-${color}-600 flex items-center justify-center transition-all duration-300`}
+        className={`group-hover:translate-x-0 group-hover:w-full absolute transform translate-x-[140px] h-full w-10 bg-${buttonBorderColour} flex items-center justify-center transition-all duration-300`}
       >
         <FaPlus color="white" />
       </span>
+    </button>
+  );
+};
+
+export const SubmitButton = ({ title = "Submit", colour = "blue" }) => {
+  const backgroundColour = CheckColour(colour, "600");
+  const hoverBackgroundColour = CheckColour(colour, "700");
+  return (
+    <button
+      type="submit"
+      className={`px-4 py-2 m-2 rounded-md bg-${backgroundColour} hover:bg-${hoverBackgroundColour} text-white text-sm font-semibold transition-colors`}
+    >
+      {title}
     </button>
   );
 };
@@ -291,30 +321,6 @@ export const DisabledButton = ({ title = "Disabled" }) => {
       disabled
       type="submit"
       className="w-full px-4 py-2 m-2 rounded-md bg-gray-400 text-gray-700 text-sm font-semibold transition-colors cursor-not-allowed"
-    >
-      {title}
-    </button>
-  );
-};
-
-export const SubmitButton = ({ title = "Submit", colour = "blue" }) => {
-  return (
-    <button
-      type="submit"
-      // className={`"w-full px-4 py-2 m-2 rounded-md bg-${colour}-600 hover:bg-${colour}-700 text-white text-sm font-semibold transition-colors`}
-      className={`"w-full px-4 py-2 m-2 rounded-md bg-${
-        colour === "red"
-          ? "red-600"
-          : colour === "blue"
-          ? "blue-600"
-          : "green-600"
-      } hover:bg-${
-        colour === "red"
-          ? "red-700"
-          : colour === "blue"
-          ? "blue-700"
-          : "green-700"
-      } text-white text-sm font-semibold transition-colors`}
     >
       {title}
     </button>

@@ -25,6 +25,14 @@ export const Profile = () => {
   // ];
   // const pinnedCards = [];
 
+  const addTask = () => {
+    console.log("Task added!");
+  };
+
+  const addCategory = () => {
+    console.log("Category added!");
+  };
+
   return (
     <Background>
       <div className="profile-details mb-8 text-gray-900 dark:text-gray-100">
@@ -44,9 +52,11 @@ export const Profile = () => {
         <ArchiveButton />
       </div>
 
-      <div className="mb-4 p-5 bg-white/50 rounded-xl">
-        <AddButton name="Category" color="blue" />
-        <AddButton name="Task" color="green" />
+      <div className="mb-6 p-5 bg-white/50 rounded-xl shadow-md dark:bg-gray-800 dark:border dark:border-gray-700">
+        <div className="flex justify-evenly gap-4">
+          <AddButton name="Add Category" colour="blue" onClick={addCategory} />
+          <AddButton name="Add Task" colour="green" onClick={addTask} />
+        </div>
       </div>
 
       <div className="pinnedTasks text-gray-900 dark:text-gray-100">
