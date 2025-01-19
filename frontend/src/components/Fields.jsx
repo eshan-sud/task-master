@@ -5,8 +5,6 @@ import { CgSearch } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
 import toast from "react-hot-toast";
 
-// import { endpoints } from "../ApiEndpoints";
-
 import { CircularLabel } from "./Labels";
 import { EmailValidator, isValidEmail } from "../utils/EmailValidator.js";
 

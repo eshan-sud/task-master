@@ -1,14 +1,16 @@
 // filename - frontend/src/components/profile/Settings.jsx
 
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { endpoints } from "../../ApiEndpoints.js";
 import toast from "react-hot-toast";
+
 import { Background } from "./Background.jsx";
 import { DefaultLabel } from "../Labels.jsx";
 import { DefaultInput, NewPasswordField } from "../Fields.jsx";
 import { DisabledButton, SubmitButton } from "../Buttons.jsx";
 import { OTPPopup, DeleteConfirmation } from "../Popups.jsx";
 import { showSpinnerToast } from "../Elements.jsx";
+
+import { endpoints } from "../../ApiEndpoints.js";
 import { useRememberMe } from "../../utils/RememberMeContext.js";
 import AuthContext from "../../utils/AuthContext.js";
 

@@ -9,11 +9,23 @@ const tasksSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    email: { type: String, required: true },
-    category: { type: mongoose.Schema.Types.ObjectId, required: true }, // Eg, Work, Personal, Custom etc
-    text: { type: String, required: true },
-    // associatedFile: {type: path}, // If any attached files with it, give a choice of uploading cloud or keep on device
-    completed: { type: Boolean, default: false },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    text: {
+      type: String,
+      required: true,
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    associatedFile: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );

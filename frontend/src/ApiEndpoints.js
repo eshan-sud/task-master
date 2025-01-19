@@ -11,7 +11,7 @@ export const endpoints = {
   checkUserExists: `${baseURL}auth/checkUserExists`, // POST
   resetPassword: `${baseURL}auth/resetPassword`, // PATCH
   getVerificationStatus: `${baseURL}auth/getVerificationStatus`, // GET
-  refreshToken: `${baseURL}auth/refreshToken`, // GET // To refresh token
+  refreshToken: `${baseURL}auth/refreshToken`, // GET // TO REFRESH TOKEN
   // OTP Endpoints
   sendOTP: `${baseURL}auth/sendOTP`, // POST
   verifyOTP: `${baseURL}auth/verifyOTP`, // POST
@@ -23,14 +23,19 @@ export const endpoints = {
   updateProfile: `${baseURL}account/updateProfile`, // PATCH
   getUserSettings: `${baseURL}account/getUserSettings`, // GET
   updateSettings: `${baseURL}account/updateSettings`, // PATCH
-  exportData: `${baseURL}account/exportData`, // POST
+  exportData: `${baseURL}account/exportData`, // POST // PENDING
 
   // Tasks Endpoints
-  createTask: `${baseURL}tasks.createTask`, // POST
+  createTask: `${baseURL}tasks/createTask`, // POST
   getTasks: `${baseURL}tasks/getTasks`, // GET
-  updateTask: `${baseURL}tasks/updateTask`, // PUT
+  updateTask: `${baseURL}tasks/updateTask`, // PATCH
   deleteTask: `${baseURL}tasks/deleteTask`, // DELETE
   archiveTask: `${baseURL}tasks/archiveTask`, // GET
+  // Category Endpoints
+  createCategory: `${baseURL}categories/createCategory`, // POST
+  getCategories: `${baseURL}tasks/getCategories`, // GET
+  updateCategory: `${baseURL}tasks/updateCategory`, // PATCH
+  deleteCategory: `${baseURL}tasks/deleteCategory`, // DELETE
 
   // Search Endpoint
   userSearch: `${baseURL}search/userSearch`, // GET

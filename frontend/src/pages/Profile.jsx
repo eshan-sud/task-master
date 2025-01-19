@@ -1,10 +1,14 @@
 // filename - frontend/src/pages/Profile.jsx
 
 import React from "react";
-import { useRememberMe } from "../utils/RememberMeContext.js";
+import toast from "react-hot-toast";
 
 import { Background } from "../components/profile/Background.jsx";
 import { NoteContainer } from "../components/profile/Tasks.jsx";
+
+import { endpoints } from "../ApiEndpoints.js";
+import { useRememberMe } from "../utils/RememberMeContext.js";
+
 import {
   AddButton,
   SendButton,
@@ -25,12 +29,56 @@ export const Profile = () => {
   // ];
   // const pinnedCards = [];
 
-  const addTask = () => {
-    console.log("Task added!");
+  const addTask = async ({ title, description, due }) => {
+    const task = {
+      title: { title },
+      description: { description },
+      dueDate: { due },
+      status: "pending",
+    };
+    try {
+      const response = await fetch(`${endpoints}/tasks/createTask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(task),
+      });
+
+      if (!response.ok) {
+        toast.error("Failed to add task!");
+        return;
+      }
+      const data = await response.json();
+      toast.success("Task added succesfully");
+      console.log("Task added!", data);
+    } catch (error) {
+      toast.error("Error adding task!");
+    }
   };
 
-  const addCategory = () => {
-    console.log("Category added!");
+  const addCategory = async ({ name, description }) => {
+    const category = {
+      name: name,
+      description: description,
+    };
+    try {
+      const response = await fetch(`${endpoints}/categories/createCategory`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(category),
+      });
+      if (!response.ok) {
+        toast.error("Failed to add category!");
+      }
+      const data = await response.json();
+      toast.success("Category added succesfully");
+      console.log("Category added!", data);
+    } catch (error) {
+      toast.error("Error adding category!");
+    }
   };
 
   return (

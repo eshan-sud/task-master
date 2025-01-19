@@ -8,10 +8,16 @@ const tasksSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  email: { type: String, required: true },
-  category: { type: String, required: true }, // Eg, Work, Personal, Custom,  etc
+  name: {
+    type: String,
+    required: true, // e.g., Work, Personal, Custom,  etc
+  },
+  description: {
+    type: String,
+    required: false, // Optional
+  },
 });
 
-const Tasks = mongoose.model("Tasks", tasksSchema);
+const Categories = mongoose.model("Categories", categoriesSchema);
 
-module.exports = Tasks;
+module.exports = Categories;
