@@ -2,6 +2,6 @@
 
 import React from "react";
 
-export const Notes = () => {
+export const Notes = ({}) => {
   return <div className="bg-black h-screen w-full"> Notes </div>;
 };

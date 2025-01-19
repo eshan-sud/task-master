@@ -1,7 +1,7 @@
 // filename - frontend/src/components/home/FAQs.jsx
 
 import React from "react";
-// import { PlayStoreButton, AppStoreButton } from '../components/Buttons.jsx';
+import { PlayStoreButton, AppStoreButton } from "../Buttons.jsx";
 
 export const FAQs = () => {
   return (
@@ -39,7 +39,7 @@ export const FAQs = () => {
           <p className="text-lg">
             We are currently working on a mobile app. Stay tuned for updates!
           </p>
-          {/* <PlayStoreButton /> <AppStoreButton /> */}
+          <PlayStoreButton /> <AppStoreButton />
         </div>
       </div>
     </div>

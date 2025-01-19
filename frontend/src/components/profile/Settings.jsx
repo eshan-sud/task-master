@@ -1,11 +1,11 @@
 // filename - frontend/src/components/profile/Settings.jsx
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { endpoints } from "../../ApiEndpoints.js";
 import toast from "react-hot-toast";
 import { Background } from "./Background.jsx";
 import { DefaultLabel } from "../Labels.jsx";
-import { NewPasswordField } from "../Fields.jsx";
+import { DefaultInput, NewPasswordField } from "../Fields.jsx";
 import { DisabledButton, SubmitButton } from "../Buttons.jsx";
 import { OTPPopup, DeleteConfirmation } from "../Popups.jsx";
 import { showSpinnerToast } from "../Elements.jsx";
@@ -15,7 +15,7 @@ import AuthContext from "../../utils/AuthContext.js";
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
-  const [email, _] = useState(storage.getItem("email"));
+  const email = storage.getItem("email");
   const [fullName, setFullName] = useState(storage.getItem("fullName"));
   const [bio, setBio] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -37,21 +37,7 @@ export const Settings = () => {
     useState(false);
   const { logout } = useContext(AuthContext);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDarkMode);
-    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
-  }, [isDarkMode]);
-
-  useEffect(() => {
-    getVerificationStatus();
-  }, [isVerified]);
-
-  useEffect(() => {
-    getProfile();
-    if (email) getUserSettings();
-  }, []);
-
-  const getUserSettings = async () => {
+  const getUserSettings = useCallback(async () => {
     try {
       const response = await fetch(
         `${endpoints.getUserSettings}?email=${encodeURIComponent(email)}`,
@@ -80,9 +66,9 @@ export const Settings = () => {
     } catch (error) {
       toast.error("Something went wrong!");
     }
-  };
+  }, [email]);
 
-  const getVerificationStatus = async () => {
+  const getVerificationStatus = useCallback(async () => {
     try {
       const response = await fetch(
         `${endpoints.getVerificationStatus}?email=${encodeURIComponent(
@@ -105,9 +91,9 @@ export const Settings = () => {
     } catch (error) {
       toast.error("Something went wrong!");
     }
-  };
+  }, [email]);
 
-  const getProfile = async () => {
+  const getProfile = useCallback(async () => {
     try {
       const response = await fetch(
         `${endpoints.getProfile}?email=${encodeURIComponent(email)}`,
@@ -130,7 +116,7 @@ export const Settings = () => {
     } catch (error) {
       toast.error("Something went wrong!");
     }
-  };
+  }, [email, storage]);
 
   const handleSendOTP = async (event) => {
     event.preventDefault();
@@ -309,6 +295,20 @@ export const Settings = () => {
     }
   };
 
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDarkMode);
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    getVerificationStatus();
+  }, [isVerified, getVerificationStatus]);
+
+  useEffect(() => {
+    getProfile();
+    getUserSettings();
+  }, [getProfile, getUserSettings]);
+
   return (
     <Background>
       <>
@@ -360,9 +360,8 @@ export const Settings = () => {
               <DefaultLabel title="ful name" htmlFor="full-name">
                 Full Name
               </DefaultLabel>
-              <input
-                id="full-name"
-                type="text"
+              <DefaultInput
+                ID="full-name"
                 value={fullName}
                 onChange={(event) => {
                   const value = event.target.value;
@@ -373,7 +372,6 @@ export const Settings = () => {
                   minWidth: "200px",
                   maxWidth: "500px",
                 }}
-                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-[#F3F3F3] dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </span>
             <span className="flex items-center space-x-3 mb-4">

@@ -242,7 +242,6 @@ export const NewPasswordField = ({
   name = "New Password",
   value,
   onChange,
-  className = "",
   autoFocus = true,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -274,5 +273,18 @@ export const NewPasswordField = ({
         {name}
       </label>
     </div>
+  );
+};
+
+export const DefaultInput = ({ ID, value, onChange, style }) => {
+  return (
+    <input
+      id={ID}
+      type="text"
+      value={value}
+      onChange={onChange}
+      style={style}
+      className="border border-gray-300 dark:border-gray-600 rounded-md p-2 w-full bg-[#F3F3F3] dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+    />
   );
 };
