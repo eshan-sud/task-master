@@ -2,7 +2,6 @@
 
 const Task = require("../models/tasks.model");
 
-// (Create) Create a new task
 const handleCreateTask = async (req, res) => {
   try {
     const { email, category, text } = req.body;
@@ -21,7 +20,6 @@ const handleCreateTask = async (req, res) => {
   }
 };
 
-// (Read) Get all tasks for a specific user
 const handleGetTasks = async (req, res) => {
   try {
     const { email } = req.body;
@@ -37,7 +35,6 @@ const handleGetTasks = async (req, res) => {
   }
 };
 
-// (Update) Update an existing task
 const handleUpdateTask = async (req, res) => {
   try {
     const { taskId, text, category, completed } = req.body;
@@ -65,7 +62,6 @@ const handleUpdateTask = async (req, res) => {
   }
 };
 
-// (Delete) Delete a task
 const handleDeleteTask = async (req, res) => {
   try {
     const { taskId } = req.body;

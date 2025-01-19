@@ -1,6 +1,6 @@
 // filename - backend/controllers/categories.controller.js
 
-const User = require("../models/user.model");
+// const User = require("../models/user.model");
 const Categories = require("../models/categories.model");
 
 // Default categories for every new user
@@ -10,15 +10,10 @@ const defaultCategories = [
   { name: "Custom", description: "Custom category for any task" },
 ];
 
-const createDefaultCategories = async (req, res) => {
+const createDefaultCategories = async (user) => {
   try {
-    const { email, password } = req.body;
-    const user = new User({ email, password });
-    await user.save();
     const existingCategories = await Categories.find({ userId: user._id });
-
     if (existingCategories.length === 0) {
-      // No categories exist, insert the default categories
       const categoriesPromises = defaultCategories.map((category) => {
         return new Categories({
           userId: user._id,
@@ -26,41 +21,40 @@ const createDefaultCategories = async (req, res) => {
           description: category.description,
         }).save();
       });
-
       await Promise.all(categoriesPromises);
-      res
-        .status(201)
-        .json({ message: "User and default categories created successfully!" });
+      console.log("Default categories added successfully");
     } else {
-      res.status(200).json({ message: "User already has categories." });
+      console.log("User already has the default categories!");
     }
   } catch (err) {
-    res.status(500).json({
-      message: "Error creating user or categories",
-      error: err.message,
-    });
+    console.error("Error adding default categories:", err.message);
   }
 };
 
-const handleGetCategories = async () => {};
+const handleGetCategories = async (req, res) => {};
 
-const handleCreateCategory = async (userId, name, description) => {
+const handleCreateCategory = async (req, res) => {
   try {
+    const { userId, name, description } = req.body();
+    if (!userId || !name || !description)
+      return res.status(404).json({ error: "All fields are required!" });
     const newCategory = new Categories({
       userId,
       name,
       description,
     });
-
     await newCategory.save();
-    console.log("Category created successfully!");
+    console.log("Category created successfully");
   } catch (err) {
     console.error("Error creating category:", err.message);
   }
 };
 
+const handleDeleteCategory = async (req, res) => {};
+
 module.exports = {
   createDefaultCategories,
   handleGetCategories,
   handleCreateCategory,
+  handleDeleteCategory,
 };

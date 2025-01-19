@@ -5,17 +5,19 @@ const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-// sendTaskNotificationEmail,
-// sendPasswordChangedEmail,
+
+const { createDefaultCategories } = require("./account.controller.js");
+
 const {
   sendOtpVerificationEmail,
   sendAccountVerifiedEmail,
 } = require("../utils/emailService");
+
 const {
   setUser,
-  getUser,
+  // getUser,
   verifyCaptcha,
-  verifyUser,
+  // verifyUser,
 } = require("../utils/auth.utils");
 
 const {
@@ -75,11 +77,11 @@ const handleRegisterAuth = async (req, res) => {
       password.trim() === "" ||
       gender.trim() === ""
     ) {
-      return res.status(400).json({ error: "All fields are required" });
+      return res.status(400).json({ error: "All fields are required!" });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({ error: "User already exists!" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
@@ -89,10 +91,11 @@ const handleRegisterAuth = async (req, res) => {
       password: hashedPassword,
       gender,
     });
+    await createDefaultCategories(newUser);
     return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
     console.error("Error occurred during registration:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error!" });
   }
 };
 
