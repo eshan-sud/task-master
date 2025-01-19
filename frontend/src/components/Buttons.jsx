@@ -279,16 +279,104 @@ function CheckColour(colour, intensity) {
     : `black-${intensity}`;
 }
 
+// export const AddButton = ({ name, colour }) => {
+//   const buttonBorderColour = CheckColour(colour, "600");
+//   const hoverBackgroundColour = CheckColour(colour, "600");
+//   const activeBorderColour = CheckColour(colour, "800");
+//   const activeBackgroundColour = CheckColour(colour, "700");
+
+//   return (
+//     <button
+//       type="button"
+//       className={`group button relative w-44 h-10 cursor-pointer flex items-center
+//         ${
+//           colour === "red" &&
+//           "border-red-600 bg-red-700 hover:bg-red-600 active:border-red-800 active:bg-red-700"
+//         }
+//         ${
+//           colour === "blue" &&
+//           "border-blue-600 bg-blue-700 hover:bg-blue-600 active:border-blue-800 active:bg-blue-700"
+//         }
+//         ${
+//           colour === "green" &&
+//           "border-green-600 bg-green-700 hover:bg-green-600 active:border-green-800 active:bg-green-700"
+//         }
+//         ${
+//           !["red", "blue", "green"].includes(colour) &&
+//           "border-black-600 bg-black-700 hover:bg-black-600 active:border-black-800 active:bg-black-700"
+//         }
+//         rounded-xl overflow-hidden transition-all duration-300`}
+//     >
+//       <span className="group-hover:text-transparent transform translate-x-8 text-white font-semibold transition-all duration-300">
+//         {name}
+//       </span>
+//       <span
+//         className={`group-hover:translate-x-0 group-hover:w-full absolute transform translate-x-[140px] h-full w-10 flex items-center justify-center transition-all duration-300`}
+//         style={{ backgroundColor: buttonBorderColour }}
+//       >
+//         <FaPlus color="white" />
+//       </span>
+//     </button>
+//   );
+// };
+
+// export const SubmitButton = ({ title = "Submit", colour = "blue" }) => {
+//   return (
+//     <button
+//       type="submit"
+//       className={`
+//         px-4 py-2 m-2 rounded-md
+//         ${colour === "blue" ? "bg-blue-600 hover:bg-blue-700" : ""}
+//         ${colour === "red" ? "bg-red-600 hover:bg-red-700" : ""}
+//         ${colour === "green" ? "bg-green-600 hover:bg-green-700" : ""}
+//         ${
+//           !["blue", "red", "green"].includes(colour)
+//             ? "bg-black-600 hover:bg-black-700"
+//             : ""
+//         }
+//         text-white text-sm font-semibold transition-colors
+//       `}
+//     >
+//       {title}
+//     </button>
+//   );
+// };
+
 export const AddButton = ({ name, colour }) => {
   const backgroundColour = `${colour}-700`;
   const buttonBorderColour = CheckColour(colour, "600");
   const hoverBackgroundColour = CheckColour(colour, "600");
   const activeBorderColour = CheckColour(colour, "800");
   const activeBackgroundColour = CheckColour(colour, "700");
+  // const inlineStyles = {
+  //   backgroundColor: backgroundColour,
+  //   borderColor: buttonBorderColour,
+  //   transition: 'all 0.3s ease',
+  // };
+  // const hoverStyles = {
+  //   backgroundColor: hoverBackgroundColour,
+  // };
+  // const activeStyles = {
+  //   borderColor: activeBorderColour,
+  //   backgroundColor: activeBackgroundColour,
+  // };
   return (
     <button
       type="button"
       className={`group button relative w-44 h-10 cursor-pointer flex items-center border border-${buttonBorderColour} bg-${backgroundColour} rounded-xl overflow-hidden transition-all duration-300 hover:bg-${hoverBackgroundColour} active:border-${activeBorderColour} active:bg-${activeBackgroundColour}`}
+      // style={inlineStyles}
+      // onMouseEnter={(e) => {
+      //   Object.assign(e.target.style, hoverStyles);
+      // }}
+      // onMouseLeave={(e) => {
+      //   Object.assign(e.target.style, inlineStyles);
+      // }}
+      // onMouseDown={(e) => {
+      //   Object.assign(e.target.style, activeStyles);
+      // }}
+      // onMouseUp={(e) => {
+      //   Object.assign(e.target.style, hoverStyles);
+      // }}
     >
       <span className="group-hover:text-transparent transform translate-x-8 text-white font-semibold transition-all duration-300">
         {name}
@@ -307,6 +395,14 @@ export const SubmitButton = ({ title = "Submit", colour = "blue" }) => {
   const hoverBackgroundColour = CheckColour(colour, "700");
   return (
     <button
+      // style={{
+      //   backgroundColor: backgroundColour,
+      //   transition: "background-color 0.3s ease",
+      // }}
+      // onMouseEnter={(e) =>
+      //   (e.target.style.backgroundColor = hoverBackgroundColour)
+      // }
+      // onMouseLeave={(e) => (e.target.style.backgroundColor = backgroundColour)}
       type="submit"
       className={`px-4 py-2 m-2 rounded-md bg-${backgroundColour} hover:bg-${hoverBackgroundColour} text-white text-sm font-semibold transition-colors`}
     >
@@ -490,7 +586,7 @@ export const PlayStoreButton = () => {
   return (
     <>
       <a
-        href="#"
+        href="/"
         className="inline-flex items-center justify-center border-2 border-black rounded-full bg-black px-6 py-2.5 text-center text-white outline-none transition-all duration-200 ease-in hover:bg-transparent hover:text-black"
       >
         <svg
@@ -514,7 +610,7 @@ export const AppStoreButton = () => {
   return (
     <>
       <a
-        href="#"
+        href="/"
         className="inline-flex items-center justify-center border-2 border-black rounded-full bg-black px-6 py-2.5 text-center text-white outline-none transition-all duration-200 ease-in hover:bg-transparent hover:text-black"
       >
         <span className="h-6 w-6 m-2">

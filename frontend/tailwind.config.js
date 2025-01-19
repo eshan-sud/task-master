@@ -3,6 +3,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js,jsx}"],
+  safelist: [
+    {
+      pattern:
+        /((bg|border|hover:bg|active:border|active:bg|hover:bg)-(red|blue|green|black)-(600|700|800))|(bg|hover:bg)-(blue|red|green|black)-(600|700)/,
+    },
+  ],
   theme: {
     extend: {
       keyframes: {
