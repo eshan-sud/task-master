@@ -1,11 +1,13 @@
 // filename - frontend/src/components/Fields.jsx
 
 import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { CgSearch } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
-import toast from "react-hot-toast";
 
 import { CircularLabel } from "./Labels";
+
+import { endpoints } from "../ApiEndpoints.js";
 import { EmailValidator, isValidEmail } from "../utils/EmailValidator.js";
 
 export const SearchField = () => {
@@ -14,11 +16,21 @@ export const SearchField = () => {
   const inputRef = useRef(null);
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     event.preventDefault();
     if (!inputValue) {
-      toast.error("Search value cannot be empty");
+      toast.error("Search value cannot be empty!");
     }
+    // try {
+    //   const response = await fetch(endpoints.search);
+    //   if (response.ok) {
+    //     displaySearched(response.body.searched);
+    //   } else {
+    //     displaySearch();
+    //   }
+    // } catch (error) {
+    //   toast.error("Something went wrong!");
+    // }
     // Handle Search Logic
   };
 

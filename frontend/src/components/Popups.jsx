@@ -108,7 +108,7 @@ export const AvatarPopup = ({
   const handleUpload = async (event) => {
     event.preventDefault();
     if (!file) {
-      toast.error("Please select an image file.");
+      toast.error("Please select an image file!");
       return;
     }
     const formData = new FormData();
@@ -127,10 +127,10 @@ export const AvatarPopup = ({
         togglePopup();
       } else {
         const message = await response.json();
-        toast.error(message.error);
+        toast.error("Something went wrong!");
       }
     } catch (error) {
-      toast.error("An error occurred while uploading the image.");
+      toast.error("Error occurred while uploading the image!");
     }
   };
 
@@ -284,7 +284,6 @@ export const OTPVerificationForm = ({ email, onVerified, purpose }) => {
         toast.error("Invalid OTP!");
       }
     } catch (error) {
-      console.log(error);
       toast.dismiss(spinnerId);
       toast.error("Something went wrong!");
     }

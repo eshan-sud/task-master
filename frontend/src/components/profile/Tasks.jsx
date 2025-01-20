@@ -86,7 +86,6 @@ export const NoteContainer = () => {
     setNotes([...notes, newNote]);
     setNewTitle("");
     setNewContent("");
-
     try {
       const response = await fetch(endpoints.getTasks, {
         method: "POST",
@@ -95,15 +94,15 @@ export const NoteContainer = () => {
         },
         credentials: "include",
         body: JSON.stringify(newNote),
-      });
+      }).json();
       const result = await response.json();
       if (response.ok) {
-        toast.success(result.message);
+        toast.success(response.message);
       } else {
-        toast.error(result.error);
+        toast.error(response.error);
       }
     } catch (error) {
-      toast.error("An error occurred while adding the note");
+      toast.error("Error occurred while adding the note!");
     }
   };
 
@@ -112,7 +111,7 @@ export const NoteContainer = () => {
     localStorage.removeItem(`card-${id}`);
 
     try {
-      const response = await fetch(`${endpoints.deleteNote}/${id}`, {
+      const response = await fetch(endpoints.deleteNote, {
         method: "DELETE",
         credentials: "include",
       });

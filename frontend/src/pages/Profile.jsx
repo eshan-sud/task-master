@@ -17,17 +17,18 @@ import {
   ArchiveButton,
   AddNew,
 } from "../components/Buttons.jsx";
+import { showSpinnerToast } from "../components/Elements.jsx";
 
 export const Profile = () => {
   const { isRememberMe } = useRememberMe();
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
 
-  // const cards = [
-  //   { id: 1, content: "Task 1" },
-  //   { id: 2, content: "Task 2" },
-  //   { id: 3, content: "Task 3" },
-  // ];
-  // const pinnedCards = [];
+  const cards = [
+    { id: 1, content: "Task 1" },
+    { id: 2, content: "Task 2" },
+    { id: 3, content: "Task 3" },
+  ];
+  const pinnedCards = [];
 
   const addTask = async ({ title, description, due }) => {
     const task = {
@@ -36,23 +37,24 @@ export const Profile = () => {
       dueDate: { due },
       status: "pending",
     };
+    const spinnerId = showSpinnerToast();
     try {
-      const response = await fetch(`${endpoints}/tasks/createTask`, {
+      const response = await fetch(endpoints.createTask, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(task),
       });
-
+      toast.dismiss(spinnerId);
       if (!response.ok) {
         toast.error("Failed to add task!");
         return;
       }
       const data = await response.json();
       toast.success("Task added succesfully");
-      console.log("Task added!", data);
     } catch (error) {
+      toast.dismiss(spinnerId);
       toast.error("Error adding task!");
     }
   };
@@ -62,21 +64,23 @@ export const Profile = () => {
       name: name,
       description: description,
     };
+    const spinnerId = showSpinnerToast();
     try {
-      const response = await fetch(`${endpoints}/categories/createCategory`, {
+      const response = await fetch(endpoints.createCategory, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(category),
       });
+      toast.dismiss(spinnerId);
       if (!response.ok) {
         toast.error("Failed to add category!");
       }
       const data = await response.json();
       toast.success("Category added succesfully");
-      console.log("Category added!", data);
     } catch (error) {
+      toast.dismiss(spinnerId);
       toast.error("Error adding category!");
     }
   };

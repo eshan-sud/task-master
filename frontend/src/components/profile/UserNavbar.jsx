@@ -34,11 +34,10 @@ export const UserNavbar = () => {
         setUserAvatar(avatarUrl);
       } else {
         setUserAvatar(null);
-        toast.error("Failed to fetch user avatar");
       }
     } catch (error) {
       setUserAvatar(null);
-      toast.error("Error fetching user avatar");
+      toast.error("Error fetching user avatar!");
     }
   };
 

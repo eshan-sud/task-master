@@ -50,11 +50,14 @@ const handleCreateCategory = async (req, res) => {
   }
 };
 
+const handleUpdateCategory = async (req, res) => {};
+
 const handleDeleteCategory = async (req, res) => {};
 
 module.exports = {
   createDefaultCategories,
   handleGetCategories,
   handleCreateCategory,
+  handleUpdateCategory,
   handleDeleteCategory,
 };

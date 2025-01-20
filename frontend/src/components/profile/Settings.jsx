@@ -172,18 +172,18 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Failed to save settings. Please try again.");
+      toast.error("Failed to update user preferences!");
     }
   };
 
   const handleChangePassword = async (event) => {
     event.preventDefault();
-    if (!newPassword) {
-      toast.error("Passwords not given!");
-      return;
-    }
     if (newPassword !== newConfirmedPassword) {
       toast.error("Passwords do not match!");
+      return;
+    }
+    if (!newPassword) {
+      toast.error("Password field can be empty!");
       return;
     }
     const spinnerId = showSpinnerToast();
@@ -206,7 +206,7 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Failed to delete account. Please try again.");
+      toast.error("Failed to change password!");
     }
   };
 
@@ -233,7 +233,7 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Failed to delete account. Please try again.");
+      toast.error("Failed to delete account!");
     }
   };
 
@@ -261,11 +261,11 @@ export const Settings = () => {
         a.remove();
         toast.success("Data exported successfully.");
       } else {
-        toast.error("Failed to export data.");
+        toast.error(response.message.error);
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Error exporting data. Please try again.");
+      toast.error("Error exporting data!");
     }
   };
 
@@ -287,7 +287,7 @@ export const Settings = () => {
       });
       toast.dismiss(spinnerId);
       if (response.ok) {
-        toast.success("Updated profile successfully.");
+        toast.success("Updated profile successfully");
       } else {
         toast.error("Failed to update profile!");
       }
