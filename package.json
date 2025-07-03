@@ -1,0 +1,25 @@
+{
+  "name": "task-master",
+  "version": "1.0.0",
+  "description": "Final project for my remote internship at Celebal Technologies 2025",
+  "repository": {
+    "type": "git",
+    "url": ".."
+  },
+  "license": "ISC",
+  "author": "Eshan Sud",
+  "type": "commonjs",
+  "main": "server.js",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

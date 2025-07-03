@@ -1,137 +1,235 @@
 # Task Master - Task Management Web Application
 
-**Task Master** is a powerful task management full-stack `MERN-based` web application that allows users to efficiently manage their tasks with a wide range of features such as task sorting, calendar integration, notifications, & much more.
+**Task Master** is a powerful task management `full-stack MERN-based web application` that allows users to efficiently manage their tasks with a wide range of features such as task sorting, calendar integration, notifications, & much more.
 
 This application is ideal for individuals, teams, or organisations looking for a comprehensive tool to track, assign & prioritise tasks in real-time with minimal effort & cost
 
-## Features (I have & will be implementing in the future)
+## Technologies Used:
+
+- JavaScript
+
+- Cloud
+
+  - GCP (Google Cloud Platform)
+
+- Database
+
+  - MongoDB
+  - Redis
+
+- Frontend
+
+  - React.js
+  - Full Calendar
+  - redux
+  - axios
+  - chart.js
+  - date-fns
+  - react-draggable
+  - react-hot-toast
+  - react-icons
+  - react-router-dom
+  - styled-components
+
+- Backend
+
+  - Node.js
+  - Express.js
+  - bcrypt
+  - body-parser
+  - cookie-parser
+  - cors
+  - dotenv
+  - express-rate-limiter
+  - express-slow-down
+  - jsonwebtoken
+  - mongoose
+  - multer
+  - nodemailer
+  - nodemon
+  - router
+
+## TODO
+
+Message Queues
 
 <details open>
   <summary><strong>Task Management</strong></summary>
     
-- [Current] **CRUD Tasks:** Create, Read, Update, Delete tasks.
-- [] **Task Completion:** Mark Tasks as Completed or In-Progress.
-- [] **Task Dependencies/Subtasks:** Add support for tasks dependent on other tasks/Ability to break down a larger tasks into smaller, more manageble tasks.
-- [] **Recurring Tasks:** Allow tasks to repeat on a schedule (daily, weekly, etc).
-- [] **Priority Levels:** Set priority levels for tasks (with default & customisable settings).
-- [] **Due Dates:** Add the ability to set and track task due dates.
-- [] **Task Descriptions:** Allow users to add detailed descriptions or notes to each task.
-- [] **Task Categories:** Organise tasks into default or custom categories.
-- [] **Task Archive:** Archive completed tasks for future reference.
-- [] **Recycle Bin:** Deleted tasks are stored for 30 days before permanent deletion.
+- [Current] **CRUD Tasks:** Create, Read, Update, Delete tasks
+- [] Task completion
+  - [] Mark tasks as completed or pending (not In-Progress)
+- [] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
+- [] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
+- [] Set priority levels for tasks (with default & customisable settings)
+- [] Add the ability to set & track task due dates
+- [] Allow users to add detailed descriptions or notes to each task
+- [] Organise tasks into default or custom categories
+- [] Archive completed tasks for future reference
+- [] Deleted tasks are stored in the recycle bin for 30 days before permanent deletion
 
 </details>
 
 <details open>
   <summary><strong>Analysis</strong></summary>
 
-- []**Visualisation Dashboards:** Use graphs, pie charts, and histograms to present data (eg, task breakdown by category or completion status).
-- [] **Time Tracking:** Track the time spent on each task.
-- [] **Completion Trends:** Visualise how many tasks are completed over time using graphs or charts.
-- [] **Missed Deadlines Report:** Generate reports of missed deadlines with reasons (eg, not started, in progress).
-- [] **Task Prioritisation Insights:** Analyse the percentage of tasks marked as high, medium, or low priority.
-- [] **Category Usage Statistics:** Show how tasks are distributed across categories.
-- [] **Collaboration Metrics:** Analyse task distribution among collaborators.
+- [] Visualisation dashboards (eg, task breakdown by category or completion status)
+  - [] Graphs
+  - [] Pie Charts
+  - [] Histograms
+- [] Track time spent on each task
+- [] Visualise how many tasks are completed over time using graphs or charts
+- [] Generate reports of missed deadlines with reasons (eg, not started, in progress)
+- [] Analyse the percentage of tasks marked as high, medium, or low priority
+- [] Show how tasks are distributed across categories
+- [] Analyse task distribution among collaborators
 
 </details>
 
 <details open>
   <summary><strong>Search & Organisation</strong></summary>
 
-- [] **Search & Sort:** Filter tasks based on various criteria (due date, priority, status, etc.).
-- [] **Tagging System:** For easiar searching.
-- [] **Calendar Integration:** Sync tasks with your calendar.
+- [] Search & filter tasks based on various criteria (due date, priority, status, etc.)
+- [] Tagging System for easiar searching
+- [] Sync tasks with Google calendar, etc
 
 </details>
 
 <details open>
   <summary><strong>User Authentication & Security</strong></summary>
 
-- [x] **Login/Register:** User authentication to create personal accounts.
-- [x] **Remember Me:** Remember me feature to reduce the number of times the user has to login back into their account.
-- [x] **Password Change using OTP:** Change account password using OTP sent to email.
-- [x] **Password Change while logged in:** Change account password using Settings page.
-- [x] **Avatar Upload/Delte:**Add & delete avatar to user account.
-- [x] **Captcha on Register Form:** Add Captcha (Google's reCAPTCHA v2) to Register form & its API for added security.
-- [x] **Profile Update:** Profile name & bio updation.
-- [x] **Settings Update:** Account settings updation.
-- [x] **Account Delete:** Acccount deletion.
-- [x] **Account Verification:** Verify account after registration through email.
-- [x] **Settings:** Able to set account settings & more for more personalisation.
-- [] **Export Data:** Able to export their own data in a PDF/CSV/Excel format. (Optional)
+- [x] Basic login/register
+- [x] Remember me feature
+- [x] Password change using OTP on email
+- [x] Add/delete avatar
+- [x] Captcha on registration form (Google's reCAPTCHA v2)
+- [x] Profile update
+  - [x] Profile name
+  - [x] Bio
+- [x] Clean account deletion (with no additional data stored on server/database)
+- [x] Account verification through email
+- [x] Settings
+  - [x] Account
+  - [x] Password change
+  - [x] More personalisation
+- [] Export data (Optional)
+  - [] PDF
+  - [] CSV
+  - [] Excel
 
 </details>
 
 <details open>
   <summary><strong>User Interface & Experience</strong></summary>
 
-- [] **Dark Mode:** Toggle between light & dark themes.
-- [] **Offline Mode:** Access & manage tasks offline.
-- [] **Offline Sync:** Able to sync tasks automatically when back online.
-- [] **Multi-Language Support:** Add support for multiple languages.
-- [] **Chatbot (Landing Page):** Provide a chatbot interface on the landing page.
+- [] Light/dark themes
+- [] Offline mode
+- [] Sync offline updates with online database automatically when online
+  - [] Resolve syncing issues with different devices syncing concurrently with different updates
 
 </details>
 
 <details open>
   <summary><strong>Notifications</strong></summary>
 
-- [] **Email Notifications:** Email notifications about password changes, profile updates, or task updates, etc.
-- [] **Push Notifications:** Real-time updates & alerts for tasks updates, reminders, etc.
-- [] **Desktop Notifications:** Dektop notifications for task updates, reminders, etc.
-- [] **In-app Notifications:** For real-time alerts within the app (while inside the application).
-- [] **Location-based Reminders Notifications:** Get reminders based on your location using client location.
-- [] **Missed Task Notifications:** Notify users about overdue tasks.
-- [] **Customisable Task Reminder:** Users may choose how & when they want to be notified (eg, via push, email, or desktop).
+- [] Email notifications
+  - [] Password changes
+  - [] Profile updates
+  - [] Task updates
+- [] Push notifications
+  - [] Password changes
+  - [] Profile updates
+  - [] Real-time updates/alerts
+  - [] Tasks updates
+  - [] Reminders
+- [] Desktop notifications
+  - [] Task updates
+  - [] Reminders
+- [] In-app notifications
+  - [] Real-time
+- [] Client location-based reminders notifications
+- [] Missed/overdue task notifications
+- [] Customisable task reminder settings - how & when users are to be notified (eg, push, email, or desktop, etc)
 
 </details>
 
 <details open>
   <summary><strong>Collaboration & Sharing</strong></summary>
 
-- [] **Real-Time Task Allotment:** Allocate tasks to teams in real-time.
-- [] **Task Sharing/Collaboration:** Collaborate & share tasks with others.
-- [] **Role-Based Access Control:** Implement roles (eg, admin, viewer) for shared tasks or team collaboration.
-- [] **Task Comments/Mentions:** Ability to mention @username for effective communication / to put comments on tasks.
-- [] **In-App Chat:** Communicate with team members directly in the app. (Optional : Real-Time in-app Chat app)
+- [] Real-time task allotment to team members
+- [] Collaborate & share tasks with others
+- [] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
+- [] Task comments/mentions `@username` for effective communication or to put comments on tasks
+- [] In-App chat app
+  - [] Communicate with team members directly in the app
+  - [] Real-Time (Optional)
 
 </details>
 
 <details open>
   <summary><strong>Additional Enhancements</strong></summary>
 
-- [] **Attachment Upload:** Attach files or documents to tasks.
-- [] **Leaderboard:** View rankings for task completion across teams or individuals.
-- [] **Voice Memos:** Record & attach voice memos to tasks for additional context.
-- [] **Voice Commands:** Control & manage tasks & the app using voice commands.
+- [] Attach files or documents to tasks
+- [] Leaderboard to view rankings for task completion across teams or individuals
+- [] Record & attach voice memos to tasks for additional context
+- [] Allow undo for accidental deletions or updates (eg, restore deleted tasks) on pressing `Cntrl + Z`
 
 </details>
 
 <details open>
   <summary><strong>Security Features</strong></summary>
 
-- [] **Rate Limiting:** Prevent brute-force attacks on login or OTP endpoints.
-- [] **Encryption:** Encrypt sensitive user data & enforce HTTPS to secure communications.
-- [] **Audit Logging:** Track & log sensitive actions like logins & profile updates.
-- [] **Privacy Controls:** Add user controls for account/tasks visibility, such as sharing tasks with specific people only.
-- [] **Multi-Factor Authentication (MFA)**: Add MFA (eg, OTP + password) for enhanced account security.
-- [] **Password Strength Checker:** Provide feedback during password creation to encourage strong passwords.
+- [] Rate Limiting on Login or OTP endpoints
+- [] Delay spammed queries
+- [] Passwords are hashed & salted before pushing to database
+- [] Encrypt sensitive user data & enforce HTTPS to secure communications
+- [] Track, log, & view sensitive actions like logins & profile updates
+- [] Privacy Controls: Add user controls for account/tasks visibility, such as sharing tasks with specific people only
+- [] MFA (Multi-Factor Authentication) support (eg, OTP + password) for enhanced account security
+- [] Provide feedback during password creation to encourage strong passwords
 
 </details>
 
 <details open>
   <summary><strong>Authentication Enhancements</strong></summary>
 
-- [] **Session Expiry:** Expire tokens after a set duration & prompt re-login.
-- [] **Token Refresh:** Implement JWT refresh tokens for secure, continuous sessions.
-- [] **Logout Everywhere:** Log out from all devices simultaneously.
+- [] Expire session tokens after a set duration & prompt re-login
+- [] Implement JWT Refresh Tokens for secure, continuous sessions
+- [] Manage all sessions based on MAC address (max devices of 3)
+  - [] Log out from all devices simultaneously
 
 </details>
 
 <details open>
-  <summary><strong>Authentication Enhancements</strong></summary>
+  <summary><strong>Accesibility</strong></summary>
 
-- [] **Undo Actions**: Allow undo for accidental deletions or updates (eg, restore deleted tasks).
+- [] Set accessibility on first login
+- [] Control & manage the app using voice commands
+- [] Have colourblind-adjusted setting
+- [] Multi-language support
+- [] RAG Chatbot (Landing Page)
+
+</details>
+
+<details open>
+  <summary><strong>Deployement</strong></summary>
+
+- [] Deploy MongoDB database to MongoDB Atlas
+- [] Deploy Frontend to AWS
+- [] Deploy Backend to AWS
+- [] Setup CICD pipeline
+- [] Integration testing
+
+</details>
+
+<details open>
+  <summary><strong>Cloud Solutions</strong></summary>
+
+- [] Load balancers
+- [] CDNs (if required)
+- [] Distributed Databases
+  - [] Sharding & Replication in Databases
+- [] Redis cache
 
 </details>
 
@@ -159,31 +257,11 @@ Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 </details>
-<details>
-  <summary>Build</summary>
-
-    npm run build
-
-Builds the app for production to the `build` folder.
-
-> Correctly bundles React in production mode & optimises the build for the best performance.
-> The build is minified & the filenames include the hashes
-
-</details>
-<details>
-  <summary>Eject</summary>
-
-    npm run eject
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-If you aren't satisfied with the build tool & configuration choices, you can `eject` at any time
-
-> This will remove the single build dependency from your project
-
-</details>
 
 ---
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---

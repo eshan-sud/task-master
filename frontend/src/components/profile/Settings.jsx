@@ -317,7 +317,7 @@ export const Settings = () => {
         {showOTPPopup && (
           <OTPPopup
             email={email}
-            onClose={(value) => setShowOTPPopup(value)}
+            onClose={() => setShowOTPPopup(false)}
             onVerified={(value) => setIsVerified(value)}
             purpose="account_verification"
           />
