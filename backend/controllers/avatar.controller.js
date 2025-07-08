@@ -34,7 +34,7 @@ const handleGetUserAvatar = async (req, res) => {
     res.setHeader("Content-Type", contentType);
     res.sendFile(avatarPath);
   } catch (error) {
-    console.error("Error retrieving avatar:", error);
+    console.error("[handleGetUserAvatar] Error", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -44,20 +44,17 @@ const handleUploadAvatar = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
-
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
     user.avatar = req.file.filename;
     await user.save();
-
     res
       .status(200)
       .json({ message: "Avatar uploaded successfully", avatar: user.avatar });
   } catch (error) {
-    console.error("Error uploading avatar:", error);
+    console.error("[handleUploadAvatar] Error", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -82,7 +79,7 @@ const handleRemoveAvatar = async (req, res) => {
     await user.save();
     res.status(200).json({ message: "Avatar removed successfully" });
   } catch (error) {
-    console.error("Error removing avatar:", error);
+    console.error("[handleRemoveAvatar] Error", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

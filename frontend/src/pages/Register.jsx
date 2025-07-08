@@ -40,11 +40,11 @@ const RegisterForm = () => {
     const spinnerId = showSpinnerToast();
     try {
       if (!captchaToken) {
-        toast.error("CAPTCHA is Required!");
+        toast.error("CAPTCHA is Required");
         return;
       }
       if (!firstName || !lastName || !email || !password || !gender) {
-        toast.error("All fields are required!");
+        toast.error("All fields are required");
         return;
       }
       const response = await fetch(endpoints.registerAuth, {
@@ -65,7 +65,7 @@ const RegisterForm = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   };
 
@@ -126,7 +126,7 @@ export default function Register() {
   return (
     <FormContainer
       form={<RegisterForm />}
-      heading="Register For Free!"
+      heading="Register For Free"
       subHeading="Create your account"
     />
   );

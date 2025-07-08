@@ -24,20 +24,26 @@ const createDefaultCategories = async (user) => {
       await Promise.all(categoriesPromises);
       console.log("Default categories added successfully");
     } else {
-      console.log("User already has the default categories!");
+      console.log("User already has the default categories");
     }
-  } catch (err) {
-    console.error("Error adding default categories:", err.message);
+  } catch (error) {
+    console.error("[createDefaultCategories] Error", error);
   }
 };
 
-const handleGetCategories = async (req, res) => {};
+const handleGetCategories = async (req, res) => {
+  try {
+  } catch (error) {
+    console.error("[handleGetCategories] Error", error);
+  }
+};
 
 const handleCreateCategory = async (req, res) => {
   try {
     const { userId, name, description } = req.body();
-    if (!userId || !name || !description)
-      return res.status(404).json({ error: "All fields are required!" });
+    if (!userId || !name || !description) {
+      return res.status(404).json({ error: "All fields are required" });
+    }
     const newCategory = new Categories({
       userId,
       name,
@@ -45,14 +51,24 @@ const handleCreateCategory = async (req, res) => {
     });
     await newCategory.save();
     console.log("Category created successfully");
-  } catch (err) {
-    console.error("Error creating category:", err.message);
+  } catch (error) {
+    console.error("[handleCreateCategory] Error", error);
   }
 };
 
-const handleUpdateCategory = async (req, res) => {};
+const handleUpdateCategory = async (req, res) => {
+  try {
+  } catch (error) {
+    console.error("[handleUpdateCategory] Error", error);
+  }
+};
 
-const handleDeleteCategory = async (req, res) => {};
+const handleDeleteCategory = async (req, res) => {
+  try {
+  } catch (error) {
+    console.error("[handleDeleteCategory] Error", error);
+  }
+};
 
 module.exports = {
   createDefaultCategories,

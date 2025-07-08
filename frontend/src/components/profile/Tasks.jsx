@@ -102,7 +102,7 @@ export const NoteContainer = () => {
         toast.error(response.error);
       }
     } catch (error) {
-      toast.error("Error occurred while adding the note!");
+      toast.error("Error occurred while adding the note");
     }
   };
 

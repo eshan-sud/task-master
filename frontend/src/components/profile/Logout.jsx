@@ -36,7 +36,7 @@ const Logout = ({ toggleLogoutModal }) => {
         toast.error(message.error);
       }
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   };
   return (

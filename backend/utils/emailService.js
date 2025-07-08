@@ -38,7 +38,7 @@ const sendTaskNotificationEmail = async (email) => {
   //   mailOptions["text"] = `Hello, ${email}\n\n.`;
   //   return await sendEmail(mailOptions);
   // } catch (error) {
-  //   return res.status(500).json({ error: "Something went wrong!" });
+  //   return res.status(500).json({ error: "Something went wrong" });
   // }
 };
 
@@ -61,7 +61,7 @@ const sendOtpVerificationEmail = async (otp, email, purpose) => {
     mailOptions["text"] = text;
     return await sendEmail(mailOptions);
   } catch (error) {
-    return { error: "Something went wrong!" };
+    return { error: "Something went wrong" };
   }
 };
 
@@ -74,7 +74,7 @@ const sendAccountVerifiedEmail = async (email) => {
     ] = `Hello, ${email}\n\nYour account has been successfully verified.`;
     return await sendEmail(mailOptions);
   } catch (error) {
-    return { error: "Something went wrong!" };
+    return { error: "Something went wrong" };
   }
 };
 
@@ -87,7 +87,7 @@ const sendAccountDeletionEmail = async (email) => {
     ] = `Hello, ${email}\n\nYour account has been successfully Deleted.`;
     return await sendEmail(mailOptions);
   } catch (error) {
-    return { error: "Something went wrong!" };
+    return { error: "Something went wrong" };
   }
 };
 
@@ -100,7 +100,7 @@ const sendPasswordChangedEmail = async (email) => {
     ] = `Hello,\n\n Your account password has been changed successfully.`;
     return await sendEmail(mailOptions);
   } catch (error) {
-    return res.status(500).json({ error: "Something went wrong!" });
+    return res.status(500).json({ error: "Something went wrong" });
   }
 };
 

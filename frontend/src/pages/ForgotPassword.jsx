@@ -26,12 +26,12 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
       const message = await response.json();
       if (!message.exists) {
         toast.dismiss(spinnerId);
-        toast.error("User Not Found!");
+        toast.error("User Not Found");
         return;
       }
       if (!response.ok) {
         toast.dismiss(spinnerId);
-        toast.error("User Not Verified!");
+        toast.error("User Not Verified");
         return;
       }
       const otpResponse = await fetch(endpoints.sendOTP, {
@@ -41,14 +41,14 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
       });
       toast.dismiss(spinnerId);
       if (!otpResponse.ok) {
-        toast.error("Couldn't generate or send OTP to your email!");
+        toast.error("Couldn't generate or send OTP to your email");
         return;
       }
-      toast.success("OTP Sent to your Email!");
+      toast.success("OTP Sent to your Email");
       setStep(2); // Proceed to OTP Verification
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Something Went Wrong!");
+      toast.error("Something Went Wrong");
       console.error(error);
     }
   };
@@ -84,12 +84,12 @@ const ResetPasswordForm = ({
     event.preventDefault();
     const resetToken = localStorage.getItem("resetToken");
     if (!resetToken) {
-      toast.error("Token expired or not found!");
+      toast.error("Token expired or not found");
       setStep(2); // Redirect back to OTP verification step
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords do not match");
       return;
     }
     const spinnerId = showSpinnerToast();
@@ -102,7 +102,7 @@ const ResetPasswordForm = ({
       const message = await response.json();
       toast.dismiss(spinnerId);
       if (response.ok) {
-        toast.success("Password reset successfully!");
+        toast.success("Password reset successfully");
         localStorage.removeItem("resetToken");
         navigate("/login");
       } else {
@@ -110,7 +110,7 @@ const ResetPasswordForm = ({
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   };
 

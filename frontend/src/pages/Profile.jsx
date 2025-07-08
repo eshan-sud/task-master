@@ -47,14 +47,14 @@ export default function Profile() {
       });
       toast.dismiss(spinnerId);
       if (!response.ok) {
-        toast.error("Failed to add task!");
+        toast.error("Failed to add task");
         return;
       }
       const data = await response.json();
       toast.success("Task added succesfully");
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Error adding task!");
+      toast.error("Error adding task");
     }
   };
 
@@ -74,13 +74,13 @@ export default function Profile() {
       });
       toast.dismiss(spinnerId);
       if (!response.ok) {
-        toast.error("Failed to add category!");
+        toast.error("Failed to add category");
       }
       const data = await response.json();
       toast.success("Category added succesfully");
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Error adding category!");
+      toast.error("Error adding category");
     }
   };
 

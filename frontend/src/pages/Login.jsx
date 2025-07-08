@@ -114,7 +114,7 @@ const LoginForm = () => {
               console.log(credentialResponse);
             }}
             onError={() => {
-              console.log("Google Login Failed!");
+              console.log("Google Login Failed");
             }}
           />
         </div>
@@ -127,7 +127,7 @@ export default function Login() {
   return (
     <FormContainer
       form={<LoginForm />}
-      heading="Welcome Back!"
+      heading="Welcome Back"
       subHeading="Login your account"
     />
   );

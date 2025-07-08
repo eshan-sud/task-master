@@ -19,7 +19,7 @@ export const SearchField = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
     if (!inputValue) {
-      toast.error("Search value cannot be empty!");
+      toast.error("Search value cannot be empty");
     }
     // try {
     //   const response = await fetch(endpoints.search);
@@ -29,7 +29,7 @@ export const SearchField = () => {
     //     displaySearch();
     //   }
     // } catch (error) {
-    //   toast.error("Something went wrong!");
+    //   toast.error("Something went wrong");
     // }
     // Handle Search Logic
   };

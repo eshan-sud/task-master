@@ -52,7 +52,7 @@ export const Settings = () => {
         }
       );
       if (!response.ok) {
-        toast.error("Error fetching user preferences!");
+        toast.error("Error fetching user preferences");
         return;
       }
       const fetchedSettings = (await response.json()).data.settings;
@@ -66,7 +66,7 @@ export const Settings = () => {
         timeZone: fetchedSettings.timeZone ?? "GMT",
       });
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   }, [email]);
 
@@ -85,13 +85,13 @@ export const Settings = () => {
         }
       );
       if (!response.ok) {
-        toast.error("Error fetching verification status!");
+        toast.error("Error fetching verification status");
         return;
       }
       const data = await response.json();
       setIsVerified(data.isVerified);
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   }, [email]);
 
@@ -108,7 +108,7 @@ export const Settings = () => {
         }
       );
       if (!response.ok) {
-        toast.error("Error fetching verification status!");
+        toast.error("Error fetching verification status");
         return;
       }
       const data = await response.json();
@@ -116,7 +116,7 @@ export const Settings = () => {
       setBio(data.bio || "");
       storage.setItem("fullName", data.fullName);
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   }, [email, storage]);
 
@@ -140,11 +140,11 @@ export const Settings = () => {
       if (response.ok) {
         toast.success("OTP Sent");
       } else {
-        toast.error("Error sending OTP!");
+        toast.error("Error sending OTP");
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   };
 
@@ -172,18 +172,18 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Failed to update user preferences!");
+      toast.error("Failed to update user preferences");
     }
   };
 
   const handleChangePassword = async (event) => {
     event.preventDefault();
     if (newPassword !== newConfirmedPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords do not match");
       return;
     }
     if (!newPassword) {
-      toast.error("Password field can be empty!");
+      toast.error("Password field can be empty");
       return;
     }
     const spinnerId = showSpinnerToast();
@@ -206,7 +206,7 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Failed to change password!");
+      toast.error("Failed to change password");
     }
   };
 
@@ -233,7 +233,7 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Failed to delete account!");
+      toast.error("Failed to delete account");
     }
   };
 
@@ -265,7 +265,7 @@ export const Settings = () => {
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Error exporting data!");
+      toast.error("Error exporting data");
     }
   };
 
@@ -289,11 +289,11 @@ export const Settings = () => {
       if (response.ok) {
         toast.success("Updated profile successfully");
       } else {
-        toast.error("Failed to update profile!");
+        toast.error("Failed to update profile");
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Something went Wrong!");
+      toast.error("Something went Wrong");
     }
   };
 

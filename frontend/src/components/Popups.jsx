@@ -108,7 +108,7 @@ export const AvatarPopup = ({
   const handleUpload = async (event) => {
     event.preventDefault();
     if (!file) {
-      toast.error("Please select an image file!");
+      toast.error("Please select an image file");
       return;
     }
     const formData = new FormData();
@@ -127,10 +127,10 @@ export const AvatarPopup = ({
         togglePopup();
       } else {
         const message = await response.json();
-        toast.error("Something went wrong!");
+        toast.error("Something went wrong");
       }
     } catch (error) {
-      toast.error("Error occurred while uploading the image!");
+      toast.error("Error occurred while uploading the image");
     }
   };
 
@@ -275,17 +275,17 @@ export const OTPVerificationForm = ({ email, onVerified, purpose }) => {
       const message = await response.json();
       toast.dismiss(spinnerId);
       if (response.ok) {
-        toast.success("OTP Verified!");
+        toast.success("OTP Verified");
         if (purpose === "password_reset") {
           localStorage.setItem("resetToken", message.token);
         }
         onVerified(true);
       } else {
-        toast.error("Invalid OTP!");
+        toast.error("Invalid OTP");
       }
     } catch (error) {
       toast.dismiss(spinnerId);
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong");
     }
   };
 

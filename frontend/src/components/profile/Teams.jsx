@@ -12,17 +12,17 @@ export const Teams = () => {
   const [newTeamName, setNewTeamName] = useState("");
   const handleCreateTeam = () => {
     if (newTeamName.trim() === "") {
-      toast.error("Team name cannot be empty!");
+      toast.error("Team name cannot be empty");
       return;
     }
     const newTeam = { id: teams.length + 1, name: newTeamName, members: 0 };
     setTeams([...teams, newTeam]);
     setNewTeamName("");
-    toast.success("Team created successfully!");
+    toast.success("Team created successfully");
   };
   const handleDeleteTeam = (id) => {
     setTeams(teams.filter((team) => team.id !== id));
-    toast.success("Team deleted successfully!");
+    toast.success("Team deleted successfully");
   };
   return (
     <Background>

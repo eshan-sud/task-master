@@ -13,6 +13,7 @@ backend/
 ├── models/
 │   ├── categories.model.js
 │   ├── otp.model.js
+│   ├── session.model.js
 │   ├── tasks.model.js
 │   └── user.model.js
 ├── public/

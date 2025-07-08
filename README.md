@@ -99,18 +99,20 @@ This application is ideal for individuals, teams, or organisations looking for a
 </details>
 
 <details open>
-  <summary><strong>User Authentication & Security</strong></summary>
+  <summary><strong>User Authentication</strong></summary>
 
 - [x] Basic login/register
-- [x] Remember me feature
-- [x] Password change using OTP on email
+- [x] Remember me feature for presistent login
+- [x] Change password using OTP
+  - [x] Email
 - [x] Add/delete avatar
 - [x] Captcha on registration form (Google's reCAPTCHA v2)
 - [x] Profile update
   - [x] Profile name
   - [x] Bio
-- [x] Clean account deletion (with no additional data stored on server/database)
-- [x] Account verification through email
+- [x] Clean account deletion (without any data stored on server/database)
+- [x] Account verification
+  - [x] Email
 - [x] Settings
   - [x] Account
   - [x] Password change
@@ -195,9 +197,18 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Security Features</strong></summary>
 
-- [x] Rate Limiting on all endpoints using Express-Rate-Limiter
-- [x] Delay spammed queries using Express-Slow-Down
-- [] Add CSRF protection
+- [x] Session management
+  - [x] Implement Refresh Tokens for secure & continuous sessions
+  - [x] Expire session tokens after a set duration
+  - [x] Manage upto 5 sessions (each lasting 7 days)
+  - [x] LRU session strategy
+  - [x] Device deduplication
+  - [x] Log out from all devices simultaneously
+- [x] Cookie-based Token Delivery
+- [x] Rate limiting
+- [x] Delay spammed queries
+- [x] Add XSS protection
+- [x] Add CSRF protection
 - [] Debouncing or Throttling
 - [] Use Helmet.js for secure HTTP headers
 - [] Passwords are hashed & salted before pushing to database
@@ -207,16 +218,6 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] MFA (Multi-Factor Authentication) support (eg, OTP + password) for enhanced account security
 - [] Provide feedback during password creation to encourage strong passwords
 - [] Implement SSL certificate
-
-</details>
-
-<details open>
-  <summary><strong>Authentication Enhancements</strong></summary>
-
-- [] Implement Refresh Tokens for secure, continuous sessions to avoid login again & again
-- [] Expire session tokens after a set duration
-- [] Manage all sessions based on MAC address (max devices of 3)
-  - [] Log out from all devices simultaneously
 
 </details>
 
@@ -245,6 +246,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Cloud Solutions</strong></summary>
 
+- [] Buy domain
 - [] Dockerize frontend & backend for portability
 - [] Use Nginx as a reverse proxy for production
 - [] Use Terraform/Ansible for infrastructure as code (future scale)
@@ -272,7 +274,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details>
   <summary>Start</summary>
     
-    npm start
+    npm run dev:all
 
 Runs the app in development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
