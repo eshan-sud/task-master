@@ -132,9 +132,9 @@ const handleRegisterAuth = async (req, res) => {
   try {
     const { firstName, lastName, email, password, gender, captchaToken } =
       req.body;
-    // if (!captchaToken || !verifyCaptcha(captchaToken)) {
-    //   return res.status(400).json({ error: "Invalid CAPTCHA" });
-    // }
+    if (!captchaToken || !verifyCaptcha(captchaToken)) {
+      return res.status(400).json({ error: "Invalid CAPTCHA" });
+    }
     if (
       !firstName ||
       !lastName ||
@@ -147,7 +147,9 @@ const handleRegisterAuth = async (req, res) => {
       password.trim() === "" ||
       gender.trim() === ""
     ) {
-      return res.status(400).json({ error: "All fields are required" });
+      return res.status(400).json({
+        error: "Firstname, lastname, email, password, & gender are required",
+      });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -180,7 +182,7 @@ const handleLogoutAuth = async (req, res) => {
     return res.status(200).json({ message: "Logout Successfully" });
   } catch (error) {
     console.error("[handleLogoutAuth] Error", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -197,7 +199,7 @@ const handleCheckUserExists = async (req, res) => {
     return res.json({ exists: true });
   } catch (error) {
     console.error("[handleCheckUserExists] Error", error);
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -223,7 +225,7 @@ const handleResetPassword = async (req, res) => {
     return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     console.error("[handleResetPassword] Error", error);
-    return res.status(500).json({ error: "Error resetting password" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -253,7 +255,7 @@ const handleSendOTP = async (req, res) => {
     return res.status(200).json({ message: "OTP sent to email" });
   } catch (error) {
     console.error("[handleSendOTP] Error", error);
-    return res.status(500).json({ error: "Error generating OTP" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -306,13 +308,13 @@ const handleVerifyOTP = async (req, res) => {
     }
   } catch (error) {
     console.error("[handleVerifyOTP] Error", error);
-    return res.status(500).json({ error: "Error verifying OTP" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const handleVerificationStatus = async (req, res) => {
   try {
-    const { email } = req.query;
+    const { email } = req.params;
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
     }
@@ -323,7 +325,7 @@ const handleVerificationStatus = async (req, res) => {
     return res.status(200).json({ isVerified: user.isVerified });
   } catch (error) {
     console.error("[handleVerificationStatus] Error", error);
-    return res.status(500).json({ error: "Something went wrong" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -379,7 +381,7 @@ const handleListSessions = async (req, res) => {
     });
   } catch (error) {
     console.error("[handleListSessions] Error:", error);
-    return res.status(500).json({ error: "Failed to fetch sessions" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

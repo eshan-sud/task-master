@@ -28,6 +28,7 @@ const createDefaultCategories = async (user) => {
     }
   } catch (error) {
     console.error("[createDefaultCategories] Error", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -35,6 +36,7 @@ const handleGetCategories = async (req, res) => {
   try {
   } catch (error) {
     console.error("[handleGetCategories] Error", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -42,7 +44,9 @@ const handleCreateCategory = async (req, res) => {
   try {
     const { userId, name, description } = req.body();
     if (!userId || !name || !description) {
-      return res.status(404).json({ error: "All fields are required" });
+      return res
+        .status(404)
+        .json({ error: "UserId, name, & description are required" });
     }
     const newCategory = new Categories({
       userId,
@@ -53,6 +57,7 @@ const handleCreateCategory = async (req, res) => {
     console.log("Category created successfully");
   } catch (error) {
     console.error("[handleCreateCategory] Error", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -60,6 +65,7 @@ const handleUpdateCategory = async (req, res) => {
   try {
   } catch (error) {
     console.error("[handleUpdateCategory] Error", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -67,6 +73,7 @@ const handleDeleteCategory = async (req, res) => {
   try {
   } catch (error) {
     console.error("[handleDeleteCategory] Error", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

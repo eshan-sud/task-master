@@ -18,13 +18,57 @@ const tasksSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    completed: {
+    description: {
+      type: String,
+    },
+    associatedFiles: [
+      {
+        fileName: String,
+        fileUrl: String,
+        fileSize: {
+          type: Number, // in bytes
+          required: true,
+        },
+        uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    status: {
+      type: String,
+      enum: [
+        "Initial",
+        "Pending",
+        "Started",
+        "Completed",
+        "Review",
+        "On Hold",
+        "Blocked",
+        "Scheduled",
+        "Archived",
+        "Deleted",
+      ],
+      default: "Initial",
+    },
+    priority: {
+      type: String,
+      enum: ["Low", "Medium", "High"],
+      default: "Medium",
+    },
+    dueDate: {
+      type: Date,
+    },
+    isArchived: {
       type: Boolean,
       default: false,
     },
-    associatedFile: {
-      type: String,
-      required: false,
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    deletedAt: {
+      type: Date,
     },
   },
   { timestamps: true }

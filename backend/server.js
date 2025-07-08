@@ -73,7 +73,6 @@ app.use((req, res, next) => {
 });
 
 // Listening Port
-
 app.listen(BACKEND_PORT, () => {
   console.log(`Server is listening on PORT: ${BACKEND_PORT}`);
 });

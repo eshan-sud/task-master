@@ -219,6 +219,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Add CSRF protection
   - [x] Implement on backend
   - [] Implement on frontend
+    - [] Add CSRF token to context
 - [x] Passwords are hashed & salted before pushing to database
 - [] Encrypt sensitive user data
 - [] Privacy Controls: Add user controls for account/tasks visibility, such as sharing tasks with specific people only

@@ -21,13 +21,13 @@ const router = express.Router();
 // Auth
 router.post("/login", handleLoginAuth);
 router.post("/register", handleRegisterAuth);
-router.post("/checkUserExists", handleCheckUserExists);
+router.post("/users/check", handleCheckUserExists);
 router.patch("/resetPassword", handleResetPassword);
-router.get("/getVerificationStatus", handleVerificationStatus);
+router.get("/users/:email/verification-status", handleVerificationStatus);
 router.get("/refreshToken", handleRefreshToken);
 // Auth - proteced routes
 router.get("/sessions", authenticate, handleListSessions);
-router.get("/logout", authenticate, handleLogoutAuth);
+router.post("/logout", authenticate, handleLogoutAuth);
 router.post("/logout/all", authenticate, handleLogoutAllDevices);
 // OTP
 router.post("/sendOTP", handleSendOTP);

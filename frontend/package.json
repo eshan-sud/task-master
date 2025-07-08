@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "license": "ISC",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@fullcalendar/core": "^6.1.18",

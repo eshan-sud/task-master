@@ -10,11 +10,11 @@ const {
 } = require("../utils/emailService");
 
 const handleGetProfile = async (req, res) => {
-  const { email } = req.query;
-  if (!email) {
-    return res.status(400).send("Email is required");
-  }
   try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).send("Email is required");
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -24,16 +24,16 @@ const handleGetProfile = async (req, res) => {
       .json({ fullName: user.firstName + " " + user.lastName, bio: user.bio });
   } catch (error) {
     console.error("[handleGetProfile] Error", error);
-    return res.status(500).send("Something went wrong");
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const handleChangePassword = async (req, res) => {
-  const { email, newPassword } = req.body;
-  if (!email || !newPassword) {
-    return res.status(400).send("Email and New password are required");
-  }
   try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+      return res.status(400).send("Email and New password are required");
+    }
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -45,7 +45,7 @@ const handleChangePassword = async (req, res) => {
     return res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     console.error("[handleChangePassword] Error", error);
-    return res.status(500).send("Something went wrong");
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -63,18 +63,18 @@ const handleDeleteAccount = async (req, res) => {
     return res.status(200).json({ message: "Account successfully deleted" });
   } catch (error) {
     console.error("[handleDeleteAccount] Error:", error);
-    return res.status(500).send("Something went wrong");
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const handleUpdateProfile = async (req, res) => {
-  const { email, fullName, bio } = req.body;
-  if (!email || !fullName) {
-    return res
-      .status(400)
-      .send("Email and updated user name are required, (bio is optional)");
-  }
   try {
+    const { email, fullName, bio } = req.body;
+    if (!email || !fullName) {
+      return res
+        .status(400)
+        .send("Email and updated user name are required, (bio is optional)");
+    }
     const nameParts = fullName.trim().split(" ");
     const firstName = nameParts[0];
     const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
@@ -89,16 +89,16 @@ const handleUpdateProfile = async (req, res) => {
     return res.status(200).json({ message: "Profile updated successfully" });
   } catch (error) {
     console.error("[handleUpdateProfile] Error:", error);
-    return res.status(500).send("Something went wrong");
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const handleGetUserSettings = async (req, res) => {
-  const { email } = req.query;
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
   try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
     const userSettings = await User.findOne({ email }, "settings");
     if (!userSettings) {
       return res.status(404).json({ message: "User not found" });
@@ -106,16 +106,16 @@ const handleGetUserSettings = async (req, res) => {
     res.status(200).json({ data: userSettings });
   } catch (error) {
     console.error("[handleGetUserSettings] Error", error);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const handleUpdateSettings = async (req, res) => {
-  const { email, darkMode, ...settings } = req.body;
-  if (!email) {
-    return res.status(400).send("Email is required");
-  }
   try {
+    const { email, darkMode, ...settings } = req.body;
+    if (!email) {
+      return res.status(400).send("Email is required");
+    }
     const updatedData = { darkMode, ...settings };
     const user = await User.findOneAndUpdate(
       { email },
@@ -136,16 +136,16 @@ const handleUpdateSettings = async (req, res) => {
       });
     }
     console.error("[handleUpdateSettings] Error", error);
-    res.status(500).send("Internal server error");
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
 const exportData = async (req, res) => {
-  const { email } = req.query;
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
   try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
     const userSettings = await User.findOne({ email }, "settings");
     if (!userSettings) {
       return res.status(404).json({ message: "User not found" });
@@ -154,7 +154,7 @@ const exportData = async (req, res) => {
     // res.status(200).json({ settings: userSettings });
   } catch (error) {
     console.error("[exportData] Error", error);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
