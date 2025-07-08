@@ -34,17 +34,19 @@ This application is ideal for individuals, teams, or organisations looking for a
 - Backend
 
   - Node.js
-  - Express.js
   - bcrypt
   - body-parser
   - cookie-parser
   - cors
   - dotenv
+  - express
   - express-rate-limiter
   - express-slow-down
+  - helmet
   - jsonwebtoken
   - mongoose
   - multer
+  - node
   - nodemailer
   - nodemon
   - router
@@ -92,6 +94,8 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>Search & Organisation</strong></summary>
 
 - [] Search & filter tasks based on various criteria (due date, priority, status, etc.)
+  - [] Debouncing (frontend)
+  - [] Throttling (frontend)
 - [] Tagging System for easiar searching
 - [] Sync tasks with Google Calendar + Outlook
 - [] Two-way sync with Google Calendar + Outlook
@@ -207,17 +211,22 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] Cookie-based Token Delivery
 - [x] Rate limiting
 - [x] Delay spammed queries
-- [x] Add XSS protection
-- [x] Add CSRF protection
-- [] Debouncing or Throttling
-- [] Use Helmet.js for secure HTTP headers
-- [] Passwords are hashed & salted before pushing to database
-- [] Encrypt sensitive user data & enforce HTTPS to secure communications
-- [] Track, log, & view sensitive actions like logins & profile updates
+- [] Add XSS protection
+  - [x] Implement on backend
+  - [] Implement on frontend
+    - [] Sanitise user-generated content before rendering
+    - [] Use strict CSP on frontend
+- [] Add CSRF protection
+  - [x] Implement on backend
+  - [] Implement on frontend
+- [x] Passwords are hashed & salted before pushing to database
+- [] Encrypt sensitive user data
 - [] Privacy Controls: Add user controls for account/tasks visibility, such as sharing tasks with specific people only
 - [] MFA (Multi-Factor Authentication) support (eg, OTP + password) for enhanced account security
 - [] Provide feedback during password creation to encourage strong passwords
+- [] Audit log : track, log, & view sensitive actions like logins & profile updates (Optional)
 - [] Implement SSL certificate
+- [] Enforce HTTPS to secure communications
 
 </details>
 

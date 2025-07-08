@@ -9,7 +9,9 @@ const connection = require("./utils/dbConnection.js");
 // Middlewares
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const maintenanceMode = require("./middleware/maintenance");
+const helmet = require("helmet");
+const csrfProtection = require("./middleware/csrf.js");
+const maintenanceMode = require("./middleware/maintenance.js");
 const rateLimiter = require("./middleware/rateLimiter.js");
 const speedLimiter = require("./middleware/slowDown.js");
 
@@ -28,13 +30,28 @@ const BACKEND_PORT = process.env.BACKEND_PORT || 8023;
 connection();
 
 // Using Middlewares
+app.use(helmet()); // for XSS protection headers
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"], // no inline scripts
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  })
+);
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
+app.use(csrfProtection);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(maintenanceMode);
 
 // Using Routes
+app.get("/csrf-token", (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
 app.use("/api", rateLimiter);
 app.use("/api", speedLimiter);
 app.use("/api/v1/account", accountRoute);
@@ -44,6 +61,12 @@ app.use("/api/v1/tasks", tasksRoute);
 // app.use("/api/v1/teams", teamsRoute);
 // app.use("/api/v1/_", _Route);
 app.use("/api/v1/auth", userauthRoute);
+app.use((err, req, res, next) => {
+  if (err.code === "EBADCSRFTOKEN") {
+    return res.status(403).json({ error: "Invalid CSRF token" });
+  }
+  next(err);
+});
 app.use((req, res, next) => {
   // For 404 errors
   res.status(404).json({ message: "API route not found" });
