@@ -9,8 +9,6 @@ const {
   handleLogoutAuth,
   handleCheckUserExists,
   handleResetPassword,
-  handleSendOTP,
-  handleVerifyOTP,
   handleVerificationStatus,
   handleLogoutAllDevices,
   handleListSessions,
@@ -23,14 +21,11 @@ router.post("/login", handleLoginAuth);
 router.post("/register", handleRegisterAuth);
 router.post("/users/check", handleCheckUserExists);
 router.patch("/resetPassword", handleResetPassword);
-router.get("/users/:email/verification-status", handleVerificationStatus);
 router.get("/refreshToken", handleRefreshToken);
 // Auth - proteced routes
+router.get("/me/verification-status", authenticate, handleVerificationStatus);
 router.get("/sessions", authenticate, handleListSessions);
 router.post("/logout", authenticate, handleLogoutAuth);
 router.post("/logout/all", authenticate, handleLogoutAllDevices);
-// OTP
-router.post("/sendOTP", handleSendOTP);
-router.post("/verifyOTP", handleVerifyOTP);
 
 module.exports = router;

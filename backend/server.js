@@ -21,6 +21,7 @@ const categoriesRoute = require("./routes/categories.route.js");
 const avatarRoute = require("./routes/avatar.route.js");
 const tasksRoute = require("./routes/tasks.route.js");
 const userauthRoute = require("./routes/userauth.route.js");
+const otpRoute = require("./routes/otp.route.js");
 
 // Create an Express server
 const app = express();
@@ -43,7 +44,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-app.use(csrfProtection);
+// app.use(csrfProtection);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(maintenanceMode);
@@ -61,6 +62,7 @@ app.use("/api/v1/tasks", tasksRoute);
 // app.use("/api/v1/teams", teamsRoute);
 // app.use("/api/v1/_", _Route);
 app.use("/api/v1/auth", userauthRoute);
+app.use("/api/v1/otp", otpRoute);
 app.use((err, req, res, next) => {
   if (err.code === "EBADCSRFTOKEN") {
     return res.status(403).json({ error: "Invalid CSRF token" });
