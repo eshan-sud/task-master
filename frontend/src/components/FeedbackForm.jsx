@@ -1,6 +1,4 @@
-// filename - frontend/src/components/FeedbackForm.jsx
-
-import React from "react";
+// frontend/src/components/FeedbackForm.jsx
 
 // import { GOOGLE_RECAPTCHA_SECRET_KEY } from ".env";
 // import ReCAPTCHA from "react-google-recaptcha";

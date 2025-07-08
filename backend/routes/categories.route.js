@@ -1,4 +1,4 @@
-// filename - backend/routes/avatar.route.js
+// backend/routes/categories.route.js
 
 const express = require("express");
 const authenticate = require("../middleware/auth");

@@ -1,6 +1,6 @@
-// filename - frontend/src/components/Layout.jsx
+// frontend/src/components/Layout.jsx
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Navbar } from "./home/Navbar.jsx";
 import { HomeBackground } from "./home/HomeBackground.jsx";
 import { Footer } from "./home/Footer.jsx";

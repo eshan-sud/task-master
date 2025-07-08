@@ -1,4 +1,4 @@
-// filename - backend/utils/auth.utils.js
+// backend/utils/auth.utils.js
 
 const jwt = require("jsonwebtoken");
 

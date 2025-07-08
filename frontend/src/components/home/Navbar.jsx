@@ -1,6 +1,6 @@
-// filename - frontend/src/components/home/Navbar.jsx
+// frontend/src/components/home/Navbar.jsx
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CiHome } from "react-icons/ci";

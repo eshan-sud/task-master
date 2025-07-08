@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/Tasks.jsx
+// frontend/src/components/profile/Tasks.jsx
 
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Draggable from "react-draggable";
 import toast from "react-hot-toast";
 

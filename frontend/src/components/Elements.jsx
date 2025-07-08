@@ -1,6 +1,6 @@
-// filename - frontend/src/components/Elements.jsx
+// frontend/src/components/Elements.jsx
 
-import React, { useContext } from "react";
+// import { useContext } from "react";
 import toast from "react-hot-toast";
 
 // import LightModeContext from "../utils/LightModeContext.js";

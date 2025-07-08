@@ -1,6 +1,4 @@
-// filename - frontend/src/components/ModeSwitch.jsx
-
-import React from "react";
+// frontend/src/components/ModeSwitch.jsx
 
 export const ModeSwitch = () => {
   return (

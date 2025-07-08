@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/Settings.jsx
+// frontend/src/components/profile/Settings.jsx
 
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import toast from "react-hot-toast";
 
 import { Background } from "./Background.jsx";

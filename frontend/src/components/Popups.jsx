@@ -1,6 +1,6 @@
-// filename - frontend/src/components/Popup.jsx
+// frontend/src/components/Popup.jsx
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { useRememberMe } from "../utils/RememberMeContext.js";
 import { endpoints } from "../ApiEndpoints.js";

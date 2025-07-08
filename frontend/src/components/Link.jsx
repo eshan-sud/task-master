@@ -1,6 +1,5 @@
-// filename - frontend/src/components/Link.jsx
+// frontend/src/components/Link.jsx
 
-import React from "react";
 import { NavLink } from "react-router-dom";
 
 export const MenuItem = ({ to, name, icon }) => {

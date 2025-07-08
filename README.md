@@ -115,10 +115,6 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Account
   - [x] Password change
   - [x] More personalisation
-- [] Export data (Optional)
-  - [] PDF
-  - [] CSV
-  - [] Excel
 
 </details>
 
@@ -187,9 +183,12 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Record & attach voice memos to tasks for additional context
 - [] Allow undo for accidental deletions or updates (eg, restore deleted tasks) on pressing `Cntrl + Z`
 - [] Implement Message Queues
-- [] Under maintenance page when website is down
-- [] 404 error page (for both landing & user pages)
-- [] "Something went wrong! Try again later." page (Timeout functionality)
+- [x] Under maintenance page for when page is in maintenance
+- [x] "Something went wrong! Try again later." page (Timeout functionality)
+- [] Export data (Optional)
+  - [] PDF
+  - [] CSV
+  - [] Excel
 
 </details>
 

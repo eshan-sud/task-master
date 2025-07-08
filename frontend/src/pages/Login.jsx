@@ -1,6 +1,6 @@
-// filename - frontend/src/pages/Login.jsx
+// frontend/src/pages/Login.jsx
 
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import AuthContext from "../utils/AuthContext.js";
@@ -123,7 +123,7 @@ const LoginForm = () => {
   );
 };
 
-export const Login = () => {
+export default function Login() {
   return (
     <FormContainer
       form={<LoginForm />}
@@ -131,4 +131,4 @@ export const Login = () => {
       subHeading="Login your account"
     />
   );
-};
+}

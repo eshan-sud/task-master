@@ -1,6 +1,6 @@
-// filename - frontend/src/utils/AuthContext.js
+// frontend/src/utils/AuthContext.js
 
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useRememberMe } from "./RememberMeContext";
 
 const AuthContext = createContext();
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
 export default AuthContext;
 
-// import React, { createContext, useEffect, useState } from "react";
+// import { createContext, useEffect, useState } from "react";
 
 // const AuthContext = createContext();
 

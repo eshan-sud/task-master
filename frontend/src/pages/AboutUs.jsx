@@ -1,8 +1,6 @@
-// filename - frontend/src/pages/AboutUs.jsx
+// frontend/src/pages/AboutUs.jsx
 
-import React from "react";
-
-export const AboutUs = () => {
+export default function AboutUs() {
   return (
     <div className="flex items-center justify-center m-[90px]">
       <div className="flex flex-col p-10 justify-center items-center bg-white/30 rounded-3xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[15px] border border-white w-full max-w-4xl">
@@ -25,4 +23,4 @@ export const AboutUs = () => {
       </div>
     </div>
   );
-};
+}

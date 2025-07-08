@@ -1,6 +1,4 @@
-// filename - frontend/src/components/Loader.jsx
-
-import React from "react";
+// frontend/src/components/Loader.jsx
 
 export const Loader = (props) => {
   return (

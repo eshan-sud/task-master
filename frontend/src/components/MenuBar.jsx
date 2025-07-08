@@ -1,6 +1,4 @@
-// filename - frontend/src/components/MenuBar.jsx
-
-import React from "react";
+// frontend/src/components/MenuBar.jsx
 
 import home from "/resources/images/Home.svg";
 import search from "/resources/images/Search.svg";

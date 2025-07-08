@@ -1,4 +1,4 @@
-// filename - backend/controllers/categories.controller.js
+// backend/controllers/categories.controller.js
 
 // const User = require("../models/user.model");
 const Categories = require("../models/categories.model");

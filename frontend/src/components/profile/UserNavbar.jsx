@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/UserNavbar.jsx
+// frontend/src/components/profile/UserNavbar.jsx
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { CiUser } from "react-icons/ci";
 import { useRememberMe } from "../../utils/RememberMeContext.js";

@@ -1,4 +1,4 @@
-// filename - frontend/src/setupTests.js
+// frontend/src/setupTests.js
 
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:

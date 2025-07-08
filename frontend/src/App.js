@@ -1,17 +1,17 @@
-// filename - frontend/src/App.js
+// frontend/src/App.js
 
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 
-import { Home } from "./pages/Home.jsx";
-import { AboutUs } from "./pages/AboutUs.jsx";
-import { Contact } from "./pages/Contact.jsx";
-import { Login } from "./pages/Login.jsx";
-import { Register } from "./pages/Register.jsx";
-import { ForgotPassword } from "./pages/ForgotPassword.jsx";
-import { Profile } from "./pages/Profile.jsx";
+import Home from "./pages/Home.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import Contact from "./pages/Contact.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import Profile from "./pages/Profile.jsx";
 
 // import { Loader } from "./components/Loader.jsx";
 import { Layout } from "./components/Layout.jsx";
@@ -25,7 +25,7 @@ import AuthContext from "./utils/AuthContext.js";
 import LightModeContext from "./utils/LightModeContext.js";
 
 // Debug Component
-import DebugComponent from "./utils/DebugComponent";
+// import DebugComponent from "./utils/DebugComponent";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);

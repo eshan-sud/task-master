@@ -1,6 +1,6 @@
-// filename - frontend/src/pages/ForgotPassword.jsx
+// frontend/src/pages/ForgotPassword.jsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -151,7 +151,7 @@ const ResetPasswordForm = ({
   );
 };
 
-export const ForgotPassword = () => {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [step, setStep] = useState(1); // 1: Email Input, 2: OTP Verification, 3: Reset Password
   const [newPassword, setNewPassword] = useState("");
@@ -199,4 +199,4 @@ export const ForgotPassword = () => {
       }
     />
   );
-};
+}

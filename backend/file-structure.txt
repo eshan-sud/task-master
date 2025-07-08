@@ -1,0 +1,35 @@
+backend/
+├── controllers/
+│   ├── account.controller.js
+│   ├── avatar.controller.js
+│   ├── categories.controller.js
+│   ├── tasks.controller.js
+│   └── userauth.controller.js
+├── middlewares/
+│   ├── auth.js
+│   ├── maintenance.js
+│   ├── rateLimiter.js
+│   └── slowDown.js
+├── models/
+│   ├── categories.model.js
+│   ├── otp.model.js
+│   ├── tasks.model.js
+│   └── user.model.js
+├── public/
+│   └── maintenance.html
+├── routes/
+│   ├── account.route.js
+│   ├── avatar.route.js
+│   ├── categories.route.js
+│   ├── tasks.route.js
+│   └── userauth.route.js
+├── uploads/
+├── utils/
+│   ├── auth.utils.js
+│   ├── dbConnection.js
+│   ├── emailService.js
+│   ├── export.js
+│   └── otp.utils.js
+├── .env
+├── package.json
+└── server.js

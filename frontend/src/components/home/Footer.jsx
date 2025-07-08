@@ -1,6 +1,4 @@
-// filename - frontend/src/components/home/Footer.jsx
-
-import React from "react";
+// frontend/src/components/home/Footer.jsx
 
 export const Footer = () => {
   return (

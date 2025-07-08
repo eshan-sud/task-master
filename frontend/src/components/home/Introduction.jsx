@@ -1,6 +1,4 @@
-// filename - frontend/src/components/home/Introduction.jsx
-
-import React from "react";
+// frontend/src/components/home/Introduction.jsx
 
 export const Introduction = () => {
   return (

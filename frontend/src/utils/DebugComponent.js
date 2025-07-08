@@ -1,4 +1,4 @@
-// filename - frontend/src/utils/DebugComponent.js
+// frontend/src/utils/DebugComponent.js
 
 import { useContext, useEffect } from "react";
 import AuthContext from "./AuthContext";

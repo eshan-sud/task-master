@@ -1,6 +1,6 @@
-// filename - frontend/src/components/Buttons.jsx
+// frontend/src/components/Buttons.jsx
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { GiPin } from "react-icons/gi";

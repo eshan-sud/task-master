@@ -1,0 +1,70 @@
+frontend/
+├── public/
+│   ├── assets/
+│   ├── favicon_io/
+│   ├── index.html
+│   ├── logo192.png         ← have to replace
+│   ├── logo512.png         ← have to replace
+│   ├── manifest.json       ← have to replace
+│   └── robots.txt          ← have to replace
+├── src/
+│   ├── components/
+│   │   ├── home/
+│   │   |   ├── FAQs.jsx
+│   │   |   ├── Feature.jsx
+│   │   |   ├── Footer.jsx
+│   │   |   ├── Home.jsx
+│   │   |   ├── Introdudction.jsx
+│   │   |   ├── Navbar.jsx
+│   │   |   └── Pricing.jsx
+│   │   ├── profile/
+│   │   |   ├── Analytics.jsx
+│   │   |   ├── Archive.jsx
+│   │   |   ├── Background.jsx
+│   │   |   ├── Dashboard.jsx
+│   │   |   ├── Logout.jsx
+│   │   |   ├── NotificationPanel.jsx
+│   │   |   ├── Settings.jsx
+│   │   |   ├── Sidebar.jsx
+│   │   |   ├── Tasks.jsx
+│   │   |   ├── Teams.jsx
+│   │   |   └── UserNavbar.jsx
+│   │   ├── Buttons.jsx
+│   │   ├── Elements.jsx
+│   │   ├── FeedbackForm.jsx
+│   │   ├── Fields.jsx
+│   │   ├── FormContainer.jsx
+│   │   ├── Labels.jsx
+│   │   ├── Layout.jsx
+│   │   ├── Link.jsx
+│   │   ├── Loader.jsx
+│   │   ├── MenuBar.jsx
+│   │   ├── ModeSwitch.jsx
+│   │   └── Popups.jsx
+│   ├── pages/
+│   │   ├── AboutUs.jsx
+│   │   ├── Contact.jsx
+│   │   ├── ForgotPassword.jsx
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── Notes.jsx
+│   │   ├── Profile.jsx
+│   │   └── Register.jsx
+│   ├── utils/
+│   │   ├── AuthContext.js
+│   │   ├── DebugComponent.js
+│   │   ├── EmailValidator.js
+│   │   ├── LightModeContext.js
+│   │   ├── Providers.js
+│   │   └── RememberMeContext.js
+│   ├── ApiEndpoints.js
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── index.css
+│   ├── index.js
+│   ├── reportWebVitals.js
+│   └── setupTests.js
+├── .env
+├── package.json
+└── tailwind.config.js

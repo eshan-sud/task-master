@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/Logout.jsx
+// frontend/src/components/profile/Logout.jsx
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationPopup } from "../../components/Popups.jsx";

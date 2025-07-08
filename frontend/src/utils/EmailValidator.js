@@ -1,6 +1,6 @@
-// filename - frontend/src/utils/EmailValidator.js
+// frontend/src/utils/EmailValidator.js
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

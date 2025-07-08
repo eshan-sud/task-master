@@ -1,6 +1,6 @@
-// filename - frontend/src/utils/RememberMeContext.js
+// frontend/src/utils/RememberMeContext.js
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const RememberMeContext = createContext();
 

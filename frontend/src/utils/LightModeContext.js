@@ -1,6 +1,6 @@
-// filename - frontend/src/utils/LightModeContext.js
+// frontend/src/utils/LightModeContext.js
 
-import React, { createContext, useState } from "react";
+import { createContext, useState } from "react";
 
 const LightModeContext = createContext();
 

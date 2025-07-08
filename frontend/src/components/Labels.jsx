@@ -1,6 +1,4 @@
-// filename - frontend/src/components/Labels.jsx
-
-import React from "react";
+// frontend/src/components/Labels.jsx
 
 export const DefaultLabel = ({ title, htmlFor, children }) => {
   return (

@@ -1,6 +1,5 @@
-// filename - frontend/src/pages/Profile.jsx
+// frontend/src/pages/Profile.jsx
 
-import React from "react";
 import toast from "react-hot-toast";
 
 import { Background } from "../components/profile/Background.jsx";
@@ -19,7 +18,7 @@ import {
 } from "../components/Buttons.jsx";
 import { showSpinnerToast } from "../components/Elements.jsx";
 
-export const Profile = () => {
+export default function Profile() {
   const { isRememberMe } = useRememberMe();
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
 
@@ -132,4 +131,4 @@ export const Profile = () => {
       <BackToTopButton />
     </Background>
   );
-};
+}

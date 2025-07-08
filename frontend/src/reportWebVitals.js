@@ -1,4 +1,4 @@
-// filename - frontend/src/reportWebVitals.js
+// frontend/src/reportWebVitals.js
 
 const reportWebVitals = (onPerfEntry) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {

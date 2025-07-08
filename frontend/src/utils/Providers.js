@@ -1,4 +1,4 @@
-// filename - frontend/src/utils/Providers.js
+// frontend/src/utils/Providers.js
 
 import React from "react";
 import { AuthProvider } from "./AuthContext";

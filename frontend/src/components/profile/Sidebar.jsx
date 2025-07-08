@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/Sidebar.jsx
+// frontend/src/components/profile/Sidebar.jsx
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FiX,
   FiMenu,

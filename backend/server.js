@@ -1,18 +1,24 @@
-// filename - backend/server.js
+// backend/server.js
 
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+
 const connection = require("./utils/dbConnection.js");
+
+// Middlewares
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const maintenanceMode = require("./middleware/maintenance");
+const rateLimiter = require("./middleware/rateLimiter.js");
+const speedLimiter = require("./middleware/slowDown.js");
+
+// Routes
 const accountRoute = require("./routes/account.route.js");
 const categoriesRoute = require("./routes/categories.route.js");
 const avatarRoute = require("./routes/avatar.route.js");
 const tasksRoute = require("./routes/tasks.route.js");
 const userauthRoute = require("./routes/userauth.route.js");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-const rateLimiter = require("./utils/rateLimiter.js");
-const speedLimiter = require("./utils/slowDown.js");
 
 // Create an Express server
 const app = express();
@@ -26,8 +32,9 @@ app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(maintenanceMode);
 
-// Routes
+// Using Routes
 app.use("/api", rateLimiter);
 app.use("/api", speedLimiter);
 app.use("/api/v1/account", accountRoute);
@@ -37,6 +44,10 @@ app.use("/api/v1/tasks", tasksRoute);
 // app.use("/api/v1/teams", teamsRoute);
 // app.use("/api/v1/_", _Route);
 app.use("/api/v1/auth", userauthRoute);
+app.use((req, res, next) => {
+  // For 404 errors
+  res.status(404).json({ message: "API route not found" });
+});
 
 // Listening Port
 

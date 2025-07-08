@@ -1,4 +1,4 @@
-// filename - backend/models/tasks.model.js
+// backend/models/tasks.model.js
 
 const mongoose = require("mongoose");
 

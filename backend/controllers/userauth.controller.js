@@ -1,4 +1,4 @@
-// filename - backend/controllers/userauth.controller.js
+// backend/controllers/userauth.controller.js
 
 require("dotenv").config();
 const User = require("../models/user.model");

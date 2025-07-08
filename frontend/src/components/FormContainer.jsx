@@ -1,6 +1,4 @@
-// filename - frontend/src/components/FormContainer.jsx
-
-import React from "react";
+// frontend/src/components/FormContainer.jsx
 
 export const FormContainer = ({ form, heading, subHeading }) => {
   return (

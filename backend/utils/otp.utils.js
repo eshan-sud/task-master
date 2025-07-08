@@ -1,4 +1,4 @@
-// filename - backend/utils/otp.utils.js
+// backend/utils/otp.utils.js
 
 require("dotenv").config();
 const crypto = require("crypto");

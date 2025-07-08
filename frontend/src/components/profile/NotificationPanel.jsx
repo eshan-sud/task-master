@@ -1,6 +1,4 @@
-// filename - frontend/src/components/profile/NotificationPanel.jsx
-
-import React from "react";
+// frontend/src/components/profile/NotificationPanel.jsx
 
 export const NotificationPanel = ({ isOpen, onClose }) => {
   const notifications = [

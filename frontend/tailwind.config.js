@@ -1,4 +1,4 @@
-// filename - frontend/tailwind.config.js
+// frontend/tailwind.config.js
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

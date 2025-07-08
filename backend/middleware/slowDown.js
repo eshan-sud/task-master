@@ -1,4 +1,4 @@
-// backend/utils/slowDown.js
+// backend/middleware/slowDown.js
 
 const slowDown = require("express-slow-down");
 

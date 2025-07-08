@@ -1,4 +1,4 @@
-// filename - backend/routes/userauth.route.js
+// backend/routes/userauth.route.js
 
 const express = require("express");
 // const authenticate = require("../middleware/auth");

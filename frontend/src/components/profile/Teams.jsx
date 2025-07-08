@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/Teams.jsx
+// frontend/src/components/profile/Teams.jsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Background } from "./Background.jsx";
 import toast from "react-hot-toast";
 

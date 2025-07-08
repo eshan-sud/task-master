@@ -1,13 +1,13 @@
-// filename - frontend/src/components/Fields.jsx
+// frontend/src/components/Fields.jsx
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { CgSearch } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
 
 import { CircularLabel } from "./Labels";
 
-import { endpoints } from "../ApiEndpoints.js";
+// import { endpoints } from "../ApiEndpoints.js";
 import { EmailValidator, isValidEmail } from "../utils/EmailValidator.js";
 
 export const SearchField = () => {

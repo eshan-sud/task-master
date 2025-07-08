@@ -1,4 +1,4 @@
-// filename - backend/utils/emailService.js
+// backend/utils/emailService.js
 
 require("dotenv").config();
 const nodemailer = require("nodemailer");

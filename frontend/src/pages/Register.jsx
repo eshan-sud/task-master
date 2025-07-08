@@ -1,6 +1,6 @@
-// filename - frontend/src/pages/Register.jsx
+// frontend/src/pages/Register.jsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -122,7 +122,7 @@ const RegisterForm = () => {
   );
 };
 
-export const Register = () => {
+export default function Register() {
   return (
     <FormContainer
       form={<RegisterForm />}
@@ -130,4 +130,4 @@ export const Register = () => {
       subHeading="Create your account"
     />
   );
-};
+}

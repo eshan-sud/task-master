@@ -1,6 +1,5 @@
-// filename - frontend/src/components/home/Pricing.jsx
+// frontend/src/components/home/Pricing.jsx
 
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Pricing = () => {

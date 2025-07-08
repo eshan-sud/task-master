@@ -1,4 +1,4 @@
- <!-- filename - frontend/public/assets/images/male.svg -->
+ <!-- frontend/public/assets/images/male.svg -->
 
 <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
   <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5631 16.1199C14.871 16.81 13.9885 17.2774 13.0288 17.462C12.0617 17.6492 11.0607 17.5459 10.1523 17.165C8.29113 16.3858 7.07347 14.5723 7.05656 12.5547C7.04683 11.0715 7.70821 9.66348 8.8559 8.72397C10.0036 7.78445 11.5145 7.4142 12.9666 7.71668C13.9237 7.9338 14.7953 8.42902 15.4718 9.14008C16.4206 10.0503 16.9696 11.2996 16.9985 12.6141C17.008 13.9276 16.491 15.1903 15.5631 16.1199Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>

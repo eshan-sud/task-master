@@ -1,6 +1,6 @@
-// filename - frontend/src/components/profile/Archive.jsx
+// frontend/src/components/profile/Archive.jsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Background } from "./Background.jsx";
 
 export const Archive = () => {

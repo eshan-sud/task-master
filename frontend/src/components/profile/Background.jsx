@@ -1,6 +1,4 @@
-// filename - frontend/src/components/profile/Background.jsx
-
-import React from "react";
+// frontend/src/components/profile/Background.jsx
 
 export const Background = ({ children }) => {
   return (

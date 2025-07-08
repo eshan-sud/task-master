@@ -1,6 +1,5 @@
-// filename - frontend/src/components/home/Features.jsx
+// frontend/src/components/home/Features.jsx
 
-import React from "react";
 import {
   FaTasks,
   FaCalendarAlt,
