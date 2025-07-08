@@ -2,7 +2,7 @@
 
 const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const {
   sendAccountDeletionEmail,

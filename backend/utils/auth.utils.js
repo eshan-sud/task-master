@@ -1,7 +1,8 @@
 // filename - backend/utils/auth.utils.js
 
 const jwt = require("jsonwebtoken");
-const secret = process.env.JWT_SECRET;
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const setUser = (user) => {
   const payload = {
@@ -11,7 +12,7 @@ const setUser = (user) => {
     email: user.email,
     gender: user.gender,
   };
-  return jwt.sign(payload, secret, { expiresIn: "1h" });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
 };
 
 const getUser = (token) => {

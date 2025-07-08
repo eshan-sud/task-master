@@ -51,14 +51,16 @@ This application is ideal for individuals, teams, or organisations looking for a
 
 ## TODO
 
-Message Queues
-
 <details open>
   <summary><strong>Task Management</strong></summary>
     
 - [Current] **CRUD Tasks:** Create, Read, Update, Delete tasks
 - [] Task completion
   - [] Mark tasks as completed or pending (not In-Progress)
+- [] Custom status pipelines (e.g., Not Started → In Progress → Review → Done)
+- [] Drag & drop task prioritization within lists
+- [] Task templates (for recurring workflows)
+- [] Quick task creation modal via shortcut (eg, /new command)
 - [] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
 - [] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
 - [] Set priority levels for tasks (with default & customisable settings)
@@ -91,7 +93,8 @@ Message Queues
 
 - [] Search & filter tasks based on various criteria (due date, priority, status, etc.)
 - [] Tagging System for easiar searching
-- [] Sync tasks with Google calendar, etc
+- [] Sync tasks with Google Calendar + Outlook
+- [] Two-way sync with Google Calendar + Outlook
 
 </details>
 
@@ -124,8 +127,15 @@ Message Queues
 
 - [] Light/dark themes
 - [] Offline mode
+- [] Pinned messages/comments
+- [] Meeting scheduling linked with task deadlines
 - [] Sync offline updates with online database automatically when online
   - [] Resolve syncing issues with different devices syncing concurrently with different updates
+- [] Have calendar notification from tasks
+  - [] Natural Language Processing for due date parsing (eg, "next Monday at 5pm")
+  - [] Smart task suggestions/reminders based on usage
+  - [] Auto-prioritization using a weighted urgency matrix (Eisenhower matrix)
+- [] Skeleton loaders & Lazy loading
 
 </details>
 
@@ -159,10 +169,13 @@ Message Queues
 - [] Real-time task allotment to team members
 - [] Collaborate & share tasks with others
 - [] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
+  - [] Audit log dashboard for admin role
+- [] Allow users to download their audit logs
 - [] Task comments/mentions `@username` for effective communication or to put comments on tasks
 - [] In-App chat app
   - [] Communicate with team members directly in the app
-  - [] Real-Time (Optional)
+  - [] Real-Time
+- [] Teams joining link sharing
 
 </details>
 
@@ -173,28 +186,36 @@ Message Queues
 - [] Leaderboard to view rankings for task completion across teams or individuals
 - [] Record & attach voice memos to tasks for additional context
 - [] Allow undo for accidental deletions or updates (eg, restore deleted tasks) on pressing `Cntrl + Z`
+- [] Implement Message Queues
+- [] Under maintenance page when website is down
+- [] 404 error page (for both landing & user pages)
+- [] "Something went wrong! Try again later." page (Timeout functionality)
 
 </details>
 
 <details open>
   <summary><strong>Security Features</strong></summary>
 
-- [] Rate Limiting on Login or OTP endpoints
-- [] Delay spammed queries
+- [x] Rate Limiting on all endpoints using Express-Rate-Limiter
+- [x] Delay spammed queries using Express-Slow-Down
+- [] Add CSRF protection
+- [] Debouncing or Throttling
+- [] Use Helmet.js for secure HTTP headers
 - [] Passwords are hashed & salted before pushing to database
 - [] Encrypt sensitive user data & enforce HTTPS to secure communications
 - [] Track, log, & view sensitive actions like logins & profile updates
 - [] Privacy Controls: Add user controls for account/tasks visibility, such as sharing tasks with specific people only
 - [] MFA (Multi-Factor Authentication) support (eg, OTP + password) for enhanced account security
 - [] Provide feedback during password creation to encourage strong passwords
+- [] Implement SSL certificate
 
 </details>
 
 <details open>
   <summary><strong>Authentication Enhancements</strong></summary>
 
-- [] Expire session tokens after a set duration & prompt re-login
-- [] Implement JWT Refresh Tokens for secure, continuous sessions
+- [] Implement Refresh Tokens for secure, continuous sessions to avoid login again & again
+- [] Expire session tokens after a set duration
 - [] Manage all sessions based on MAC address (max devices of 3)
   - [] Log out from all devices simultaneously
 
@@ -225,11 +246,23 @@ Message Queues
 <details open>
   <summary><strong>Cloud Solutions</strong></summary>
 
+- [] Dockerize frontend & backend for portability
+- [] Use Nginx as a reverse proxy for production
+- [] Use Terraform/Ansible for infrastructure as code (future scale)
 - [] Load balancers
 - [] CDNs (if required)
 - [] Distributed Databases
   - [] Sharding & Replication in Databases
 - [] Redis cache
+
+</details>
+
+<details open>
+  <summary><strong>Mobile App</strong></summary>
+
+- [] Initial setup of React Native app
+- [] All features in the mobile app too
+- [] Add Widgets
 
 </details>
 

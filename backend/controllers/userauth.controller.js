@@ -3,7 +3,7 @@
 require("dotenv").config();
 const User = require("../models/user.model");
 const OTP = require("../models/otp.model");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { createDefaultCategories } = require("./account.controller.js");
@@ -25,6 +25,8 @@ const {
   generateOTP,
   compareOTP,
 } = require("../utils/otp.utils.js");
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const handleRefreshToken = async (req, res) => {};
 
@@ -138,7 +140,7 @@ const handleResetPassword = async (req, res) => {
         error: "Email, New Password, and token are required",
       });
     }
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
       if (err) {
         return res.status(401).json({ error: "Invalid or expired token" });
       }
