@@ -53,56 +53,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 
 ## TODO
 
-<details open>
-  <summary><strong>Task Management</strong></summary>
-    
-- [Current] **CRUD Tasks:** Create, Read, Update, Delete tasks
-- [] Task completion
-  - [] Mark tasks as completed or pending (not In-Progress)
-- [] Custom status pipelines (e.g., Not Started → In Progress → Review → Done)
-- [] Drag & drop task prioritization within lists
-- [] Task templates (for recurring workflows)
-- [] Quick task creation modal via shortcut (eg, /new command)
-- [] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
-- [] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
-- [] Set priority levels for tasks (with default & customisable settings)
-- [] Add the ability to set & track task due dates
-- [] Allow users to add detailed descriptions or notes to each task
-- [] Organise tasks into default or custom categories
-- [] Archive completed tasks for future reference
-- [] Deleted tasks are stored in the recycle bin for 30 days before permanent deletion
-
-</details>
-
-<details open>
-  <summary><strong>Analysis</strong></summary>
-
-- [] Visualisation dashboards (eg, task breakdown by category or completion status)
-  - [] Graphs
-  - [] Pie Charts
-  - [] Histograms
-- [] Track time spent on each task
-- [] Visualise how many tasks are completed over time using graphs or charts
-- [] Generate reports of missed deadlines with reasons (eg, not started, in progress)
-- [] Analyse the percentage of tasks marked as high, medium, or low priority
-- [] Show how tasks are distributed across categories
-- [] Analyse task distribution among collaborators
-
-</details>
-
-<details open>
-  <summary><strong>Search & Organisation</strong></summary>
-
-- [] Search & filter tasks based on various criteria (due date, priority, status, etc.)
-  - [] Debouncing (frontend)
-  - [] Throttling (frontend)
-- [] Tagging System for easiar searching
-- [] Sync tasks with Google Calendar + Outlook
-- [] Two-way sync with Google Calendar + Outlook
-
-</details>
-
-<details open>
+<details closed>
   <summary><strong>User Authentication</strong></summary>
 
 - [x] Basic login/register
@@ -121,80 +72,6 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Account
   - [x] Password change
   - [x] More personalisation
-
-</details>
-
-<details open>
-  <summary><strong>User Interface & Experience</strong></summary>
-
-- [] Light/dark themes
-- [] Offline mode
-- [] Pinned messages/comments
-- [] Meeting scheduling linked with task deadlines
-- [] Sync offline updates with online database automatically when online
-  - [] Resolve syncing issues with different devices syncing concurrently with different updates
-- [] Have calendar notification from tasks
-  - [] Natural Language Processing for due date parsing (eg, "next Monday at 5pm")
-  - [] Smart task suggestions/reminders based on usage
-  - [] Auto-prioritization using a weighted urgency matrix (Eisenhower matrix)
-- [] Skeleton loaders & Lazy loading
-
-</details>
-
-<details open>
-  <summary><strong>Notifications</strong></summary>
-
-- [] Email notifications
-  - [] Password changes
-  - [] Profile updates
-  - [] Task updates
-- [] Push notifications
-  - [] Password changes
-  - [] Profile updates
-  - [] Real-time updates/alerts
-  - [] Tasks updates
-  - [] Reminders
-- [] Desktop notifications
-  - [] Task updates
-  - [] Reminders
-- [] In-app notifications
-  - [] Real-time
-- [] Client location-based reminders notifications
-- [] Missed/overdue task notifications
-- [] Customisable task reminder settings - how & when users are to be notified (eg, push, email, or desktop, etc)
-
-</details>
-
-<details open>
-  <summary><strong>Collaboration & Sharing</strong></summary>
-
-- [] Real-time task allotment to team members
-- [] Collaborate & share tasks with others
-- [] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
-  - [] Audit log dashboard for admin role
-- [] Allow users to download their audit logs
-- [] Task comments/mentions `@username` for effective communication or to put comments on tasks
-- [] In-App chat app
-  - [] Communicate with team members directly in the app
-  - [] Real-Time
-- [] Teams joining link sharing
-
-</details>
-
-<details open>
-  <summary><strong>Additional Enhancements</strong></summary>
-
-- [] Attach files or documents to tasks
-- [] Leaderboard to view rankings for task completion across teams or individuals
-- [] Record & attach voice memos to tasks for additional context
-- [] Allow undo for accidental deletions or updates (eg, restore deleted tasks) on pressing `Cntrl + Z`
-- [] Implement Message Queues
-- [x] Under maintenance page for when page is in maintenance
-- [x] "Something went wrong! Try again later." page (Timeout functionality)
-- [] Export data (Optional)
-  - [] PDF
-  - [] CSV
-  - [] Excel
 
 </details>
 
@@ -220,7 +97,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Implement on backend
   - [] Implement on frontend
     - [] Add CSRF token to context
-- [x] Passwords are hashed & salted before pushing to database
+- [x] Passwords are hashed & salted before storing in database
 - [] Encrypt sensitive user data
 - [] Privacy Controls: Add user controls for account/tasks visibility, such as sharing tasks with specific people only
 - [] MFA (Multi-Factor Authentication) support (eg, OTP + password) for enhanced account security
@@ -228,6 +105,129 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Audit log : track, log, & view sensitive actions like logins & profile updates (Optional)
 - [] Implement SSL certificate
 - [] Enforce HTTPS to secure communications
+
+</details>
+
+<details open>
+  <summary><strong>Task Management</strong></summary>
+
+- [x] CRUD endpoints
+- [] Custom task status pipelines (eg, Intial → Pending → Started → Review → Completed)
+- [] Drag & drop task prioritization within lists
+- [] Task templates (for recurring workflows)
+- [] Quick task creation modal via shortcut (eg, /new command)
+- [] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
+- [] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
+- [] Set priority levels for tasks (with default & customisable settings)
+- [] Add the ability to set & track task due dates
+- [] Allow users to add detailed descriptions or notes to each task
+- [] Organise tasks into default or custom categories
+- [] Archive completed tasks for future reference
+- [] Deleted tasks are stored in the recycle bin for 30 days before permanent deletion
+
+</details>
+
+<details open>
+  <summary><strong>Search & Organisation</strong></summary>
+
+- [] Search & filter tasks based on various criteria (due date, priority, status, etc.)
+  - [] Debouncing (frontend)
+  - [] Throttling (frontend)
+- [] Tagging System for easiar searching
+- [] Sync tasks with Google Calendar + Outlook
+- [] Two-way sync with Google Calendar + Outlook
+
+</details>
+
+<details open>
+  <summary><strong>Collaboration & Sharing</strong></summary>
+
+- [] Real-time task allotment to team members
+- [] Collaborate & share tasks with others
+- [] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
+  - [] Audit log dashboard for admin role
+- [] Allow users to download their audit logs
+- [] Task comments/mentions `@username` for effective communication or to put comments on tasks
+- [] In-App chat app
+  - [] Communicate with team members directly in the app
+  - [] Real-Time
+- [] Teams joining link sharing
+
+</details>
+
+<details open>
+  <summary><strong>Analysis</strong></summary>
+
+- [] Visualisation dashboards (eg, task breakdown by category or completion status)
+  - [] Graphs
+  - [] Pie Charts
+  - [] Histograms
+- [] Track time spent on each task
+- [] Visualise how many tasks are completed over time using graphs or charts
+- [] Generate reports of missed deadlines with reasons (eg, not started, in progress)
+- [] Analyse the percentage of tasks marked as high, medium, or low priority
+- [] Show how tasks are distributed across categories
+- [] Analyse task distribution among collaborators
+
+</details>
+
+<details open>
+  <summary><strong>User Interface & User Experience</strong></summary>
+
+- [] Light/dark themes
+- [] Offline mode
+- [] Pinned messages/comments
+- [] Meeting scheduling linked with task deadlines
+- [] Sync offline updates with online database automatically when online
+  - [] Resolve syncing issues with different devices syncing concurrently with different updates
+- [] Have calendar notification from tasks
+  - [] Natural Language Processing for due date parsing (eg, "next Monday at 5pm")
+  - [] Smart task suggestions/reminders based on usage
+  - [] Auto-prioritization using a weighted urgency matrix (Eisenhower matrix)
+- [] Skeleton loaders & Lazy loading
+
+</details>
+
+<details open>
+  <summary><strong>Notifications</strong></summary>
+
+- [] Email notifications
+  - [x] Password changes
+  - [] Profile updates
+  - [] Task updates
+- [] Push notifications
+  - [] Password changes
+  - [] Profile updates
+  - [] Real-time updates/alerts
+  - [] Tasks updates
+  - [] Reminders
+- [] Desktop notifications
+  - [] Task updates
+  - [] Reminders
+- [] In-app notifications
+  - [] Real-time
+- [] Client location-based reminders notifications
+- [] Missed/overdue task notifications
+- [] Customisable task reminder settings - how & when users are to be notified (eg, push, email, or desktop, etc)
+
+</details>
+
+<details open>
+  <summary><strong>Additional Enhancements</strong></summary>
+
+- [] Attach files or documents to tasks
+- [] Leaderboard to view rankings for task completion across teams or individuals
+- [] Record & attach voice memos to tasks for additional context
+- [] Button control
+  - [] Allow undo on pressing `Cntrl + Z`
+  - [] Allow redo on pressing `Cntrl + Y`
+- [] Implement Message Queues
+- [x] Under maintenance page for when page is in maintenance
+- [x] "Something went wrong! Try again later." page (Timeout functionality)
+- [] Export data (Optional)
+  - [] PDF
+  - [] CSV
+  - [] Excel
 
 </details>
 
@@ -274,12 +274,19 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Initial setup of React Native app
 - [] All features in the mobile app too
 - [] Add Widgets
+- [] Push notifications
+  - [] Password changes
+  - [] Profile updates
+  - [] Real-time updates/alerts
+  - [] Tasks updates
+  - [] Reminders
+- [] Light/Dark mode (Default -> System)
 
-</details>
+  </details>
 
 ---
 
-### (Available Scripts - For Devs)
+## (Available Scripts - For Devs)
 
 <details>
   <summary>Start</summary>
