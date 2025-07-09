@@ -51,6 +51,15 @@ const tasksSchema = new mongoose.Schema(
       ],
       default: "Initial",
     },
+    recurrence: {
+      type: {
+        type: String,
+        enum: ["none", "daily", "weekly", "monthly", "quarterly", "yearly"],
+        default: "none",
+      },
+      interval: Number, // Optional custom interval
+      endsOn: Date, // Optional end date
+    },
     priority: {
       type: String,
       enum: ["Low", "Medium", "High"],
@@ -70,6 +79,18 @@ const tasksSchema = new mongoose.Schema(
     deletedAt: {
       type: Date,
     },
+    subtasks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tasks",
+      },
+    ],
+    dependsOn: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tasks",
+      },
+    ],
   },
   { timestamps: true }
 );

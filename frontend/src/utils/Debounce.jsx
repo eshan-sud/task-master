@@ -1,4 +1,4 @@
-// frontend/src/utils/Debounce.js
+// frontend/src/utils/Debounce.jsx
 
 export const debounce = (fn, delay) => {
   let timeout;

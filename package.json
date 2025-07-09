@@ -23,7 +23,8 @@
     "concurrently": "^9.1.2"
   },
   "dependencies": {
-    "csurf": "^1.11.0",
-    "helmet": "^8.1.0"
+    "clean": "^4.0.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }

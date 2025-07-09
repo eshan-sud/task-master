@@ -5,15 +5,16 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { endpoints } from "../ApiEndpoints.js";
+import { endpoints } from "../ApiEndpoints.jsx";
 
 import { Field, EmailField, GenderInput } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
 import { showSpinnerToast } from "../components/Elements.jsx";
 
+const siteKey = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
+
 const RegisterForm = () => {
-  const siteKey = process.env.REACT_APP_GOOGLE_RECAPTCHA_SITE_KEY;
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

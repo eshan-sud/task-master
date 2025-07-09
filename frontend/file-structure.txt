@@ -1,14 +1,39 @@
 frontend/
 ├── public/
-│   ├── assets/
 │   ├── favicon_io/
+│   │   ├── about.txt 
+│   │   ├── android-chrome-192x192.png
+│   │   ├── android-chrome-512x512.png
+│   │   ├── apple-touch-icon.png
+│   │   ├── favicon-16x16.png
+│   │   ├── favicon-32x32.png
+│   │   ├── favicon.ico
+│   │   └── site.webmanifest
 │   ├── index.html
 │   ├── logo192.png         ← have to replace
 │   ├── logo512.png         ← have to replace
-│   ├── manifest.json       ← have to replace
-│   └── robots.txt          ← have to replace
+│   ├── manifest.json
+│   └── robots.txt
 ├── src/
+│   ├── assets/
+│   │   ├── data/
+│   │   │   ├── data
+│   │   │   └── features.json
+│   │   ├── images/
+│   │   │   ├── creator.jpg
+│   │   │   ├── female.svg
+│   │   │   ├── male.svg
+│   │   │   ├── non_binary.svg
+│   │   │   └── none.svg
+│   │   └── videos/
+│   │       └── background.mp4
 │   ├── components/
+│   │   ├── chat/
+│   │   |   ├── ChatDock.jsx
+│   │   |   ├── ChatTabsManager.jsx
+│   │   |   ├── ChatWindow.jsx
+│   │   |   ├── MessageBubble.jsx
+│   │   |   └── NewChatPopup.jsx
 │   │   ├── home/
 │   │   |   ├── FAQs.jsx
 │   │   |   ├── Feature.jsx
@@ -52,6 +77,7 @@ frontend/
 │   │   └── Register.jsx
 │   ├── utils/
 │   │   ├── AuthContext.js
+│   │   ├── Debounce.js
 │   │   ├── DebugComponent.js
 │   │   ├── EmailValidator.js
 │   │   ├── LightModeContext.js
@@ -59,12 +85,12 @@ frontend/
 │   │   └── RememberMeContext.js
 │   ├── ApiEndpoints.js
 │   ├── App.css
-│   ├── App.js
-│   ├── App.test.js
+│   ├── App.jsx
 │   ├── index.css
-│   ├── index.js
-│   ├── reportWebVitals.js
-│   └── setupTests.js
+│   └── main.jsx
 ├── .env
+├── eslint.config.js
+├── index.html
 ├── package.json
-└── tailwind.config.js
+├── tailwind.config.js
+└── vite.config.js

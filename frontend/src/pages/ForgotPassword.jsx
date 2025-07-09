@@ -11,7 +11,7 @@ import { SubmitButton } from "../components/Buttons";
 import { showSpinnerToast } from "../components/Elements.jsx";
 import { OTPVerificationForm } from "../components/Popups.jsx";
 
-import { endpoints } from "../ApiEndpoints.js";
+import { endpoints } from "../ApiEndpoints.jsx";
 
 const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
   const handleForgotPassword = async (event) => {

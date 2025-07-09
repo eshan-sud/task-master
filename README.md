@@ -6,19 +6,26 @@ This application is ideal for individuals, teams, or organisations looking for a
 
 ## Technologies Used:
 
-- JavaScript
+- Programming Languages
+
+  - JavaScript
+
+- Package Manage
+
+  - npm
 
 - Cloud
 
-  - GCP (Google Cloud Platform)
+  - GCP (Google Cloud Platform) or AWS (Amazon Web Services)
 
 - Database
 
   - MongoDB
-  - Redis
+  - Redis (Cache)
 
 - Frontend
 
+  - Vite
   - React.js
   - Full Calendar
   - redux
@@ -38,6 +45,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   - body-parser
   - cookie-parser
   - cors
+  - crypto
   - dotenv
   - express
   - express-rate-limiter
@@ -88,6 +96,11 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] Cookie-based Token Delivery
 - [x] Rate limiting
 - [x] Delay spammed queries
+- [] Prevent web scraping
+  - [x] Robots.txt
+  - [x] Captchas
+  - [x] Rate Limiting
+  - [] IP Blocking (Use extra links that can't be found by any user, but a web scrapper could & if they visit that link, we block that IP address from accessing the content)
 - [] Add XSS protection
   - [x] Implement on backend
   - [] Implement on frontend
@@ -97,24 +110,32 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Implement on backend
   - [] Implement on frontend
     - [] Add CSRF token to context
+- [] Protection against Eavesdropping & MiTM (Man-in-the-Middle) attacks
+  - [] Implement SSL certificate from `Let's Encrypt`
+  - [] Add CertBot to renew SSL certificate automatically
+  - [] Enforce HTTPS to secure communications
+- [x] E2EE (End-to-end encryption) functions
+- [] Encrypted file uploads
 - [x] Passwords are hashed & salted before storing in database
-- [] Encrypt sensitive user data
 - [] Privacy Controls: Add user controls for account/tasks visibility, such as sharing tasks with specific people only
 - [] MFA (Multi-Factor Authentication) support (eg, OTP + password) for enhanced account security
 - [] Provide feedback during password creation to encourage strong passwords
-- [] Audit log : track, log, & view sensitive actions like logins & profile updates (Optional)
-- [] Implement SSL certificate
-- [] Enforce HTTPS to secure communications
+- [] Audit logs: track, log, & view sensitive actions like logins & profile updates (Optional)
 
 </details>
 
 <details open>
   <summary><strong>Task Management</strong></summary>
 
-- [x] CRUD endpoints
+- [x] CRUD endpoints on backend
+- [] Task creation on frontend
+- [x] File upload
+  - [] Backend
+  - [] Frontend
 - [] Custom task status pipelines (eg, Intial → Pending → Started → Review → Completed)
 - [] Drag & drop task prioritization within lists
-- [] Task templates (for recurring workflows)
+- [] Recurring tasks
+- [] Encrypted tasks w/ end-to-end encryption (only available on user's own private key not stored anywhere using AES-256)
 - [] Quick task creation modal via shortcut (eg, /new command)
 - [] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
 - [] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
@@ -122,8 +143,8 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Add the ability to set & track task due dates
 - [] Allow users to add detailed descriptions or notes to each task
 - [] Organise tasks into default or custom categories
-- [] Archive completed tasks for future reference
-- [] Deleted tasks are stored in the recycle bin for 30 days before permanent deletion
+- [] Archive completed tasks
+- [] Recycle bin (30 day lifecycle)
 
 </details>
 
@@ -149,8 +170,10 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Allow users to download their audit logs
 - [] Task comments/mentions `@username` for effective communication or to put comments on tasks
 - [] In-App chat app
+  - [x] User Interface
   - [] Communicate with team members directly in the app
   - [] Real-Time
+  - [] End-to-end encryption
 - [] Teams joining link sharing
 
 </details>

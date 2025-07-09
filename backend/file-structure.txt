@@ -22,6 +22,7 @@ backend/
 │   ├── account.route.js
 │   ├── avatar.route.js
 │   ├── categories.route.js
+│   ├── otp.route.js
 │   ├── tasks.route.js
 │   └── userauth.route.js
 ├── uploads/
@@ -29,6 +30,7 @@ backend/
 │   ├── auth.utils.js
 │   ├── dbConnection.js
 │   ├── emailService.js
+│   ├── encryption.utils.js
 │   ├── export.js
 │   └── otp.utils.js
 ├── .env

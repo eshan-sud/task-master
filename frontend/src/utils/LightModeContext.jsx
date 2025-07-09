@@ -1,4 +1,4 @@
-// frontend/src/utils/LightModeContext.js
+// frontend/src/utils/LightModeContext.jsx
 
 import { createContext, useState } from "react";
 

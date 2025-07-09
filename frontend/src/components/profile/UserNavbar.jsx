@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { CiUser } from "react-icons/ci";
-import { useRememberMe } from "../../utils/RememberMeContext.js";
+import { useRememberMe } from "../../utils/RememberMeContext.jsx";
 
 import { SearchField } from "../Fields.jsx";
 import { NotificationPanel } from "./NotificationPanel.jsx";
 import { NotificationButton, LightDarkModeButton } from "../Buttons.jsx";
 import { AvatarPopup } from "../Popups.jsx";
 
-import { endpoints } from "../../ApiEndpoints";
+import { endpoints } from "../../ApiEndpoints.jsx";
 
 export const UserNavbar = () => {
   const { isRememberMe } = useRememberMe();

@@ -10,9 +10,9 @@ import { DisabledButton, SubmitButton } from "../Buttons.jsx";
 import { OTPPopup, DeleteConfirmation } from "../Popups.jsx";
 import { showSpinnerToast } from "../Elements.jsx";
 
-import { endpoints } from "../../ApiEndpoints.js";
-import { useRememberMe } from "../../utils/RememberMeContext.js";
-import AuthContext from "../../utils/AuthContext.js";
+import { endpoints } from "../../ApiEndpoints.jsx";
+import { useRememberMe } from "../../utils/RememberMeContext.jsx";
+import AuthContext from "../../utils/AuthContext.jsx";
 
 export const Settings = () => {
   const { isRememberMe } = useRememberMe();

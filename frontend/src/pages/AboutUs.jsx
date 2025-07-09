@@ -19,6 +19,14 @@ export default function AboutUs() {
             striving for better collaboration, Task Master is here to support
             you every step of the way.
           </p>
+          <div className="mt-6">
+            <a
+              href="/contact"
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+            >
+              Get in Touch
+            </a>
+          </div>
         </div>
       </div>
     </div>

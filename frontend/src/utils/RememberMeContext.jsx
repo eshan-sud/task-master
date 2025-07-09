@@ -1,4 +1,4 @@
-// frontend/src/utils/RememberMeContext.js
+// frontend/src/utils/RememberMeContext.jsx
 
 import { createContext, useContext, useState, useEffect } from "react";
 

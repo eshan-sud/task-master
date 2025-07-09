@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
-import { useRememberMe } from "../utils/RememberMeContext.js";
-import { endpoints } from "../ApiEndpoints.js";
+import { useRememberMe } from "../utils/RememberMeContext.jsx";
+import { endpoints } from "../ApiEndpoints.jsx";
 import { CiUser } from "react-icons/ci";
 
 import { SubmitButton, CloseButton } from "./Buttons.jsx";

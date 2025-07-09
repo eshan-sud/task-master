@@ -8,19 +8,19 @@ import { UserNavbar } from "./profile/UserNavbar.jsx";
 import { Sidebar } from "./profile/Sidebar.jsx";
 import { WelcomePopup } from "../components/Popups.jsx";
 
-import AuthContext from "../utils/AuthContext.js";
-import LightModeContext from "../utils/LightModeContext.js";
+import AuthContext from "../utils/AuthContext.jsx";
+import LightModeContext from "../utils/LightModeContext.jsx";
 
 export const Layout = ({ children }) => {
   const { toggleLightMode } = useContext(LightModeContext);
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       {!isAuthenticated ? (
         <>
           <Navbar LightModeContext={LightModeContext} />
-          <div>{children}</div>
+          <div className="flex-grow">{children}</div>
           <Footer LightModeContext={LightModeContext} />
           <HomeBackground LightModeContext={LightModeContext} />
         </>
@@ -35,6 +35,6 @@ export const Layout = ({ children }) => {
           <div className="ml-16 mt-16 p-8">{children}</div>
         </>
       )}
-    </>
+    </div>
   );
 };

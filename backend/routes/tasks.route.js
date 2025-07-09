@@ -10,6 +10,9 @@ const {
   handleDeleteTask,
   handleRestoreTask,
   handleGetDeletedTasks,
+  handleAddSubtask,
+  handleGetSubtasks,
+  checkAndUpdateParentStatus,
 } = require("../controllers/tasks.controller");
 
 const router = express.Router();
@@ -28,6 +31,8 @@ router.patch(
   upload.array("files", 5),
   handleUpdateTask
 );
+router.post("/subtask", authenticate, handleAddSubtask);
+router.get("/subtasks/:taskId", authenticate, handleGetSubtasks);
 router.delete("/delete", authenticate, handleDeleteTask);
 router.patch("/restore", authenticate, handleRestoreTask);
 router.get("/recycle-bin", authenticate, handleGetDeletedTasks);

@@ -1,4 +1,4 @@
-// frontend/src/ApiEndpoints.js
+// frontend/src/ApiEndpoints.jsx
 
 // Base URL
 const baseURL = "http://localhost:8000/api/v1/";

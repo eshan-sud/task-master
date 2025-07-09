@@ -74,7 +74,8 @@ const handleUpdateTask = async (req, res) => {
     task.status = status ?? task.status;
     task.category = category ?? task.category;
     await task.save();
-    res.status(200).json({ message: "Task updated", task });
+    await checkAndUpdateParentStatus(taskId);
+    return res.status(200).json({ message: "Task updated", task });
   } catch (error) {
     console.error("[handleUpdateTask] Error", error);
     return res.status(500).json({ error: "Something went wrong" });
@@ -130,6 +131,69 @@ const handleGetDeletedTasks = async (req, res) => {
   }
 };
 
+const handleAddSubtask = async (req, res) => {
+  try {
+    const { parentTaskId, text, description, dueDate, priority, status } =
+      req.body;
+    if (!parentTaskId || !text) {
+      return res.status(400).json({ error: "Parent ID and text required" });
+    }
+    const parent = await Task.findOne({
+      _id: parentTaskId,
+      userId: req.user._id,
+    });
+    if (!parent || parent.isDeleted) {
+      return res.status(404).json({ error: "Parent task not found" });
+    }
+    const subtask = await Task.create({
+      userId: req.user._id,
+      text,
+      description,
+      dueDate,
+      priority,
+      status,
+      category: parent.category, // Inherit from parent
+    });
+    parent.subtasks.push(subtask._id);
+    await parent.save();
+    return res.status(201).json({ message: "Subtask created", subtask });
+  } catch (error) {
+    console.error("[handleAddSubtask]", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+const handleGetSubtasks = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const parent = await Task.findOne({
+      _id: taskId,
+      userId: req.user._id,
+    }).populate("subtasks");
+    if (!parent || parent.isDeleted) {
+      return res.status(404).json({ error: "Parent task not found" });
+    }
+    res.status(200).json(parent.subtasks);
+  } catch (error) {
+    console.error("[handleGetSubtasks]", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+};
+
+const checkAndUpdateParentStatus = async (taskId) => {
+  const parent = await Task.findOne({ subtasks: taskId });
+  if (!parent) return;
+  const subtasks = await Task.find({
+    _id: { $in: parent.subtasks },
+    isDeleted: false,
+  });
+  const allCompleted = subtasks.every((t) => t.status === "Completed");
+  if (allCompleted && parent.status !== "Completed") {
+    parent.status = "Completed";
+    await parent.save();
+  }
+};
+
 module.exports = {
   handleCreateTask,
   handleGetTasks,
@@ -137,4 +201,7 @@ module.exports = {
   handleDeleteTask,
   handleRestoreTask,
   handleGetDeletedTasks,
+  handleAddSubtask,
+  handleGetSubtasks,
+  checkAndUpdateParentStatus,
 };

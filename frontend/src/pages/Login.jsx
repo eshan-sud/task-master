@@ -3,18 +3,19 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import AuthContext from "../utils/AuthContext.js";
-import { useRememberMe } from "../utils/RememberMeContext.js";
+import AuthContext from "../utils/AuthContext.jsx";
+import { useRememberMe } from "../utils/RememberMeContext.jsx";
 import { GoogleLogin } from "@react-oauth/google";
 import "../App.css";
 
-import { endpoints } from "../ApiEndpoints.js";
+import { endpoints } from "../ApiEndpoints.jsx";
 
 import { Field, EmailField } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
 
 // Add this on 3-4 failed login attempts - maybe put the no. of failed attempts in cache storage or session storage?
+// Also define it for vite application
 // import ReCAPTCHA from "react-google-recaptcha";
 // import GOOGLE_RECAPTCHA_SITE_KEY from process.env.GOOGLE_RECAPTCHA_SITE_KEY;
 // <span>

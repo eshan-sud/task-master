@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationPopup } from "../../components/Popups.jsx";
 import AuthContext from "../../utils/AuthContext";
-import { useRememberMe } from "../../utils/RememberMeContext.js";
+import { useRememberMe } from "../../utils/RememberMeContext.jsx";
 import { endpoints } from "../../ApiEndpoints";
 
 const Logout = ({ toggleLogoutModal }) => {

@@ -1,4 +1,4 @@
-// frontend/src/App.js
+// frontend/src/App.jsx
 
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
@@ -21,8 +21,8 @@ import { Archive } from "./components/profile/Archive.jsx";
 import { Teams } from "./components/profile/Teams.jsx";
 import { Settings } from "./components/profile/Settings.jsx";
 
-import AuthContext from "./utils/AuthContext.js";
-import LightModeContext from "./utils/LightModeContext.js";
+import AuthContext from "./utils/AuthContext.jsx";
+import LightModeContext from "./utils/LightModeContext.jsx";
 
 // Debug Component
 // import DebugComponent from "./utils/DebugComponent";

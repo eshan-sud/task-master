@@ -1,8 +1,11 @@
-// frontend/tailwind.config.js
+// frontend/vite.config.js
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{html,js,jsx}"],
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  content: ["./src/**/*.{html,jsx}"],
   safelist: [
     {
       pattern:
@@ -55,5 +58,8 @@ module.exports = {
       },
     },
   },
-  plugins: [],
-};
+  server: {
+    port: 3000, // Frontend port
+  },
+  plugins: [react(), tailwindcss()],
+});

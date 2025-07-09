@@ -5,10 +5,10 @@ import toast from "react-hot-toast";
 import { CgSearch } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
 
-import { CircularLabel } from "./Labels";
+import { CircularLabel } from "./Labels.jsx";
 
-// import { endpoints } from "../ApiEndpoints.js";
-import { EmailValidator, isValidEmail } from "../utils/EmailValidator.js";
+// import { endpoints } from "../ApiEndpoints.jsx";
+import { EmailValidator, isValidEmail } from "../utils/EmailValidator.jsx";
 
 export const SearchField = () => {
   const [isHovered, setIsHovered] = useState(false);

@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 import { Background } from "../components/profile/Background.jsx";
 import { NoteContainer } from "../components/profile/Tasks.jsx";
 
-import { endpoints } from "../ApiEndpoints.js";
-import { useRememberMe } from "../utils/RememberMeContext.js";
+import { endpoints } from "../ApiEndpoints.jsx";
+import { useRememberMe } from "../utils/RememberMeContext.jsx";
 
 import {
   AddButton,
@@ -17,6 +17,7 @@ import {
   AddNew,
 } from "../components/Buttons.jsx";
 import { showSpinnerToast } from "../components/Elements.jsx";
+import ChatTabsManager from "../components/chat/ChatTabsManager";
 
 export default function Profile() {
   const { isRememberMe } = useRememberMe();
@@ -86,6 +87,7 @@ export default function Profile() {
 
   return (
     <Background>
+      <ChatTabsManager />
       <div className="profile-details mb-8 text-gray-900 dark:text-gray-100">
         <h1 className="text-2xl font-bold mb-2"> Profile </h1>
         <p className="text-lg">

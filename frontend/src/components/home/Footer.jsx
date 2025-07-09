@@ -1,5 +1,7 @@
 // frontend/src/components/home/Footer.jsx
 
+import { FaLinkedin, FaEnvelope, FaGithub } from "react-icons/fa";
+
 export const Footer = () => {
   return (
     <footer className="w-full py-8 bg-gray-900 text-white">
@@ -14,7 +16,9 @@ export const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold"> Eshan Sud </h3>
             <p className="text-sm"> Creator of Task Master </p>
-            <p className="text-sm"> Student @ Manipal University Jaipur </p>
+            <p className="text-sm">
+              Final year student @ Manipal University Jaipur
+            </p>
           </div>
         </div>
         <ul className="flex space-x-6 mb-4 md:mb-0">
@@ -23,10 +27,10 @@ export const Footer = () => {
               key="0"
               href="https://github.com/eshan-sud"
               target="_blank"
-              className="hover:underline"
+              className="flex items-center gap-2 hover:underline"
               rel="noopener noreferrer"
             >
-              GitHub
+              <FaGithub /> GitHub
             </a>
           </li>
           <li>
@@ -34,10 +38,19 @@ export const Footer = () => {
               key="1"
               href="https://www.linkedin.com/in/eshan-sud/"
               target="_blank"
-              className="hover:underline"
+              className="flex items-center gap-2 hover:underline"
               rel="noopener noreferrer"
             >
-              LinkedIn
+              <FaLinkedin /> LinkedIn
+            </a>
+          </li>
+          <li>
+            <a
+              key="2"
+              href="mailto:eshansud22@gmail.com"
+              className="flex items-center gap-2 hover:underline"
+            >
+              <FaEnvelope /> Eshan Sud
             </a>
           </li>
         </ul>
