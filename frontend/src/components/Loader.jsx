@@ -1,6 +1,6 @@
 // frontend/src/components/Loader.jsx
 
-export const Loader = (props) => {
+export const Loader = () => {
   return (
     <div className="w-full h-screen bg-black {/*Light Dark Mode*/} flex justify-center items-center">
       {[0, 0.3, 0.6, 0.9, 1.2].map((delay, index) => (

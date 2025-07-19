@@ -14,14 +14,6 @@ import { Field, EmailField } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
 
-// Add this on 3-4 failed login attempts - maybe put the no. of failed attempts in cache storage or session storage?
-// Also define it for vite application
-// import ReCAPTCHA from "react-google-recaptcha";
-// import GOOGLE_RECAPTCHA_SITE_KEY from process.env.GOOGLE_RECAPTCHA_SITE_KEY;
-// <span>
-//   <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
-// </span>;
-
 const checkVerification = (email) => {};
 
 const LoginForm = () => {
@@ -50,6 +42,7 @@ const LoginForm = () => {
         credentials: "include",
       });
       const message = await response.json();
+      console.log(message);
       if (response.ok) {
         const storage = isRememberMe
           ? window.localStorage

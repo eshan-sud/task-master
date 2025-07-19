@@ -22,14 +22,14 @@ import { Teams } from "./components/profile/Teams.jsx";
 import { Settings } from "./components/profile/Settings.jsx";
 
 import AuthContext from "./utils/AuthContext.jsx";
-import LightModeContext from "./utils/LightModeContext.jsx";
+import ThemeContext from "./utils/ThemeContext.jsx";
 
 // Debug Component
 // import DebugComponent from "./utils/DebugComponent";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
-  const { isLightMode } = useContext(LightModeContext);
+  const { isTheme } = useContext(ThemeContext);
 
   // const [isLoading, setIsLoading] = useState(true);
   // useEffect(() => {
@@ -54,32 +54,32 @@ function App() {
                 <Route
                   exact="true"
                   path="/profile"
-                  element={<Profile isLightMode={isLightMode} />}
+                  element={<Profile isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/dashboard"
-                  element={<Dashboard isLightMode={isLightMode} />}
+                  element={<Dashboard isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/analytics"
-                  element={<Analytics isLightMode={isLightMode} />}
+                  element={<Analytics isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/archive"
-                  element={<Archive isLightMode={isLightMode} />}
+                  element={<Archive isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/teams"
-                  element={<Teams isLightMode={isLightMode} />}
+                  element={<Teams isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/settings"
-                  element={<Settings isLightMode={isLightMode} />}
+                  element={<Settings isTheme={isTheme} />}
                 />
                 <Route
                   exact
@@ -93,32 +93,32 @@ function App() {
                 <Route
                   exact="true"
                   path="/home"
-                  element={<Home isLightMode={isLightMode} />}
+                  element={<Home isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/about-us"
-                  element={<AboutUs isLightMode={isLightMode} />}
+                  element={<AboutUs isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/contact"
-                  element={<Contact isLightMode={isLightMode} />}
+                  element={<Contact isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/login"
-                  element={<Login isLightMode={isLightMode} />}
+                  element={<Login isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/register"
-                  element={<Register isLightMode={isLightMode} />}
+                  element={<Register isTheme={isTheme} />}
                 />
                 <Route
                   exact="true"
                   path="/forgotPassword"
-                  element={<ForgotPassword isLightMode={isLightMode} />}
+                  element={<ForgotPassword isTheme={isTheme} />}
                 />
                 <Route
                   exact

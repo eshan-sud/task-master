@@ -1,7 +1,7 @@
 // frontend/src/ApiEndpoints.jsx
 
 // Base URL
-const baseURL = "http://localhost:8000/api/v1/";
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export const endpoints = {
   // Auth Endpoints

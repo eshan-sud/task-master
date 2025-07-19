@@ -1,10 +1,12 @@
 // frontend/src/components/FeedbackForm.jsx
 
-// import { GOOGLE_RECAPTCHA_SECRET_KEY } from ".env";
-// import ReCAPTCHA from "react-google-recaptcha";
-// <ReCAPTCHA sitekey={siteKey} onChange={handleCaptchaChange} />
+import ReCAPTCHA from "react-google-recaptcha";
+
+const SITE_KEY = import.meta.env.GOOGLE_RECAPTCHA_SITE_KEY;
 
 export const FeedbackForm = () => {
+  const handleCaptchaChange = (event) => {};
+
   return (
     <div className="bg-white border border-slate-200 grid grid-cols-6 gap-2 rounded-xl p-2 text-sm">
       <h1 className="text-center text-slate-200 text-xl font-bold col-span-6">
@@ -55,6 +57,7 @@ export const FeedbackForm = () => {
           ></path>
         </svg>
       </button>
+      {/* <ReCAPTCHA sitekey={SITE_KEY} onChange={handleCaptchaChange} /> */}
     </div>
   );
 };

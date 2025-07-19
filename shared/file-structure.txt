@@ -1,0 +1,10 @@
+shared/
+├── api/
+│   └── api.js              ← Reusable API client using axios/fetch
+├── context/
+│   └── AuthContext.js      ← Can be shared (with platform-specific UI)
+├── validators/
+│   └── EmailValidator.js
+├── constants/
+│   └── endpoints.js        ← Shared endpoint URLs
+└── index.js                ← (optional) exports everything

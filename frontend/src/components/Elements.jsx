@@ -3,7 +3,7 @@
 // import { useContext } from "react";
 import toast from "react-hot-toast";
 
-// import LightModeContext from "../utils/LightModeContext.jsx";
+// import ThemeContext from "../utils/ThemeContext.jsx";
 
 export const Spinner = () => {
   return (

@@ -14,10 +14,10 @@ import {
 import { IoClose } from "react-icons/io5";
 import { IoIosNotifications } from "react-icons/io";
 
-import LightModeContext from "../utils/LightModeContext.jsx";
+import ThemeContext from "../utils/ThemeContext.jsx";
 
 export const LightDarkModeButton = () => {
-  const { isLightMode, toggleLightMode } = useContext(LightModeContext);
+  const { isTheme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <label className="inline-flex items-center relative">
@@ -25,8 +25,8 @@ export const LightDarkModeButton = () => {
         className="peer hidden"
         id="toggle"
         type="checkbox"
-        checked={!isLightMode}
-        onChange={toggleLightMode}
+        checked={!isTheme}
+        onChange={toggleTheme}
       />
       <div className="relative w-[110px] h-[50px] bg-white peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[40px] after:h-[40px] after:bg-gradient-to-r from-orange-500 to-yellow-400 peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[50px] peer-checked:after:left-[105px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md"></div>
       <svg
@@ -207,7 +207,7 @@ export const BackToTopButton = () => {
 
 export const PinButton = () => {
   return (
-    <label className="container flex items-center justify-center w-11 h-11 bg-transparent rounded-lg cursor-pointer transition-transform duration-200 active:scale-90 bg-gray-400 hover:bg-white hover:shadow-md">
+    <label className="container flex items-center justify-center w-11 h-11 bg-transparent rounded-lg cursor-pointer transition-transform duration-200 active:scale-90 hover:bg-white hover:shadow-md">
       <input type="checkbox" className="hidden" />
       <GiPin />
     </label>

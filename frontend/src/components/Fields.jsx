@@ -10,6 +10,8 @@ import { CircularLabel } from "./Labels.jsx";
 // import { endpoints } from "../ApiEndpoints.jsx";
 import { EmailValidator, isValidEmail } from "../utils/EmailValidator.jsx";
 
+const base_resource_path = "/src/assets/images/";
+
 export const SearchField = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -214,7 +216,7 @@ const GenderField = ({ name, title, setGender }) => {
       />
       <CircularLabel title={title} htmlFor={name}>
         <img
-          src={`/assets/images/${name}.svg`}
+          src={`${base_resource_path}${name}.svg`}
           alt={title}
           className="absolute stroke-black"
         />

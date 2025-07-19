@@ -80,7 +80,7 @@ frontend/
 │   │   ├── Debounce.js
 │   │   ├── DebugComponent.js
 │   │   ├── EmailValidator.js
-│   │   ├── LightModeContext.js
+│   │   ├── ThemeContext.js
 │   │   ├── Providers.js
 │   │   └── RememberMeContext.js
 │   ├── ApiEndpoints.js

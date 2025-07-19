@@ -10,7 +10,7 @@ import { CiPhone } from "react-icons/ci";
 import { LoginButton, RegisterButton } from "../Buttons";
 import { MenuItem } from "../Link";
 
-export const Navbar = ({ LightModeContext }) => {
+export const Navbar = ({ ThemeContext }) => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 

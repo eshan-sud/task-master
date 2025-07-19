@@ -2,13 +2,15 @@
 
 import { FaLinkedin, FaEnvelope, FaGithub } from "react-icons/fa";
 
+const creatorImgPath = "/src/assets/images/creator.jpg"
+
 export const Footer = () => {
   return (
     <footer className="w-full py-8 bg-gray-900 text-white">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center mb-6">
         <div className="flex items-center mb-4 md:mb-0">
           <img
-            src="/assets/images/creator.jpg"
+            src={creatorImgPath}
             alt="Creator"
             title="Eshan Sud"
             className="w-16 h-16 object-cover rounded-full mr-4"

@@ -9,29 +9,26 @@ import { Sidebar } from "./profile/Sidebar.jsx";
 import { WelcomePopup } from "../components/Popups.jsx";
 
 import AuthContext from "../utils/AuthContext.jsx";
-import LightModeContext from "../utils/LightModeContext.jsx";
+import ThemeContext from "../utils/ThemeContext.jsx";
 
 export const Layout = ({ children }) => {
-  const { toggleLightMode } = useContext(LightModeContext);
+  const { toggleTheme } = useContext(ThemeContext);
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <div className="min-h-screen flex flex-col">
       {!isAuthenticated ? (
         <>
-          <Navbar LightModeContext={LightModeContext} />
+          <Navbar ThemeContext={ThemeContext} />
           <div className="flex-grow">{children}</div>
-          <Footer LightModeContext={LightModeContext} />
-          <HomeBackground LightModeContext={LightModeContext} />
+          <Footer ThemeContext={ThemeContext} />
+          <HomeBackground ThemeContext={ThemeContext} />
         </>
       ) : (
         <>
-          <UserNavbar
-            LightModeContext={LightModeContext}
-            toggleLightMode={toggleLightMode}
-          />
-          <WelcomePopup LightModeContext={LightModeContext} />
-          <Sidebar LightModeContext={LightModeContext} />
+          <UserNavbar ThemeContext={ThemeContext} toggleTheme={toggleTheme} />
+          <WelcomePopup ThemeContext={ThemeContext} />
+          <Sidebar ThemeContext={ThemeContext} />
           <div className="ml-16 mt-16 p-8">{children}</div>
         </>
       )}

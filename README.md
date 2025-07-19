@@ -38,6 +38,13 @@ This application is ideal for individuals, teams, or organisations looking for a
   - react-router-dom
   - styled-components
 
+  (To Be Used) :-
+
+  - React Tooltip
+  - React Helmet
+  - React Spinners
+  - React
+
 - Backend
 
   - Node.js
@@ -96,6 +103,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] Cookie-based Token Delivery
 - [x] Rate limiting
 - [x] Delay spammed queries
+- [] XML, SQL, DLL, LDAP injection protection
 - [] Prevent web scraping
   - [x] Robots.txt
   - [x] Captchas
@@ -167,6 +175,7 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Collaborate & share tasks with others
 - [] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
   - [] Audit log dashboard for admin role
+  - [] Add permissions
 - [] Allow users to download their audit logs
 - [] Task comments/mentions `@username` for effective communication or to put comments on tasks
 - [] In-App chat app

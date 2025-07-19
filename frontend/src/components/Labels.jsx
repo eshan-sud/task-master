@@ -24,6 +24,6 @@ export const CircularLabel = ({ title, htmlFor, children }) => {
   );
 };
 
-export const Labels = () => {
-  return <></>;
-};
+// export const Labels = () => {
+//   return <></>;
+// };
