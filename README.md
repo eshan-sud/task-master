@@ -1,3 +1,7 @@
+# ABANDONDED FOR A LARGER PROJECT
+
+---
+
 # Task Master - Task Management Web Application
 
 **Task Master** is a powerful task management `full-stack MERN-based web application` that allows users to efficiently manage their tasks with a wide range of features such as task sorting, calendar integration, notifications, & much more.
