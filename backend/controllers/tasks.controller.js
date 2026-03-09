@@ -88,7 +88,7 @@ const handleDeleteTask = async (req, res) => {
     const task = await Task.findOneAndUpdate(
       { _id: taskId, userId: req.user._id },
       { isDeleted: true, deletedAt: new Date() },
-      { new: true }
+      { new: true },
     );
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
@@ -106,7 +106,7 @@ const handleRestoreTask = async (req, res) => {
     const task = await Task.findOneAndUpdate(
       { _id: taskId, userId: req.user._id },
       { isDeleted: false, deletedAt: null },
-      { new: true }
+      { new: true },
     );
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
@@ -194,6 +194,291 @@ const checkAndUpdateParentStatus = async (taskId) => {
   }
 };
 
+/**
+ * Search tasks with full-text search
+ */
+const handleSearchTasks = async (req, res) => {
+  try {
+    const { query, status, category, priority, fromDate, toDate } = req.query;
+
+    const filter = {
+      userId: req.user._id,
+      isDeleted: false,
+    };
+
+    // Text search
+    if (query) {
+      filter.$or = [
+        { text: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ];
+    }
+
+    // Filters
+    if (status) filter.status = status;
+    if (category) filter.category = category;
+    if (priority) filter.priority = priority;
+
+    // Date range
+    if (fromDate || toDate) {
+      filter.dueDate = {};
+      if (fromDate) filter.dueDate.$gte = new Date(fromDate);
+      if (toDate) filter.dueDate.$lte = new Date(toDate);
+    }
+
+    const tasks = await Task.find(filter)
+      .populate("category", "name")
+      .populate("subtasks")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ tasks, count: tasks.length });
+  } catch (error) {
+    console.error("[handleSearchTasks] Error", error);
+    res.status(500).json({ error: "Failed to search tasks" });
+  }
+};
+
+/**
+ * Archive a task
+ */
+const handleArchiveTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findOneAndUpdate(
+      { _id: taskId, userId: req.user._id },
+      { isArchived: true },
+      { new: true },
+    );
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    res.status(200).json({ message: "Task archived successfully", task });
+  } catch (error) {
+    console.error("[handleArchiveTask] Error", error);
+    res.status(500).json({ error: "Failed to archive task" });
+  }
+};
+
+/**
+ * Unarchive a task
+ */
+const handleUnarchiveTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findOneAndUpdate(
+      { _id: taskId, userId: req.user._id },
+      { isArchived: false },
+      { new: true },
+    );
+
+    if (!task) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    res.status(200).json({ message: "Task unarchived successfully", task });
+  } catch (error) {
+    console.error("[handleUnarchiveTask] Error", error);
+    res.status(500).json({ error: "Failed to unarchive task" });
+  }
+};
+
+/**
+ * Get archived tasks
+ */
+const handleGetArchivedTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find({
+      userId: req.user._id,
+      isArchived: true,
+      isDeleted: false,
+    })
+      .populate("category", "name")
+      .sort({ updatedAt: -1 });
+
+    res.status(200).json({ tasks });
+  } catch (error) {
+    console.error("[handleGetArchivedTasks] Error", error);
+    res.status(500).json({ error: "Failed to fetch archived tasks" });
+  }
+};
+
+/**
+ * Bulk update tasks
+ */
+const handleBulkUpdateTasks = async (req, res) => {
+  try {
+    const { taskIds, updates } = req.body;
+
+    if (!taskIds || !Array.isArray(taskIds) || taskIds.length === 0) {
+      return res.status(400).json({ error: "taskIds array is required" });
+    }
+
+    if (!updates || Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: "updates object is required" });
+    }
+
+    // Only allow certain fields to be bulk updated
+    const allowedFields = ["status", "priority", "category", "isArchived"];
+    const filteredUpdates = {};
+
+    Object.keys(updates).forEach((key) => {
+      if (allowedFields.includes(key)) {
+        filteredUpdates[key] = updates[key];
+      }
+    });
+
+    const result = await Task.updateMany(
+      {
+        _id: { $in: taskIds },
+        userId: req.user._id,
+        isDeleted: false,
+      },
+      { $set: filteredUpdates },
+    );
+
+    res.status(200).json({
+      message: "Tasks updated successfully",
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    console.error("[handleBulkUpdateTasks] Error", error);
+    res.status(500).json({ error: "Failed to bulk update tasks" });
+  }
+};
+
+/**
+ * Bulk delete tasks
+ */
+const handleBulkDeleteTasks = async (req, res) => {
+  try {
+    const { taskIds } = req.body;
+
+    if (!taskIds || !Array.isArray(taskIds) || taskIds.length === 0) {
+      return res.status(400).json({ error: "taskIds array is required" });
+    }
+
+    const result = await Task.updateMany(
+      {
+        _id: { $in: taskIds },
+        userId: req.user._id,
+      },
+      {
+        $set: { isDeleted: true, deletedAt: new Date() },
+      },
+    );
+
+    res.status(200).json({
+      message: "Tasks deleted successfully",
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    console.error("[handleBulkDeleteTasks] Error", error);
+    res.status(500).json({ error: "Failed to bulk delete tasks" });
+  }
+};
+
+/**
+ * Create recurring task
+ */
+const handleCreateRecurringTask = async (req, res) => {
+  try {
+    const {
+      category,
+      text,
+      description,
+      dueDate,
+      priority,
+      status,
+      recurrence,
+    } = req.body;
+
+    if (!category || !text) {
+      return res.status(400).json({ error: "Text & category are required" });
+    }
+
+    if (!recurrence || !recurrence.type || recurrence.type === "none") {
+      return res
+        .status(400)
+        .json({ error: "Recurrence configuration is required" });
+    }
+
+    const associatedFiles = req.files ? mapFilesToMetadata(req.files) : [];
+
+    const newTask = await Task.create({
+      userId: req.user._id,
+      category,
+      text,
+      description,
+      dueDate,
+      priority,
+      status,
+      associatedFiles,
+      recurrence: {
+        type: recurrence.type,
+        interval: recurrence.interval || 1,
+        endsOn: recurrence.endsOn || null,
+      },
+    });
+
+    res.status(201).json({
+      message: "Recurring task created successfully",
+      task: newTask,
+    });
+  } catch (error) {
+    console.error("[handleCreateRecurringTask] Error", error);
+    res.status(500).json({ error: "Failed to create recurring task" });
+  }
+};
+
+/**
+ * Get task statistics
+ */
+const handleGetTaskStats = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const stats = await Task.aggregate([
+      { $match: { userId, isDeleted: false } },
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const priorityStats = await Task.aggregate([
+      { $match: { userId, isDeleted: false } },
+      {
+        $group: {
+          _id: "$priority",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    const total = await Task.countDocuments({ userId, isDeleted: false });
+    const overdue = await Task.countDocuments({
+      userId,
+      isDeleted: false,
+      dueDate: { $lt: new Date() },
+      status: { $ne: "Completed" },
+    });
+
+    res.status(200).json({
+      total,
+      overdue,
+      byStatus: stats,
+      byPriority: priorityStats,
+    });
+  } catch (error) {
+    console.error("[handleGetTaskStats] Error", error);
+    res.status(500).json({ error: "Failed to get task statistics" });
+  }
+};
+
 module.exports = {
   handleCreateTask,
   handleGetTasks,
@@ -204,4 +489,12 @@ module.exports = {
   handleAddSubtask,
   handleGetSubtasks,
   checkAndUpdateParentStatus,
+  handleSearchTasks,
+  handleArchiveTask,
+  handleUnarchiveTask,
+  handleGetArchivedTasks,
+  handleBulkUpdateTasks,
+  handleBulkDeleteTasks,
+  handleCreateRecurringTask,
+  handleGetTaskStats,
 };

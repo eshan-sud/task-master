@@ -1,6 +1,7 @@
 // backend/controllers/otp.controller.js
 
 const OTP = require("../models/otp.model");
+const User = require("../models/user.model");
 
 const {
   sendOtpVerificationEmail,
@@ -12,6 +13,8 @@ const {
   generateOTP,
   compareOTP,
 } = require("../utils/otp.utils.js");
+
+const { generateAccessToken } = require("../utils/auth.utils.js");
 
 const handleSendOTP = async (req, res) => {
   try {

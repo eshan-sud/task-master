@@ -1,0 +1,127 @@
+// frontend/src/services/api.service.js
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8023/api/v1";
+
+class APIService {
+  constructor() {
+    this.baseURL = API_BASE_URL;
+  }
+
+  async request(endpoint, options = {}) {
+    const url = `${this.baseURL}${endpoint}`;
+
+    const config = {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      credentials: "include", // Important for cookies
+    };
+
+    try {
+      const response = await fetch(url, config);
+
+      // Handle 401 Unauthorized - token might be expired
+      if (response.status === 401) {
+        // Try to refresh the token
+        const refreshed = await this.refreshToken();
+        if (refreshed) {
+          // Retry the original request
+          return await fetch(url, config).then((r) => this.handleResponse(r));
+        } else {
+          // Redirect to login
+          window.location.href = "/login";
+          throw new Error("Session expired. Please login again.");
+        }
+      }
+
+      return this.handleResponse(response);
+    } catch (error) {
+      console.error("API Error:", error);
+      throw error;
+    }
+  }
+
+  async handleResponse(response) {
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      const error = new Error(
+        data.error || data.message || "API request failed",
+      );
+      error.response = { data, status: response.status };
+      throw error;
+    }
+
+    return { data, status: response.status };
+  }
+
+  async refreshToken() {
+    try {
+      const response = await fetch(`${this.baseURL}/auth/refreshToken`, {
+        method: "GET",
+        credentials: "include",
+      });
+      return response.ok;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      return false;
+    }
+  }
+
+  async get(endpoint, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "GET",
+    });
+  }
+
+  async post(endpoint, data, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async patch(endpoint, data, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async put(endpoint, data, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async delete(endpoint, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "DELETE",
+    });
+  }
+
+  // File upload with multipart/form-data
+  async uploadFile(endpoint, formData, options = {}) {
+    return this.request(endpoint, {
+      ...options,
+      method: "POST",
+      headers: {
+        // Don't set Content-Type, let browser set it with boundary
+        ...options.headers,
+      },
+      body: formData,
+    });
+  }
+}
+
+export const apiService = new APIService();
+export default apiService;

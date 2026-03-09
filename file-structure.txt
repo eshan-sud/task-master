@@ -1,0 +1,158 @@
+Task-Master/
+├── .github
+│   └── workflows
+├── backend
+│   ├── controllers
+│   │   ├── account.controller.js
+│   │   ├── avatar.controller.js
+│   │   ├── categories.controller.js
+│   │   ├── otp.controller.js
+│   │   ├── tasks.controller.js
+│   │   └── userauth.controller.js
+│   ├── middleware
+│   │   ├── auth.js
+│   │   ├── csrf.js
+│   │   ├── maintenance.js
+│   │   ├── multer.js
+│   │   ├── rateLimiter.js
+│   │   └── slowDown.js
+│   ├── models
+│   │   ├── categories.model.js
+│   │   ├── otp.model.js
+│   │   ├── session.model.js
+│   │   ├── tasks.model.js
+│   │   └── user.model.js
+│   ├── public
+│   │   └── maintenance.html
+│   ├── routes
+│   │   ├── account.route.js
+│   │   ├── avatar.route.js
+│   │   ├── categories.route.js
+│   │   ├── otp.route.js
+│   │   ├── tasks.route.js
+│   │   └── userauth.route.js
+│   ├── uploads
+│   ├── utils
+│   │   ├── auditLogger.js
+│   │   ├── auth.utils.js
+│   │   ├── dbConnection.js
+│   │   ├── emailService.js
+│   │   ├── encryption.utils.js
+│   │   ├── export.utils.js
+│   │   └── otp.utils.js
+│   ├── file-structure.txt
+│   ├── package.json
+│   └── server.js
+├── frontend
+│   ├── node_modules
+│   ├── public
+│   │   ├── favicon_io
+│   │   │   ├── about.txt
+│   │   │   ├── android-chrome-192x192.png
+│   │   │   ├── android-chrome-512x512.png
+│   │   │   ├── apple-touch-icon.png
+│   │   │   ├── favicon-16x16.png
+│   │   │   ├── favicon-32x32.png
+│   │   │   ├── favicon.ico
+│   │   │   └── site.webmanifest
+│   │   └── robots.txt
+│   ├── src
+│   │   ├── assets
+│   │   │   ├── data
+│   │   │   │   ├── data
+│   │   │   │   └── features.json
+│   │   │   ├── images
+│   │   │   │   ├── creator.jpg
+│   │   │   │   ├── female.svg
+│   │   │   │   ├── male.svg
+│   │   │   │   ├── non_binary.svg
+│   │   │   │   └── none.svg
+│   │   │   └── videos
+│   │   │       └── --fbackground.mp4
+│   │   ├── components
+│   │   │   ├── chat
+│   │   │   │   ├── ChatDock.jsx
+│   │   │   │   ├── ChatTabsManager.jsx
+│   │   │   │   ├── ChatWindow.jsx
+│   │   │   │   ├── MessageBubble.jsx
+│   │   │   │   ├── MessageInput.jsx
+│   │   │   │   └── NewChatPopup.jsx
+│   │   │   ├── home
+│   │   │   │   ├── FAQs.jsx
+│   │   │   │   ├── Features.jsx
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── HomeBackground.jsx
+│   │   │   │   ├── Introduction.jsx
+│   │   │   │   ├── Navbar.jsx
+│   │   │   │   └── Pricing.jsx
+│   │   │   ├── profile
+│   │   │   │   ├── Analytics.jsx
+│   │   │   │   ├── Archive.jsx
+│   │   │   │   ├── Background.jsx
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── Logout.jsx
+│   │   │   │   ├── NotificationPanel.jsx
+│   │   │   │   ├── Settings.jsx
+│   │   │   │   ├── Sidebar.jsx
+│   │   │   │   ├── Tasks.jsx
+│   │   │   │   ├── Teams.jsx
+│   │   │   │   └── UserNavbar.jsx
+│   │   │   ├── Buttons.jsx
+│   │   │   ├── Elements.jsx
+│   │   │   ├── FeedbackForm.jsx
+│   │   │   ├── Fields.jsx
+│   │   │   ├── FormContainer.jsx
+│   │   │   ├── Labels.jsx
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Link.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   ├── MenuBar.jsx
+│   │   │   ├── ModeSwitch.jsx
+│   │   │   └── Popups.jsx
+│   │   ├── pages
+│   │   │   ├── AboutUs.jsx
+│   │   │   ├── Contact.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Notes.jsx
+│   │   │   ├── Profile.jsx
+│   │   │   └── Register.jsx
+│   │   ├── utils
+│   │   │   ├── AuthContext.jsx
+│   │   │   ├── Debounce.jsx
+│   │   │   ├── DebugComponent.jsx
+│   │   │   ├── EmailValidator.jsx
+│   │   │   ├── Providers.jsx
+│   │   │   ├── RememberMeContext.jsx
+│   │   │   └── ThemeContext.jsx
+│   │   ├── ApiEndpoints.jsx
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── eslint.config.js
+│   ├── file-structure.txt
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+├── mobile
+├── node_modules
+├── screenshots
+├── shared
+│   ├── api
+│   │   └── api.js
+│   ├── constants
+│   │   └── endpoints.js
+│   ├── context
+│   │   └── AuthContext.js
+│   ├── validators
+│   │   └── EmailValidators.js
+│   ├── file-structure.txt
+│   └── index.js
+├── .gitattributes
+├── .gitignore
+├── LICENSE
+├── package-lock.json
+├── package.json
+└── README.md

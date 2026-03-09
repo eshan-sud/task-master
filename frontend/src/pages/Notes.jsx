@@ -1,5 +1,11 @@
 // frontend/src/pages/Notes.jsx
 
-export const Notes = ({}) => {
-  return <div className="bg-black h-screen w-full"> Notes </div>;
+import TasksContainer from "../components/Tasks/TasksContainer";
+
+export const Notes = () => {
+  return (
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+      <TasksContainer />
+    </div>
+  );
 };

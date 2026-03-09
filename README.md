@@ -1,7 +1,3 @@
-# ABANDONDED FOR A LARGER PROJECT
-
----
-
 # Task Master - Task Management Web Application
 
 **Task Master** is a powerful task management `full-stack MERN-based web application` that allows users to efficiently manage their tasks with a wide range of features such as task sorting, calendar integration, notifications, & much more.
@@ -11,28 +7,24 @@ This application is ideal for individuals, teams, or organisations looking for a
 ## Technologies Used:
 
 - Programming Languages
-
   - JavaScript
 
 - Package Manage
-
   - npm
 
 - Cloud
-
   - GCP (Google Cloud Platform) or AWS (Amazon Web Services)
 
 - Database
-
   - MongoDB
   - Redis (Cache)
 
 - Frontend
-
   - Vite
   - React.js
   - Full Calendar
-  - redux
+  - Redux Toolkit
+  - react-redux
   - axios
   - chart.js
   - date-fns
@@ -41,16 +33,16 @@ This application is ideal for individuals, teams, or organisations looking for a
   - react-icons
   - react-router-dom
   - styled-components
+  - socket.io-client
 
   (To Be Used) :-
-
   - React Tooltip
   - React Helmet
   - React Spinners
-  - React
+  - React bits
+  - OAuth2
 
 - Backend
-
   - Node.js
   - bcrypt
   - body-parser
@@ -61,7 +53,9 @@ This application is ideal for individuals, teams, or organisations looking for a
   - express
   - express-rate-limiter
   - express-slow-down
+  - express-mongo-sanitize
   - helmet
+  - http (for Socket.io server)
   - jsonwebtoken
   - mongoose
   - multer
@@ -69,6 +63,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   - nodemailer
   - nodemon
   - router
+  - socket.io
 
 ## TODO
 
@@ -140,30 +135,49 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>Task Management</strong></summary>
 
 - [x] CRUD endpoints on backend
-- [] Task creation on frontend
+- [x] Task creation on frontend
+  - [x] Task creation modal with full form
+  - [x] Task editing with inline updates
+  - [x] Task cards (grid & list views)
+  - [x] Task filters (status, priority, category)
+  - [x] Task search with real-time results
+  - [x] Bulk operations UI (select multiple, bulk actions)
 - [x] File upload
-  - [] Backend
-  - [] Frontend
+  - [x] Backend
+  - [x] Frontend (attachments in task modal)
 - [] Custom task status pipelines (eg, Intial → Pending → Started → Review → Completed)
 - [] Drag & drop task prioritization within lists
-- [] Recurring tasks
+- [x] Recurring tasks
 - [] Encrypted tasks w/ end-to-end encryption (only available on user's own private key not stored anywhere using AES-256)
 - [] Quick task creation modal via shortcut (eg, /new command)
-- [] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
-- [] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
-- [] Set priority levels for tasks (with default & customisable settings)
-- [] Add the ability to set & track task due dates
-- [] Allow users to add detailed descriptions or notes to each task
-- [] Organise tasks into default or custom categories
-- [] Archive completed tasks
-- [] Recycle bin (30 day lifecycle)
+- [x] Add support for tasks dependent on other tasks / Ability to break down a larger tasks into smaller, more manageble tasks
+- [x] Allow tasks to repeat on a schedule (daily, weekly, quarterly, financial-yearly, yearly, etc) (Recurring Tasks)
+- [x] Set priority levels for tasks (with default & customisable settings)
+- [x] Add the ability to set & track task due dates
+- [x] Allow users to add detailed descriptions or notes to each task
+- [x] Organise tasks into default or custom categories
+- [x] Archive completed tasks
+- [x] Recycle bin (30 day lifecycle)
+- [x] Bulk operations (update, delete multiple tasks)
+  - [x] Backend API
+  - [x] Frontend UI with bulk actions bar
+- [x] Search and filter tasks with advanced filters
+  - [x] Backend search API
+  - [x] Frontend search component with debouncing
+  - [x] Advanced filters (status, priority, category, sort)
+- [x] Task statistics and analytics
+  - [x] Backend aggregation API
+  - [] Frontend charts & dashboards
+  <!-- - [x] Bulk operations (update, delete multiple tasks)
+- [x] Search and filter tasks with advanced filters
+- [x] Task statistics and analytics -->
 
 </details>
 
 <details open>
   <summary><strong>Search & Organisation</strong></summary>
 
-- [] Search & filter tasks based on various criteria (due date, priority, status, etc.)
+- [x] Search & filter tasks based on various criteria (due date, priority, status, etc.)
   - [] Debouncing (frontend)
   - [] Throttling (frontend)
 - [] Tagging System for easiar searching
@@ -175,18 +189,27 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Collaboration & Sharing</strong></summary>
 
-- [] Real-time task allotment to team members
-- [] Collaborate & share tasks with others
-- [] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
+- [x] Real-time task allotment to team members (Backend)
+- [x] Collaborate & share tasks with others (Backend)
+- [x] Role-based access control (eg, admin, viewer) for shared tasks or team collaboration
   - [] Audit log dashboard for admin role
-  - [] Add permissions
+  - [x] Add permissions
 - [] Allow users to download their audit logs
-- [] Task comments/mentions `@username` for effective communication or to put comments on tasks
-- [] In-App chat app
-  - [x] User Interface
-  - [] Communicate with team members directly in the app
-  - [] Real-Time
+- [x] Task comments/mentions `@username` for effective communication or to put comments on tasks
+  - [x] Backend API
+  - [x] Frontend comments component
+  - [x] Mention detection and highlighting
+  - [x] Emoji reactions support
+- [x] In-App chat app
+  - [x] User Interface (MessagesPage, ChatWindow, ConversationList)
+  - [x] Communicate with team members directly in the app (Backend)
+  - [x] Real-Time (Backend)
   - [] End-to-end encryption
+- [x] Teams management
+  - [x] Backend (Create/update/delete teams, Add/remove members)
+  - [x] Frontend UI (TeamsPage, TeamCard, CreateTeamModal)
+  - [x] Role-based permissions (owner, admin, member, viewer)
+  - [x] Member management interface
 - [] Teams joining link sharing
 
 </details>
@@ -227,11 +250,11 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>Notifications</strong></summary>
 
-- [] Email notifications
+- [x] Email notifications (Backend)
   - [x] Password changes
   - [] Profile updates
   - [] Task updates
-- [] Push notifications
+- [x] Push notifications (Backend infrastructure ready)
   - [] Password changes
   - [] Profile updates
   - [] Real-time updates/alerts
@@ -240,8 +263,14 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Desktop notifications
   - [] Task updates
   - [] Reminders
-- [] In-app notifications
-  - [] Real-time
+- [x] In-app notifications
+  - [x] Backend API (Real-time, notification types, mark as read)
+  - [x] Frontend UI (NotificationsCenter, NotificationItem)
+  - [x] Notification system with 13 types (task_assigned, task_shared, comment_added, mention, etc.)
+  - [x] Mark as read & mark all as read functionality
+  - [x] Unread count tracking
+  - [x] Filter notifications (all, unread, read)
+  - [x] Delete notifications
 - [] Client location-based reminders notifications
 - [] Missed/overdue task notifications
 - [] Customisable task reminder settings - how & when users are to be notified (eg, push, email, or desktop, etc)
@@ -319,6 +348,14 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [] Light/Dark mode (Default -> System)
 
   </details>
+
+<details open>
+  <summary><strong>Watch App</strong></summary>
+
+- [] Frontend
+- [] Incoming task notification
+
+</details>
 
 ---
 

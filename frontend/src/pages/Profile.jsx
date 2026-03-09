@@ -12,12 +12,12 @@ import {
   AddButton,
   SendButton,
   PinButton,
-  BackToTopButton,
   ArchiveButton,
   AddNew,
 } from "../components/Buttons.jsx";
 import { showSpinnerToast } from "../components/Elements.jsx";
 import ChatTabsManager from "../components/chat/ChatTabsManager";
+import TaskList from "../components/Tasks/Task.jsx";
 
 export default function Profile() {
   const { isRememberMe } = useRememberMe();
@@ -32,9 +32,9 @@ export default function Profile() {
 
   const addTask = async ({ title, description, due }) => {
     const task = {
-      title: { title },
-      description: { description },
-      dueDate: { due },
+      title: title,
+      description: description,
+      dueDate: due,
       status: "pending",
     };
     const spinnerId = showSpinnerToast();
@@ -44,6 +44,7 @@ export default function Profile() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(task),
       });
       toast.dismiss(spinnerId);
@@ -71,6 +72,7 @@ export default function Profile() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(category),
       });
       toast.dismiss(spinnerId);
@@ -88,6 +90,7 @@ export default function Profile() {
   return (
     <Background>
       <ChatTabsManager />
+      <TaskList />
       <div className="profile-details mb-8 text-gray-900 dark:text-gray-100">
         <h1 className="text-2xl font-bold mb-2"> Profile </h1>
         <p className="text-lg">
@@ -130,7 +133,6 @@ export default function Profile() {
           <NoteContainer />
         </div>
       </div>
-      <BackToTopButton />
     </Background>
   );
 }

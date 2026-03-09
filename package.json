@@ -1,7 +1,7 @@
 {
   "name": "task-master",
   "version": "1.0.0",
-  "description": "Final project for my remote internship at Celebal Technologies 2025",
+  "description": "A task management application built with React & Node.js",
   "repository": {
     "type": "git",
     "url": ".."

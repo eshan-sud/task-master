@@ -34,6 +34,9 @@ const createDefaultCategories = async (user) => {
 
 const handleGetCategories = async (req, res) => {
   try {
+    const userId = req.user._id;
+    const categories = await Categories.find({ userId }).sort({ createdAt: -1 });
+    return res.status(200).json({ categories });
   } catch (error) {
     console.error("[handleGetCategories] Error", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -42,11 +45,12 @@ const handleGetCategories = async (req, res) => {
 
 const handleCreateCategory = async (req, res) => {
   try {
-    const { userId, name, description } = req.body();
-    if (!userId || !name || !description) {
+    const userId = req.user._id;
+    const { name, description } = req.body;
+    if (!name || !description) {
       return res
-        .status(404)
-        .json({ error: "UserId, name, & description are required" });
+        .status(400)
+        .json({ error: "Name & description are required" });
     }
     const newCategory = new Categories({
       userId,
@@ -55,6 +59,7 @@ const handleCreateCategory = async (req, res) => {
     });
     await newCategory.save();
     console.log("Category created successfully");
+    return res.status(201).json({ message: "Category created successfully", category: newCategory });
   } catch (error) {
     console.error("[handleCreateCategory] Error", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -63,6 +68,25 @@ const handleCreateCategory = async (req, res) => {
 
 const handleUpdateCategory = async (req, res) => {
   try {
+    const userId = req.user._id;
+    const { categoryId } = req.params;
+    const { name, description } = req.body;
+    
+    if (!categoryId) {
+      return res.status(400).json({ error: "Category ID is required" });
+    }
+    
+    const category = await Categories.findOne({ _id: categoryId, userId });
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    
+    if (name) category.name = name;
+    if (description) category.description = description;
+    
+    await category.save();
+    console.log("Category updated successfully");
+    return res.status(200).json({ message: "Category updated successfully", category });
   } catch (error) {
     console.error("[handleUpdateCategory] Error", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -71,6 +95,20 @@ const handleUpdateCategory = async (req, res) => {
 
 const handleDeleteCategory = async (req, res) => {
   try {
+    const userId = req.user._id;
+    const { categoryId } = req.params;
+    
+    if (!categoryId) {
+      return res.status(400).json({ error: "Category ID is required" });
+    }
+    
+    const category = await Categories.findOneAndDelete({ _id: categoryId, userId });
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    
+    console.log("Category deleted successfully");
+    return res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
     console.error("[handleDeleteCategory] Error", error);
     return res.status(500).json({ error: "Internal server error" });

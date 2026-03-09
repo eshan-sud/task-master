@@ -12,10 +12,14 @@ const {
 
 const router = express.Router();
 
-// Email Verification
+// Category Management Routes
 router.get("/getCategories", authenticate, handleGetCategories);
 router.post("/createCategory", authenticate, handleCreateCategory);
-router.post("/updateCategory", authenticate, handleUpdateCategory);
-router.post("/deleteCategory", authenticate, handleDeleteCategory);
+router.patch("/updateCategory/:categoryId", authenticate, handleUpdateCategory);
+router.delete(
+  "/deleteCategory/:categoryId",
+  authenticate,
+  handleDeleteCategory,
+);
 
 module.exports = router;
