@@ -8,15 +8,17 @@ import { CiUser } from "react-icons/ci";
 
 import { SubmitButton, CloseButton } from "./Buttons.jsx";
 import { showSpinnerToast } from "./Elements.jsx";
+import { Modal } from "./common/Modal.jsx";
+import { Button } from "./common/Button.jsx";
 
 const PopupContainer = ({ children, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div
-        className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       ></div>
-      <div className="relative z-50 bg-white p-6 rounded-lg shadow-lg w-fit">
+      <div className="relative z-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 rounded-lg shadow-2xl w-fit border border-gray-200 dark:border-gray-700">
         {children}
       </div>
     </div>
@@ -41,21 +43,22 @@ export const WelcomePopup = () => {
   };
 
   return (
-    <>
-      {visible && (
-        <PopupContainer onClose={hideMessage}>
-          <h1 className="text-4xl font-bold mb-4 text-black">
-            Welcome to Task Master
-          </h1>
-          <button
-            onClick={hideMessage}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded"
-          >
-            Close
-          </button>
-        </PopupContainer>
-      )}
-    </>
+    <Modal
+      isOpen={visible}
+      onClose={hideMessage}
+      title="Welcome to Task Master"
+      size="md"
+      footer={
+        <Button variant="primary" onClick={hideMessage}>
+          Get Started
+        </Button>
+      }
+    >
+      <p className="text-gray-700 dark:text-gray-300">
+        Manage your tasks efficiently with powerful features like calendar
+        integration, notifications, and team collaboration.
+      </p>
+    </Modal>
   );
 };
 
@@ -67,25 +70,24 @@ export const ConfirmationPopup = ({
   onYes,
 }) => {
   return (
-    <PopupContainer onClose={onClose}>
-      <CloseButton onClose={onClose} />
-      <h2 className="text-2xl font-bold mb-4"> {heading} </h2>
-      <p className="mb-4"> {message} </p>
-      <div className="flex justify-between w-full">
-        <button
-          onClick={onNo}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6"
-        >
-          No
-        </button>
-        <button
-          onClick={onYes}
-          className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded"
-        >
-          Yes
-        </button>
-      </div>
-    </PopupContainer>
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      title={heading}
+      size="md"
+      footer={
+        <div className="flex justify-end gap-3 w-full">
+          <Button variant="outline" onClick={onNo}>
+            No
+          </Button>
+          <Button variant="danger" onClick={onYes}>
+            Yes
+          </Button>
+        </div>
+      }
+    >
+      <p className="text-gray-700 dark:text-gray-300">{message}</p>
+    </Modal>
   );
 };
 
@@ -126,17 +128,17 @@ export const AvatarPopup = ({
         fetchUserAvatar();
         togglePopup();
       } else {
-        const message = await response.json();
+        await response.json().catch(() => null);
         toast.error("Something went wrong");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error occurred while uploading the image");
     }
   };
 
   return (
     <>
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit p-10 bg-white bg-opacity-30 backdrop-blur-lg rounded-lg shadow-lg">
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit p-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700">
         <CloseButton onClose={onClose} />
         <div className="flex flex-col justify-around align-middle">
           <div className="flex justify-around align-middle w-[100%] mb-5">
@@ -144,28 +146,22 @@ export const AvatarPopup = ({
               <img
                 src={avatarUrl}
                 alt="User Avatar"
-                className="w-[200px] h-[200px] aspect-square border-black border-2 rounded-full"
+                className="w-[200px] h-[200px] aspect-square border-2 border-gray-300 dark:border-gray-600 rounded-full object-cover"
               />
             ) : (
               <CiUser
                 size={200}
-                className="aspect-square border-black border-2 rounded-full"
+                className="aspect-square border-2 border-gray-300 dark:border-gray-600 rounded-full text-gray-700 dark:text-gray-200"
               />
             )}
           </div>
           <div className="flex justify-center align-middle gap-3 text-nowrap">
-            <button
-              className="w-full px-4 py-4 bg-red-500 text-white rounded-md"
-              onClick={handleRemoveAvatar}
-            >
+            <Button variant="danger" onClick={handleRemoveAvatar} fullWidth>
               Remove Avatar
-            </button>
-            <button
-              className="w-full px-4 py-4 bg-blue-500 text-white rounded-md"
-              onClick={togglePopup}
-            >
+            </Button>
+            <Button variant="primary" onClick={togglePopup} fullWidth>
               Change Avatar
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -175,18 +171,12 @@ export const AvatarPopup = ({
           <input type="file" accept="image/*" onChange={handleFileChange} />
           <p className="mt-4"> Are you sure you want to change your avatar? </p>
           <div className="flex justify-end gap-2 mt-4">
-            <button
-              className="bg-gray-200 px-4 py-2 rounded-md"
-              onClick={togglePopup}
-            >
-              No
-            </button>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
-              onClick={handleUpload}
-            >
-              Yes
-            </button>
+            <Button variant="outline" onClick={togglePopup}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleUpload}>
+              Upload
+            </Button>
           </div>
         </PopupContainer>
       )}
@@ -198,8 +188,10 @@ export const OTPPopup = ({ email, onClose, onVerified, purpose }) => {
   return (
     <>
       <PopupContainer onClose={onClose}>
-        <h2 className="text-2xl font-bold mb-4">Enter OTP</h2>
-        <p className="mb-4 text-gray-700">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+          Enter OTP
+        </h2>
+        <p className="mb-4 text-gray-700 dark:text-gray-300">
           A 6-digit OTP has been sent to your email: <strong>{email}</strong>.
         </p>
         <OTPVerificationForm
@@ -283,7 +275,7 @@ export const OTPVerificationForm = ({ email, onVerified, purpose }) => {
       } else {
         toast.error("Invalid OTP");
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Something went wrong");
     }
@@ -308,7 +300,7 @@ export const OTPVerificationForm = ({ email, onVerified, purpose }) => {
               onChange={(e) => handleChange(index, e.target.value)}
               onPaste={(e) => handlePaste(e)}
               onKeyDown={(e) => handleKeyDown(index, e)}
-              className="w-10 h-10 text-center text-xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-10 h-10 text-center text-xl border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               autoFocus={index === 0}
             />
           ))}

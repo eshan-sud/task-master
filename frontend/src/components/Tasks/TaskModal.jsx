@@ -1,7 +1,13 @@
 // frontend/src/components/Tasks/TaskModal.jsx
 import { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCategories } from "../../store/slices/categoriesSlice";
+import apiService from "../../services/api.service";
+import toast from "react-hot-toast";
 import CommentsSection from "../Comments/CommentsSection";
+import { Modal } from "../common/Modal";
+import { Button, IconButton } from "../common/Button";
+import { Input, TextArea } from "../common/Input";
 import {
   FiX,
   FiCalendar,
@@ -12,6 +18,7 @@ import {
 } from "react-icons/fi";
 
 const TaskModal = ({ task, onClose, onSave }) => {
+  const dispatch = useDispatch();
   const modalRef = useRef(null);
   const { categories } = useSelector(
     (state) => state.categories || { categories: [] },
@@ -22,7 +29,8 @@ const TaskModal = ({ task, onClose, onSave }) => {
     description: task?.description || "",
     status: task?.status || "pending",
     priority: task?.priority || "medium",
-    category: task?.category?._id || "",
+    // Support both populated category objects and raw ObjectId strings
+    category: task?.category?._id || task?.category || "",
     dueDate: task?.dueDate
       ? new Date(task.dueDate).toISOString().slice(0, 16)
       : "",
@@ -33,23 +41,25 @@ const TaskModal = ({ task, onClose, onSave }) => {
 
   const [newTag, setNewTag] = useState("");
   const [errors, setErrors] = useState({});
+  const [showQuickCategoryForm, setShowQuickCategoryForm] = useState(false);
+  const [categoryForm, setCategoryForm] = useState({
+    name: "",
+    description: "",
+  });
+
+  // Fetch categories on mount
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-
     const handleEscape = (event) => {
       if (event.key === "Escape") onClose();
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEscape);
     };
   }, [onClose]);
@@ -119,8 +129,38 @@ const TaskModal = ({ task, onClose, onSave }) => {
     );
   };
 
+  const handleQuickAddCategory = async (e) => {
+    e.preventDefault();
+    if (!categoryForm.name.trim()) {
+      toast.error("Category name is required");
+      return;
+    }
+
+    try {
+      const response = await apiService.post(
+        "/categories/createCategory",
+        categoryForm,
+      );
+      toast.success("Category added successfully");
+      const newCategory = response.data.category;
+      // Set the newly created category in the task form
+      handleChange("category", newCategory._id);
+      setCategoryForm({ name: "", description: "" });
+      setShowQuickCategoryForm(false);
+      // Refresh categories list
+      await dispatch(fetchCategories()).unwrap();
+    } catch (error) {
+      toast.error(error.error || "Failed to add category");
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       <div
         ref={modalRef}
         className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg shadow-2xl my-8"
@@ -210,21 +250,72 @@ const TaskModal = ({ task, onClose, onSave }) => {
 
             {/* Category */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Category
-              </label>
-              <select
-                value={formData.category}
-                onChange={(e) => handleChange("category", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">No category</option>
-                {categories.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Category
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowQuickCategoryForm(!showQuickCategoryForm)
+                  }
+                  className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {showQuickCategoryForm ? "- Hide" : "+ New Category"}
+                </button>
+              </div>
+
+              {showQuickCategoryForm ? (
+                <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-3 bg-gray-50 dark:bg-gray-900">
+                  <input
+                    type="text"
+                    value={categoryForm.name}
+                    onChange={(e) =>
+                      setCategoryForm({ ...categoryForm, name: e.target.value })
+                    }
+                    className="w-full px-3 py-2 mb-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                    placeholder="Category name *"
+                  />
+                  <input
+                    type="text"
+                    value={categoryForm.description}
+                    onChange={(e) =>
+                      setCategoryForm({
+                        ...categoryForm,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 mb-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+                    placeholder="Description (optional)"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleQuickAddCategory}
+                    className="w-full px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors text-sm"
+                  >
+                    Create Category
+                  </button>
+                </div>
+              ) : (
+                <select
+                  value={formData.category}
+                  onChange={(e) => handleChange("category", e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select a category</option>
+                  {categories.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {categories.length === 0 && !showQuickCategoryForm && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  No categories available. Click "+ New Category" to create one.
+                </p>
+              )}
             </div>
           </div>
 
@@ -278,13 +369,9 @@ const TaskModal = ({ task, onClose, onSave }) => {
                 placeholder="Add a tag and press Enter"
                 className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-              >
+              <Button type="button" variant="primary" onClick={handleAddTag}>
                 Add
-              </button>
+              </Button>
             </div>
             <div className="flex flex-wrap gap-2">
               {formData.tags.map((tag, index) => (
@@ -342,19 +429,12 @@ const TaskModal = ({ task, onClose, onSave }) => {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            >
+            <Button type="button" variant="outline" onClick={onClose}>
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            >
+            </Button>
+            <Button type="submit" variant="primary">
               {task ? "Save Changes" : "Create Task"}
-            </button>
+            </Button>
           </div>
         </form>
 

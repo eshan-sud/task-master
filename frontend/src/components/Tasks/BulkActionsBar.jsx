@@ -8,9 +8,17 @@ import {
   FiTag,
   FiStar,
 } from "react-icons/fi";
+import { IconButton } from "../common/Button";
+import { ConfirmDialog } from "../common/ConfirmDialog";
 
 const BulkActionsBar = ({ selectedCount, onBulkAction, onClearSelection }) => {
   const [showActions, setShowActions] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    action: null,
+    title: "",
+    message: "",
+  });
 
   const actions = [
     {
@@ -47,9 +55,12 @@ const BulkActionsBar = ({ selectedCount, onBulkAction, onClearSelection }) => {
       label: "Archive",
       icon: FiArchive,
       action: () => {
-        if (window.confirm(`Archive ${selectedCount} tasks?`)) {
-          onBulkAction("archive");
-        }
+        setConfirmDialog({
+          isOpen: true,
+          action: "archive",
+          title: "Archive Tasks",
+          message: `Are you sure you want to archive ${selectedCount} task(s)?`,
+        });
       },
       color: "text-gray-500",
     },
@@ -57,9 +68,12 @@ const BulkActionsBar = ({ selectedCount, onBulkAction, onClearSelection }) => {
       label: "Delete",
       icon: FiTrash2,
       action: () => {
-        if (window.confirm(`Delete ${selectedCount} tasks permanently?`)) {
-          onBulkAction("delete");
-        }
+        setConfirmDialog({
+          isOpen: true,
+          action: "delete",
+          title: "Delete Tasks",
+          message: `Are you sure you want to permanently delete ${selectedCount} task(s)? This action cannot be undone.`,
+        });
       },
       color: "text-red-500",
     },
@@ -81,37 +95,41 @@ const BulkActionsBar = ({ selectedCount, onBulkAction, onClearSelection }) => {
 
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
-            <button
+            <IconButton
+              icon={FiCheck}
+              label="Mark as completed"
+              variant="success"
+              size="sm"
               onClick={() => onBulkAction("update", { status: "completed" })}
-              className="p-2 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 text-green-500 transition-colors"
-              title="Mark as completed"
-            >
-              <FiCheck size={18} />
-            </button>
-            <button
+            />
+            <IconButton
+              icon={FiArchive}
+              label="Archive"
+              variant="ghost"
+              size="sm"
               onClick={() => {
-                if (window.confirm(`Archive ${selectedCount} tasks?`)) {
-                  onBulkAction("archive");
-                }
+                setConfirmDialog({
+                  isOpen: true,
+                  action: "archive",
+                  title: "Archive Tasks",
+                  message: `Are you sure you want to archive ${selectedCount} task(s)?`,
+                });
               }}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors"
-              title="Archive"
-            >
-              <FiArchive size={18} />
-            </button>
-            <button
+            />
+            <IconButton
+              icon={FiTrash2}
+              label="Delete"
+              variant="danger"
+              size="sm"
               onClick={() => {
-                if (
-                  window.confirm(`Delete ${selectedCount} tasks permanently?`)
-                ) {
-                  onBulkAction("delete");
-                }
+                setConfirmDialog({
+                  isOpen: true,
+                  action: "delete",
+                  title: "Delete Tasks",
+                  message: `Are you sure you want to permanently delete ${selectedCount} task(s)? This action cannot be undone.`,
+                });
               }}
-              className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 transition-colors"
-              title="Delete"
-            >
-              <FiTrash2 size={18} />
-            </button>
+            />
           </div>
 
           {/* More Actions Dropdown */}
@@ -151,15 +169,42 @@ const BulkActionsBar = ({ selectedCount, onBulkAction, onClearSelection }) => {
           <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
 
           {/* Clear Selection */}
-          <button
+          <IconButton
+            icon={FiX}
+            label="Clear selection"
+            variant="ghost"
+            size="sm"
             onClick={onClearSelection}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 transition-colors"
-            title="Clear selection"
-          >
-            <FiX size={18} />
-          </button>
+          />
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={() =>
+          setConfirmDialog({
+            isOpen: false,
+            action: null,
+            title: "",
+            message: "",
+          })
+        }
+        onConfirm={() => {
+          if (confirmDialog.action) {
+            onBulkAction(confirmDialog.action);
+          }
+          setConfirmDialog({
+            isOpen: false,
+            action: null,
+            title: "",
+            message: "",
+          });
+        }}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        variant={confirmDialog.action === "delete" ? "danger" : "warning"}
+      />
     </div>
   );
 };
