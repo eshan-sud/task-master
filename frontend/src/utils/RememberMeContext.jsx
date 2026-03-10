@@ -1,5 +1,7 @@
 // frontend/src/utils/RememberMeContext.jsx
 
+/* eslint-disable react-refresh/only-export-components */
+
 import { createContext, useContext, useState, useEffect } from "react";
 
 const RememberMeContext = createContext();
@@ -11,7 +13,6 @@ export const RememberMeProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem("isRememberMe", isRememberMe);
-    setIsRememberMe(isRememberMe);
   }, [isRememberMe]);
 
   return (

@@ -1,6 +1,7 @@
 // frontend/src/utils/AuthContext.jsx
 
 import { createContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useRememberMe } from "./RememberMeContext";
 import { endpoints } from "../ApiEndpoints";
 
@@ -8,6 +9,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const { isRememberMe } = useRememberMe();
+  const csrfToken = useSelector((state) => state.csrf.token);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,10 +25,19 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
+      // Wait for CSRF token to be available before validating
+      if (!csrfToken) {
+        // Keep loading state until CSRF token is ready
+        return;
+      }
+
       // Validate token by attempting to refresh it
       try {
         const response = await fetch(endpoints.refreshToken, {
           method: "GET",
+          headers: {
+            ...(csrfToken && { "X-CSRF-Token": csrfToken }),
+          },
           credentials: "include",
         });
 
@@ -49,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     validateToken();
-  }, [isRememberMe]);
+  }, [isRememberMe, csrfToken]);
 
   const login = () => {
     setIsAuthenticated(true);

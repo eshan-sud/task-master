@@ -27,8 +27,8 @@ export const SidebarItem = ({ to, name, icon }) => {
         to={to}
         className={({ isActive }) =>
           isActive
-            ? "text-blue-500 underline flex items-center hover:bg-gray-200 rounded-lg px-1 py-2 w-full"
-            : "hover:text-blue hover:underline flex items-center hover:bg-gray-200 rounded-lg px-1 py-2 w-full"
+            ? "text-blue-500 dark:text-blue-400 underline flex items-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg px-1 py-2 w-full"
+            : "text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 hover:underline flex items-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg px-1 py-2 w-full"
         }
       >
         <span className="mr-6 text-2xl">{icon}</span>

@@ -1,22 +1,22 @@
 // frontend/src/components/FeedbackForm.jsx
 
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
-const SITE_KEY = import.meta.env.GOOGLE_RECAPTCHA_SITE_KEY;
+// const SITE_KEY = import.meta.env.GOOGLE_RECAPTCHA_SITE_KEY;
 
 export const FeedbackForm = () => {
-  const handleCaptchaChange = (event) => {};
+  // const handleCaptchaChange = (event) => {};
 
   return (
-    <div className="bg-white border border-slate-200 grid grid-cols-6 gap-2 rounded-xl p-2 text-sm">
-      <h1 className="text-center text-slate-200 text-xl font-bold col-span-6">
+    <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 grid grid-cols-6 gap-2 rounded-xl p-2 text-sm transition-colors">
+      <h1 className="text-center text-slate-800 dark:text-slate-100 text-xl font-bold col-span-6">
         Send Feedback
       </h1>
       <textarea
         placeholder="Your feedback..."
-        className="bg-slate-100 text-slate-600 h-28 placeholder:text-slate-600 placeholder:opacity-50 border border-slate-200 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-slate-600"
+        className="bg-slate-100 dark:bg-gray-800 text-slate-600 dark:text-slate-200 h-28 placeholder:text-slate-600 dark:placeholder:text-slate-300 placeholder:opacity-50 border border-slate-200 dark:border-gray-700 col-span-6 resize-none outline-none rounded-lg p-2 duration-300 focus:border-slate-600 dark:focus:border-slate-300"
       ></textarea>
-      <button className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200">
+      <button className="fill-slate-600 dark:fill-slate-200 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 dark:bg-gray-800 hover:border-slate-600 dark:hover:border-slate-300 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200 dark:border-gray-700">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="20px"
@@ -25,7 +25,7 @@ export const FeedbackForm = () => {
           <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"></path>
         </svg>
       </button>
-      <button className="fill-slate-600 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 hover:border-slate-600 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200">
+      <button className="fill-slate-600 dark:fill-slate-200 col-span-1 flex justify-center items-center rounded-lg p-2 duration-300 bg-slate-100 dark:bg-gray-800 hover:border-slate-600 dark:hover:border-slate-300 focus:fill-blue-200 focus:bg-blue-400 border border-slate-200 dark:border-gray-700">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="20px"
@@ -35,7 +35,7 @@ export const FeedbackForm = () => {
         </svg>
       </button>
       <span className="col-span-2"></span>
-      <button className="bg-slate-100 stroke-slate-600 border border-slate-200 col-span-2 flex justify-center rounded-lg p-2 duration-300 hover:border-slate-600 hover:text-white focus:stroke-blue-200 focus:bg-blue-400">
+      <button className="bg-slate-100 dark:bg-gray-800 stroke-slate-600 dark:stroke-slate-200 border border-slate-200 dark:border-gray-700 col-span-2 flex justify-center rounded-lg p-2 duration-300 hover:border-slate-600 dark:hover:border-slate-300 hover:text-white focus:stroke-blue-200 focus:bg-blue-400">
         <svg
           fill="none"
           viewBox="0 0 24 24"

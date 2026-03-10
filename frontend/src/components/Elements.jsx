@@ -1,5 +1,7 @@
 // frontend/src/components/Elements.jsx
 
+/* eslint-disable react-refresh/only-export-components */
+
 // import { useContext } from "react";
 import toast from "react-hot-toast";
 
@@ -37,7 +39,7 @@ export const showSpinnerToast = () => {
     <div
       className={`${
         t.visible ? "animate-enter" : "animate-leave"
-      } bg-white shadow-lg rounded-md px-2 py-4 flex justify-center items-center`}
+      } bg-white dark:bg-gray-900 shadow-lg rounded-md px-2 py-4 flex justify-center items-center border border-gray-200 dark:border-gray-700`}
       style={{
         width: "50px",
         height: "50px",

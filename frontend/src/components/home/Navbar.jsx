@@ -10,7 +10,7 @@ import { CiPhone } from "react-icons/ci";
 import { LoginButton, RegisterButton } from "../Buttons";
 import { MenuItem } from "../Link";
 
-export const Navbar = ({ ThemeContext }) => {
+export const Navbar = () => {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -29,16 +29,19 @@ export const Navbar = ({ ThemeContext }) => {
   return (
     <>
       <div
-        className={`bg-white/75 fixed top-0 z-40 p-4 w-full shadow-2xl border-solid border-b-[1px] border-black flex align-middle justify-between transition-transform duration-300 ${
+        className={`fixed top-0 z-40 p-4 w-full shadow-2xl border-b flex items-center justify-between transition-transform duration-300 bg-white/80 dark:bg-gray-900/80 border-gray-200 dark:border-gray-800 backdrop-blur-md ${
           showNavbar ? "transform translate-y-0" : "transform -translate-y-full"
         }`}
       >
-        <Link to="/" className="tracking-wider text-2xl font-mono">
+        <Link
+          to="/"
+          className="tracking-wider text-2xl font-mono text-gray-900 dark:text-gray-100"
+        >
           Task Master
-          <hr className="border-solid border-slate-950" />
+          <hr className="border-solid border-slate-900 dark:border-slate-200" />
         </Link>
 
-        <ul className="list-none flex justify-center items-center text-lg absolute left-1/2 transform -translate-x-1/2 z-40">
+        <ul className="list-none flex justify-center items-center text-lg absolute left-1/2 transform -translate-x-1/2 z-40 text-gray-800 dark:text-gray-100">
           <MenuItem to="/home" name="Home" icon={<CiHome />} />
           <MenuItem to="/about-us" name="About us" icon={<BsQuestion />} />
           <MenuItem to="/contact" name="Contact" icon={<CiPhone />} />

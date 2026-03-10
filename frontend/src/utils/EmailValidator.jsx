@@ -1,5 +1,7 @@
 // frontend/src/utils/EmailValidator.jsx
 
+/* eslint-disable react-refresh/only-export-components */
+
 import React, { useState, useEffect } from "react";
 
 export const isValidEmail = (email) => {

@@ -6,7 +6,7 @@ const creatorImgPath = "/src/assets/images/creator.jpg"
 
 export const Footer = () => {
   return (
-    <footer className="w-full py-8 bg-gray-900 text-white">
+    <footer className="w-full py-8 bg-gray-900 text-white dark:bg-black dark:text-gray-200 border-t border-gray-800">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center mb-6">
         <div className="flex items-center mb-4 md:mb-0">
           <img
@@ -23,7 +23,7 @@ export const Footer = () => {
             </p>
           </div>
         </div>
-        <ul className="flex space-x-6 mb-4 md:mb-0">
+        <ul className="flex space-x-6 mb-4 md:mb-0 text-sm">
           <li>
             <a
               key="0"

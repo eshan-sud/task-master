@@ -82,10 +82,13 @@ export const CloseButton = ({ onClose }) => {
 export const NotificationButton = ({ toggleNotificationPanel }) => {
   return (
     <div
-      className="w-10 h-10 rounded-full cursor-pointer p-3 bg-gray-200"
+      className="w-10 h-10 rounded-full cursor-pointer p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors flex items-center justify-center"
       onClick={toggleNotificationPanel}
     >
-      <IoIosNotifications />
+      <IoIosNotifications
+        className="text-gray-700 dark:text-gray-200"
+        size={24}
+      />
     </div>
   );
 };
