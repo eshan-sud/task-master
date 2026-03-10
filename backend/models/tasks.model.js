@@ -14,7 +14,7 @@ const tasksSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-    text: {
+    title: {
       type: String,
       required: true,
     },
@@ -37,19 +37,8 @@ const tasksSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: [
-        "Initial",
-        "Pending",
-        "Started",
-        "Completed",
-        "Review",
-        "On Hold",
-        "Blocked",
-        "Scheduled",
-        "Archived",
-        "Deleted",
-      ],
-      default: "Initial",
+      enum: ["pending", "in-progress", "completed"],
+      default: "pending",
     },
     recurrence: {
       type: {
@@ -62,8 +51,12 @@ const tasksSchema = new mongoose.Schema(
     },
     priority: {
       type: String,
-      enum: ["Low", "Medium", "High"],
-      default: "Medium",
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
+    pinned: {
+      type: Boolean,
+      default: false,
     },
     dueDate: {
       type: Date,

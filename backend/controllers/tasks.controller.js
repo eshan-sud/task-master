@@ -13,19 +13,21 @@ const mapFilesToMetadata = (files) =>
 
 const handleCreateTask = async (req, res) => {
   try {
-    const { category, text, description, dueDate, priority, status } = req.body;
-    if (!category || !text) {
-      return res.status(400).json({ error: "Text & category are required" });
+    const { category, title, description, dueDate, priority, status, pinned } =
+      req.body;
+    if (!category || !title) {
+      return res.status(400).json({ error: "Title & category are required" });
     }
     const associatedFiles = req.files ? mapFilesToMetadata(req.files) : [];
     const newTask = await Task.create({
       userId: req.user._id,
       category,
-      text,
+      title,
       description,
       dueDate,
       priority,
       status,
+      pinned: pinned ?? false,
       associatedFiles,
     });
     return res.status(201).json({ message: "Task created", task: newTask });
@@ -44,7 +46,9 @@ const handleGetTasks = async (req, res) => {
     };
     if (status) filter.status = status;
     if (category) filter.category = category;
-    const tasks = await Task.find(filter).sort({ dueDate: 1 });
+    const tasks = await Task.find(filter)
+      .populate("category", "name")
+      .sort({ dueDate: 1 });
     return res.status(200).json(tasks);
   } catch (error) {
     console.error("[handleGetTasks] Error", error);
@@ -54,8 +58,16 @@ const handleGetTasks = async (req, res) => {
 
 const handleUpdateTask = async (req, res) => {
   try {
-    const { taskId, text, description, dueDate, priority, status, category } =
-      req.body;
+    const {
+      taskId,
+      title,
+      description,
+      dueDate,
+      priority,
+      status,
+      category,
+      pinned,
+    } = req.body;
     const task = await Task.findOne({ _id: taskId, userId: req.user._id });
     if (!task || task.isDeleted) {
       return res.status(404).json({ error: "Task not found" });
@@ -67,12 +79,15 @@ const handleUpdateTask = async (req, res) => {
       const newFiles = mapFilesToMetadata(req.files);
       task.associatedFiles.push(...newFiles);
     }
-    task.text = text ?? task.text;
+    task.title = title ?? task.title;
     task.description = description ?? task.description;
     task.dueDate = dueDate ?? task.dueDate;
     task.priority = priority ?? task.priority;
     task.status = status ?? task.status;
     task.category = category ?? task.category;
+    if (typeof pinned === "boolean") {
+      task.pinned = pinned;
+    }
     await task.save();
     await checkAndUpdateParentStatus(taskId);
     return res.status(200).json({ message: "Task updated", task });
@@ -133,10 +148,10 @@ const handleGetDeletedTasks = async (req, res) => {
 
 const handleAddSubtask = async (req, res) => {
   try {
-    const { parentTaskId, text, description, dueDate, priority, status } =
+    const { parentTaskId, title, description, dueDate, priority, status } =
       req.body;
-    if (!parentTaskId || !text) {
-      return res.status(400).json({ error: "Parent ID and text required" });
+    if (!parentTaskId || !title) {
+      return res.status(400).json({ error: "Parent ID and title required" });
     }
     const parent = await Task.findOne({
       _id: parentTaskId,
@@ -147,7 +162,7 @@ const handleAddSubtask = async (req, res) => {
     }
     const subtask = await Task.create({
       userId: req.user._id,
-      text,
+      title,
       description,
       dueDate,
       priority,
@@ -187,9 +202,9 @@ const checkAndUpdateParentStatus = async (taskId) => {
     _id: { $in: parent.subtasks },
     isDeleted: false,
   });
-  const allCompleted = subtasks.every((t) => t.status === "Completed");
-  if (allCompleted && parent.status !== "Completed") {
-    parent.status = "Completed";
+  const allCompleted = subtasks.every((t) => t.status === "completed");
+  if (allCompleted && parent.status !== "completed") {
+    parent.status = "completed";
     await parent.save();
   }
 };
@@ -479,6 +494,48 @@ const handleGetTaskStats = async (req, res) => {
   }
 };
 
+/**
+ * Reorder tasks - Update task order/position
+ */
+const handleReorderTasks = async (req, res) => {
+  try {
+    const { taskIds } = req.body;
+
+    if (!taskIds || !Array.isArray(taskIds) || taskIds.length === 0) {
+      return res.status(400).json({ error: "taskIds array is required" });
+    }
+
+    // Verify all tasks belong to the user
+    const tasks = await Task.find({
+      _id: { $in: taskIds },
+      userId: req.user._id,
+      isDeleted: false,
+    });
+
+    if (tasks.length !== taskIds.length) {
+      return res.status(404).json({ error: "Some tasks not found" });
+    }
+
+    // Update order field for each task
+    const bulkOps = taskIds.map((taskId, index) => ({
+      updateOne: {
+        filter: { _id: taskId, userId: req.user._id },
+        update: { $set: { order: index } },
+      },
+    }));
+
+    await Task.bulkWrite(bulkOps);
+
+    res.status(200).json({
+      message: "Tasks reordered successfully",
+      updatedCount: taskIds.length,
+    });
+  } catch (error) {
+    console.error("[handleReorderTasks] Error", error);
+    res.status(500).json({ error: "Failed to reorder tasks" });
+  }
+};
+
 module.exports = {
   handleCreateTask,
   handleGetTasks,
@@ -497,4 +554,5 @@ module.exports = {
   handleBulkDeleteTasks,
   handleCreateRecurringTask,
   handleGetTaskStats,
+  handleReorderTasks,
 };

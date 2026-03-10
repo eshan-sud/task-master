@@ -20,6 +20,7 @@ const {
   handleBulkDeleteTasks,
   handleCreateRecurringTask,
   handleGetTaskStats,
+  handleReorderTasks,
 } = require("../controllers/tasks.controller");
 
 const router = express.Router();
@@ -60,6 +61,7 @@ router.get("/archived", authenticate, handleGetArchivedTasks);
 // Bulk operations
 router.patch("/bulk/update", authenticate, handleBulkUpdateTasks);
 router.delete("/bulk/delete", authenticate, handleBulkDeleteTasks);
+router.patch("/reorder", authenticate, handleReorderTasks);
 
 // Recurring tasks
 router.post(

@@ -70,7 +70,7 @@ const teamSchema = new mongoose.Schema(
 // Index for faster lookups
 teamSchema.index({ owner: 1 });
 teamSchema.index({ "members.userId": 1 });
-teamSchema.index({ inviteCode: 1 });
+// inviteCode index created automatically by unique: true
 
 const Teams = mongoose.model("Teams", teamSchema);
 

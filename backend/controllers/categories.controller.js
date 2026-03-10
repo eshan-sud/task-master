@@ -1,7 +1,7 @@
 // backend/controllers/categories.controller.js
 
 // const User = require("../models/user.model");
-const Categories = require("../models/categories.model");
+const Category = require("../models/categories.model");
 
 // Default categories for every new user
 const defaultCategories = [
@@ -12,10 +12,10 @@ const defaultCategories = [
 
 const createDefaultCategories = async (user) => {
   try {
-    const existingCategories = await Categories.find({ userId: user._id });
+    const existingCategories = await Category.find({ userId: user._id });
     if (existingCategories.length === 0) {
       const categoriesPromises = defaultCategories.map((category) => {
-        return new Categories({
+        return new Category({
           userId: user._id,
           name: category.name,
           description: category.description,
@@ -35,7 +35,7 @@ const createDefaultCategories = async (user) => {
 const handleGetCategories = async (req, res) => {
   try {
     const userId = req.user._id;
-    const categories = await Categories.find({ userId }).sort({ createdAt: -1 });
+    const categories = await Category.find({ userId }).sort({ createdAt: -1 });
     return res.status(200).json({ categories });
   } catch (error) {
     console.error("[handleGetCategories] Error", error);
@@ -52,7 +52,7 @@ const handleCreateCategory = async (req, res) => {
         .status(400)
         .json({ error: "Name & description are required" });
     }
-    const newCategory = new Categories({
+    const newCategory = new Category({
       userId,
       name,
       description,
@@ -76,7 +76,7 @@ const handleUpdateCategory = async (req, res) => {
       return res.status(400).json({ error: "Category ID is required" });
     }
     
-    const category = await Categories.findOne({ _id: categoryId, userId });
+    const category = await Category.findOne({ _id: categoryId, userId });
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
@@ -102,7 +102,7 @@ const handleDeleteCategory = async (req, res) => {
       return res.status(400).json({ error: "Category ID is required" });
     }
     
-    const category = await Categories.findOneAndDelete({ _id: categoryId, userId });
+    const category = await Category.findOneAndDelete({ _id: categoryId, userId });
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
