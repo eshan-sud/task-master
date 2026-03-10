@@ -1,6 +1,7 @@
 // frontend/src/components/profile/UserNavbar.jsx
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { CiUser } from "react-icons/ci";
 import { useRememberMe } from "../../utils/RememberMeContext.jsx";
@@ -14,6 +15,7 @@ import { endpoints } from "../../ApiEndpoints.jsx";
 
 export const UserNavbar = () => {
   const { isRememberMe } = useRememberMe();
+  const csrfToken = useSelector((state) => state.csrf.token);
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
   const [userName] = useState(storage.getItem("fullName"));
   const [userAvatar, setUserAvatar] = useState(null);
@@ -22,10 +24,13 @@ export const UserNavbar = () => {
   const avatarRef = useRef(null);
   const notificationRef = useRef(null);
 
-  const fetchUserAvatar = async () => {
+  const fetchUserAvatar = useCallback(async () => {
     try {
       const response = await fetch(endpoints.getUserAvatar, {
         method: "GET",
+        headers: {
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
+        },
         credentials: "include",
       });
 
@@ -33,18 +38,22 @@ export const UserNavbar = () => {
         const avatarUrl = URL.createObjectURL(await response.blob());
         setUserAvatar(avatarUrl);
       } else {
+        // Set default avatar or null
         setUserAvatar(null);
       }
-    } catch (error) {
+    } catch {
+      // Set default avatar on error instead of showing error
       setUserAvatar(null);
-      toast.error("Error fetching user avatar");
     }
-  };
+  }, [csrfToken]);
 
   const handleRemoveAvatar = async () => {
     try {
       const response = await fetch(endpoints.removeAvatar, {
         method: "DELETE",
+        headers: {
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
+        },
         credentials: "include",
       });
 
@@ -56,7 +65,7 @@ export const UserNavbar = () => {
         const data = await response.json();
         toast.error(data.error);
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while removing the avatar");
     }
   };
@@ -78,20 +87,22 @@ export const UserNavbar = () => {
   };
 
   useEffect(() => {
-    fetchUserAvatar();
+    if (csrfToken) {
+      fetchUserAvatar();
+    }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [csrfToken, fetchUserAvatar]);
 
   return (
-    <div className="flex justify-between w-[calc(100vw-64px)] h-16 bg-white fixed top-0 left-16 z-40 px-4 shadow-md">
+    <div className="flex justify-between w-[calc(100vw-64px)] h-16 bg-white dark:bg-gray-800 fixed top-0 left-16 z-40 px-4 shadow-md transition-colors duration-300">
       <div className="flex justify-center w-[100%]">
         <SearchField />
       </div>
       <div className="flex items-center gap-4">
-        <div className="h-full border-r-2 m-2"></div>
+        <div className="h-full border-r-2 border-gray-200 dark:border-gray-700 m-2"></div>
         <div ref={notificationRef}>
           <NotificationButton
             toggleNotificationPanel={toggleNotificationPanel}
@@ -102,9 +113,12 @@ export const UserNavbar = () => {
           />
         </div>
         <LightDarkModeButton />
-        <div className="h-full border-r-2 m-2"></div>
+        <div className="h-full border-r-2 border-gray-200 dark:border-gray-700 m-2"></div>
         <div className="flex items-center space-x-4 mr-6" ref={avatarRef}>
-          <span className="text-gray-700 text-nowrap"> Hi, {userName} </span>
+          <span className="text-gray-700 dark:text-gray-200 text-nowrap">
+            {" "}
+            Hi, {userName}{" "}
+          </span>
           <div className="relative w-10 h-10">
             {userAvatar ? (
               <img

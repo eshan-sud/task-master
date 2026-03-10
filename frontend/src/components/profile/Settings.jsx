@@ -14,7 +14,7 @@ import { endpoints } from "../../ApiEndpoints.jsx";
 import { useRememberMe } from "../../utils/RememberMeContext.jsx";
 import AuthContext from "../../utils/AuthContext.jsx";
 
-export const Settings = () => {
+const Settings = () => {
   const { isRememberMe } = useRememberMe();
   const storage = isRememberMe ? window.localStorage : window.sessionStorage;
   const email = storage.getItem("email");
@@ -23,7 +23,7 @@ export const Settings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [newConfirmedPassword, setNewConfirmedPassword] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("darkMode") || false
+    JSON.parse(localStorage.getItem("darkMode") ?? "false"),
   );
   const [settings, setSettings] = useState({
     accountVisibility: "public",
@@ -49,7 +49,7 @@ export const Settings = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-        }
+        },
       );
       if (!response.ok) {
         toast.error("Error fetching user preferences");
@@ -65,7 +65,7 @@ export const Settings = () => {
         preferredLanguage: fetchedSettings.preferredLanguage ?? "en",
         timeZone: fetchedSettings.timeZone ?? "GMT",
       });
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     }
   }, [email]);
@@ -74,7 +74,7 @@ export const Settings = () => {
     try {
       const response = await fetch(
         `${endpoints.getVerificationStatus}?email=${encodeURIComponent(
-          email
+          email,
         )}&purpose=account_verification`,
         {
           method: "GET",
@@ -82,7 +82,7 @@ export const Settings = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-        }
+        },
       );
       if (!response.ok) {
         toast.error("Error fetching verification status");
@@ -90,7 +90,7 @@ export const Settings = () => {
       }
       const data = await response.json();
       setIsVerified(data.isVerified);
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     }
   }, [email]);
@@ -105,7 +105,7 @@ export const Settings = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-        }
+        },
       );
       if (!response.ok) {
         toast.error("Error fetching verification status");
@@ -115,7 +115,7 @@ export const Settings = () => {
       setFullName(data.fullName || "");
       setBio(data.bio || "");
       storage.setItem("fullName", data.fullName);
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     }
   }, [email, storage]);
@@ -142,7 +142,7 @@ export const Settings = () => {
       } else {
         toast.error("Error sending OTP");
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Something went wrong");
     }
@@ -170,7 +170,7 @@ export const Settings = () => {
       } else {
         toast.error(message.error);
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Failed to update user preferences");
     }
@@ -204,7 +204,7 @@ export const Settings = () => {
       } else {
         toast.error(message.error);
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Failed to change password");
     }
@@ -221,7 +221,7 @@ export const Settings = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-        }
+        },
       );
       toast.dismiss(spinnerId);
       const message = await response.json();
@@ -231,7 +231,7 @@ export const Settings = () => {
       } else {
         toast.error(message.error);
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Failed to delete account");
     }
@@ -263,7 +263,7 @@ export const Settings = () => {
       } else {
         toast.error(response.message.error);
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Error exporting data");
     }
@@ -291,7 +291,7 @@ export const Settings = () => {
       } else {
         toast.error("Failed to update profile");
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Something went Wrong");
     }
@@ -304,7 +304,7 @@ export const Settings = () => {
 
   useEffect(() => {
     getVerificationStatus();
-  }, [isVerified, getVerificationStatus]);
+  }, [getVerificationStatus]);
 
   useEffect(() => {
     getProfile();
@@ -585,3 +585,5 @@ export const Settings = () => {
     </Background>
   );
 };
+
+export default Settings;

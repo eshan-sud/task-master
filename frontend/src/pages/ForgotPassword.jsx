@@ -1,7 +1,7 @@
 // frontend/src/pages/ForgotPassword.jsx
 
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -14,13 +14,17 @@ import { OTPVerificationForm } from "../components/Popups.jsx";
 import { endpoints } from "../ApiEndpoints.jsx";
 
 const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
+  const csrfToken = useSelector((state) => state.csrf.token);
   const handleForgotPassword = async (event) => {
     event.preventDefault();
     const spinnerId = showSpinnerToast();
     try {
       const response = await fetch(endpoints.checkUserExists, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
+        },
         body: JSON.stringify({ email }),
       });
       const message = await response.json();
@@ -36,7 +40,10 @@ const ForgotPasswordForm = ({ email, setEmail, setStep }) => {
       }
       const otpResponse = await fetch(endpoints.sendOTP, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
+        },
         body: JSON.stringify({ email, purpose: "password_reset" }),
       });
       toast.dismiss(spinnerId);
@@ -79,6 +86,7 @@ const ResetPasswordForm = ({
   setStep,
 }) => {
   const navigate = useNavigate();
+  const csrfToken = useSelector((state) => state.csrf.token);
 
   const handleResetPassword = async (event) => {
     event.preventDefault();
@@ -96,7 +104,10 @@ const ResetPasswordForm = ({
     try {
       const response = await fetch(endpoints.resetPassword, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
+        },
         body: JSON.stringify({ email, newPassword, token: resetToken }),
       });
       const message = await response.json();
@@ -108,7 +119,7 @@ const ResetPasswordForm = ({
       } else {
         toast.error(message.error);
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Something went wrong");
     }
@@ -187,15 +198,15 @@ export default function ForgotPassword() {
         step === 1
           ? "Forgot Your Password?"
           : step === 2
-          ? "Verify OTP"
-          : "Reset Your Password"
+            ? "Verify OTP"
+            : "Reset Your Password"
       }
       subHeading={
         step === 1
           ? "Enter your registered email"
           : step === 2
-          ? "Enter the 6-digit one-time-password (OTP) sent to your registered email address"
-          : "Set a new password"
+            ? "Enter the 6-digit one-time-password (OTP) sent to your registered email address"
+            : "Set a new password"
       }
     />
   );

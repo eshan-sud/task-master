@@ -1,6 +1,7 @@
 // frontend/src/pages/Register.jsx
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -16,6 +17,7 @@ const siteKey = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const csrfToken = useSelector((state) => state.csrf.token);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -52,6 +54,7 @@ const RegisterForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
         },
         body: JSON.stringify(registerDetails),
         credentials: "include",
@@ -64,7 +67,7 @@ const RegisterForm = () => {
       } else {
         toast.error(message.error);
       }
-    } catch (error) {
+    } catch {
       toast.dismiss(spinnerId);
       toast.error("Something went wrong");
     }

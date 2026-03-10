@@ -62,19 +62,19 @@ export const Sidebar = () => {
         }`}
         ref={sidebarRef}
       >
-        <div className="flex flex-col justify-between bg-white h-full p-4">
+        <div className="flex flex-col justify-between bg-white dark:bg-gray-800 h-full p-4 transition-colors duration-300">
           <div className="flex gap-2">
             <button
               ref={buttonRef}
               onClick={toggleSidebar}
-              className="text-2xl focus:outline-none z-40"
+              className="text-2xl text-gray-800 dark:text-gray-200 focus:outline-none z-40"
             >
-              <div className="hover:bg-gray-200 rounded-lg px-1 py-2 w-full flex">
+              <div className="hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg px-1 py-2 w-full flex">
                 {isOpen ? <FiX /> : <FiMenu />}
               </div>
             </button>
             {isOpen && (
-              <span className="text-2xl text-center font-bold text-nowrap">
+              <span className="text-2xl text-center font-bold text-nowrap text-gray-800 dark:text-gray-200">
                 TASK MASTER
               </span>
             )}
@@ -97,11 +97,13 @@ export const Sidebar = () => {
                 title="Logout"
                 type="button"
                 onClick={toggleLogoutModal}
-                className="flex items-center hover:bg-gray-200 rounded-lg px-1 py-2 w-full"
+                className="flex items-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg px-1 py-2 w-full"
               >
-                <FiLogOut className="text-2xl text-red-600" />
+                <FiLogOut className="text-2xl text-red-600 dark:text-red-400" />
                 {isOpen && (
-                  <span className="ml-2 text-xl text-red-600">Logout</span>
+                  <span className="ml-2 text-xl text-red-600 dark:text-red-400">
+                    Logout
+                  </span>
                 )}
               </button>
             </li>

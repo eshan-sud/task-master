@@ -3,9 +3,11 @@
 export default function AboutUs() {
   return (
     <div className="flex items-center justify-center m-[90px]">
-      <div className="flex flex-col p-10 justify-center items-center bg-white/30 rounded-3xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[15px] border border-white w-full max-w-4xl">
-        <h2 className="text-4xl font-bold mb-8 text-center"> About Us </h2>
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="flex flex-col p-10 justify-center items-center bg-white/80 dark:bg-gray-900/70 rounded-3xl shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-[15px] border border-gray-200 dark:border-gray-700 w-full max-w-4xl transition-colors">
+        <h2 className="text-4xl font-bold mb-8 text-center text-gray-900 dark:text-gray-100">
+          About Us
+        </h2>
+        <div className="max-w-4xl mx-auto text-center text-gray-800 dark:text-gray-200">
           <p className="text-lg mb-6">
             At Task Master, we are dedicated to helping you manage your tasks
             efficiently and effectively. Our mission is to provide a
@@ -22,7 +24,7 @@ export default function AboutUs() {
           <div className="mt-6">
             <a
               href="/contact"
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition duration-200"
             >
               Get in Touch
             </a>

@@ -2,6 +2,7 @@
 
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import AuthContext from "../utils/AuthContext.jsx";
 import { useRememberMe } from "../utils/RememberMeContext.jsx";
@@ -14,12 +15,13 @@ import { Field, EmailField } from "../components/Fields";
 import { SubmitButton } from "../components/Buttons";
 import { FormContainer } from "../components/FormContainer";
 
-const checkVerification = (email) => {};
+const checkVerification = () => {};
 
 const LoginForm = () => {
   const Navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const { isRememberMe, setIsRememberMe } = useRememberMe();
+  const csrfToken = useSelector((state) => state.csrf.token);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const logindetails = {
@@ -37,6 +39,7 @@ const LoginForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(csrfToken && { "X-CSRF-Token": csrfToken }),
         },
         body: JSON.stringify(logindetails),
         credentials: "include",
@@ -58,7 +61,8 @@ const LoginForm = () => {
         toast.error(message.error);
       }
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message || "Login failed. Please try again.");
+      console.error("Login error:", error);
     }
   };
 
