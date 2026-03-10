@@ -1,6 +1,6 @@
 <!-- frontend/index.html -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-in">
   <head>
     <meta charset="utf-8" />
@@ -8,6 +8,27 @@
     <meta name="description" content="Task management platform" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+
+    <!-- ============================================ -->
+    <!-- Content Security Policy (CSP) - DISABLED    -->
+    <!-- ============================================ -->
+    <!-- CSP temporarily disabled for development because:
+         - Frontend runs on localhost:3000
+         - Backend runs on localhost:8000
+         - connect-src 'self' blocks cross-origin requests
+         
+         TO RE-ENABLE FOR PRODUCTION:
+         1. Option A: Use same domain with reverse proxy (nginx/Apache)
+         2. Option B: Update connect-src to include backend domain:
+            connect-src 'self' https://api.yourdomain.com ws: wss:;
+         3. For development, you can use:
+            connect-src 'self' http://localhost:8000 ws://localhost:8000 wss://localhost:8000;
+    -->
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'self'; form-action 'self';"
+    /> -->
+
     <link rel="apple-touch-icon" href="/logo192.png" />
     <title>Task Master | Eshan Sud</title>
     <meta property="og:type" content="website" />

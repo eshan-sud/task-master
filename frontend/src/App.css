@@ -2,7 +2,62 @@
 
 @import "tailwindcss";
 
+/* Global selection */
 ::selection {
-  color: white;
-  background-color: black;
+  color: #f9fafb;
+  background-color: #4f46e5;
+}
+
+/* Smooth background/text transitions for theme switch */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+html.dark body {
+  @apply bg-slate-950 text-gray-100;
+}
+
+/* React Calendar theming */
+.react-calendar {
+  @apply w-full bg-white text-gray-900 rounded-lg shadow-sm border border-gray-200;
+}
+
+.react-calendar__tile {
+  @apply text-gray-800;
+}
+
+.react-calendar__tile--now {
+  @apply bg-blue-50 text-blue-700;
+}
+
+.react-calendar__tile--active {
+  @apply bg-blue-600 text-white;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  @apply text-rose-500;
+}
+
+html.dark .react-calendar {
+  @apply bg-gray-900 text-gray-100 border border-gray-700;
+}
+
+html.dark .react-calendar__tile {
+  @apply text-gray-200;
+}
+
+html.dark .react-calendar__tile--now {
+  @apply bg-blue-900/40 text-blue-300;
+}
+
+html.dark .react-calendar__tile--active {
+  @apply bg-blue-500 text-white;
+}
+
+html.dark .react-calendar__month-view__days__day--weekend {
+  @apply text-rose-300;
 }
