@@ -15,7 +15,7 @@ const cookieParser = require("cookie-parser");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
-// const csrfProtection = require("./middleware/csrf.js");
+const csrfProtection = require("./middleware/csrf.js");
 const rateLimiter = require("./middleware/rateLimiter.js");
 const speedLimiter = require("./middleware/slowDown.js");
 const compression = require("compression");
@@ -34,10 +34,11 @@ const messagesRoute = require("./routes/messages.route.js");
 const taskShareRoute = require("./routes/taskShare.route.js");
 const userauthRoute = require("./routes/userauth.route.js");
 const otpRoute = require("./routes/otp.route.js");
+const searchRoute = require("./routes/search.route.js");
 
 // Create an Express server
 const app = express();
-const BACKEND_PORT = process.env.BACKEND_PORT || 8023;
+const BACKEND_PORT = process.env.BACKEND_PORT || 8000;
 
 // Establish Connection with Database
 connection();
@@ -64,15 +65,8 @@ app.use(
 app.use(express.urlencoded({ extended: false })); // NEW MIDDLEWARE
 app.use(express.json());
 app.use(cookieParser());
-app.use(mongoSanitize());
-app.use(xss());
-app.use(hpp());
-// app.use(csrfProtection);
-app.use(rateLimiter);
-app.use(speedLimiter);
-app.use(compression());
 
-// CORS - Dynamic based on environment
+// CORS - Dynamic based on environment (MUST be before CSRF)
 const allowedOrigins =
   process.env.NODE_ENV === "production"
     ? process.env.FRONTEND_URL?.split(",") || []
@@ -93,6 +87,20 @@ app.use(
   }),
 );
 
+app.use(mongoSanitize());
+app.use(xss());
+app.use(hpp());
+app.use(csrfProtection);
+// Skip rate limiting for CSRF token endpoint
+app.use((req, res, next) => {
+  if (req.path === "/csrf-token") {
+    return next();
+  }
+  rateLimiter(req, res, next);
+});
+app.use(speedLimiter);
+app.use(compression());
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(maintenanceMode);
 
@@ -106,7 +114,16 @@ app.use(maintenanceMode);
 // });
 
 app.get("/csrf-token", (req, res) => {
-  return res.json({ csrfToken: req.csrfToken() });
+  try {
+    const token = req.csrfToken();
+    return res.json({ csrfToken: token });
+  } catch (error) {
+    console.error("CSRF token generation error:", error);
+    return res.status(500).json({
+      error: "Failed to generate CSRF token",
+      message: error.message,
+    });
+  }
 });
 
 app.use("/api/v1/account", accountRoute);
@@ -120,6 +137,7 @@ app.use("/api/v1/messages", messagesRoute);
 app.use("/api/v1/task-share", taskShareRoute);
 app.use("/api/v1/auth", userauthRoute);
 app.use("/api/v1/otp", otpRoute);
+app.use("/api/v1/search", searchRoute);
 app.use((err, req, res, next) => {
   if (err.code === "EBADCSRFTOKEN") {
     return res.status(403).json({ error: "Invalid CSRF token" });
