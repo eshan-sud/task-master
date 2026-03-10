@@ -1,9 +1,17 @@
 // frontend/src/Tasks/Task.jsx
 
-import { SendButton, PinButton, ArchiveButton } from "../Buttons.jsx";
+// import { SendButton, PinButton, ArchiveButton } from "../Buttons.jsx";
 
 import { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FiStar, FiArchive, FiTrash2, FiSend } from "react-icons/fi";
+import toast from "react-hot-toast";
+import {
+  fetchTasks,
+  updateTask,
+  deleteTask,
+  archiveTask,
+} from "../../store/slices/tasksSlice.js";
 
 const Task = ({ task: initialTask, onUpdate, onDelete, onArchive, onSend }) => {
   const [task, setTask] = useState(initialTask);
@@ -19,9 +27,9 @@ const Task = ({ task: initialTask, onUpdate, onDelete, onArchive, onSend }) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const handleShareTask = () => {};
-  const handleArchiveTask = () => {};
-  const handleDeleteTask = () => {};
+  // const handleShareTask = () => {};
+  // const handleArchiveTask = () => {};
+  // const handleDeleteTask = () => {};
 
   return (
     <>
@@ -60,7 +68,7 @@ const Task = ({ task: initialTask, onUpdate, onDelete, onArchive, onSend }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onArchive(task.id);
+              onArchive?.(task.id);
             }}
             className="p-2 rounded-full text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700"
             title="Archive"
@@ -70,7 +78,7 @@ const Task = ({ task: initialTask, onUpdate, onDelete, onArchive, onSend }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onSend(task.id);
+              onSend?.(task.id);
             }}
             className="p-2 rounded-full text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700"
             title="Send"
@@ -80,7 +88,7 @@ const Task = ({ task: initialTask, onUpdate, onDelete, onArchive, onSend }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onDelete(task.id);
+              onDelete?.(task.id);
             }}
             className="p-2 rounded-full text-gray-500 hover:bg-red-100 dark:hover:bg-red-900/50 hover:text-red-600 dark:hover:text-red-500"
             title="Delete"
@@ -163,72 +171,110 @@ const TaskModal = ({ task, onClose, onUpdate }) => {
   );
 };
 
-// --- Example Usage ---
-// You can place this in another component to display a list of tasks.
-// For example, in your redesigned Profile.jsx.
+// --- TaskList Component with Redux Integration ---
 
 const TaskList = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Finalize Q3 report",
-      content: "Review the numbers and add a conclusion section.",
-      pinned: true,
-    },
-    {
-      id: 2,
-      title: "Team meeting agenda",
-      content: "- Discuss project milestones\n- Brainstorm new features",
-      pinned: false,
-    },
-    {
-      id: 3,
-      title: "Follow up with clients",
-      content:
-        "Email John about the contract.\nCall Sarah to confirm the meeting.",
-      pinned: false,
-    },
-  ]);
+  const dispatch = useDispatch();
+  const { items: tasksFromStore, loading } = useSelector(
+    (state) => state.tasks,
+  );
 
-  const handleUpdateTask = (updatedTask) => {
-    setTasks(tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
-    console.log("Updated Task:", updatedTask);
+  // Filter to get active tasks only (not archived or deleted)
+  const tasks = tasksFromStore
+    .filter((task) => !task.isDeleted && !task.isArchived)
+    .map((task) => ({
+      id: task._id,
+      title: task.title,
+      content: task.description || "",
+      pinned: task.isPinned || false,
+      ...task,
+    }));
+
+  useEffect(() => {
+    dispatch(fetchTasks({}));
+  }, [dispatch]);
+
+  const handleUpdateTask = async (updatedTask) => {
+    try {
+      await dispatch(
+        updateTask({
+          taskId: updatedTask.id,
+          task: {
+            title: updatedTask.title,
+            description: updatedTask.content,
+            isPinned: updatedTask.pinned,
+          },
+        }),
+      ).unwrap();
+      toast.success("Task updated successfully");
+    } catch (error) {
+      toast.error(error.error || "Failed to update task");
+    }
   };
 
-  const handleDeleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
-    console.log("Deleted Task ID:", id);
+  const handleDeleteTask = async (id) => {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      try {
+        await dispatch(deleteTask(id)).unwrap();
+        toast.success("Task deleted successfully");
+      } catch (error) {
+        toast.error(error.error || "Failed to delete task");
+      }
+    }
   };
 
-  const handleArchiveTask = (id) => {
-    console.log("Archived Task ID:", id);
-    // Add archive logic here
+  const handleArchiveTask = async (id) => {
+    try {
+      await dispatch(archiveTask(id)).unwrap();
+      toast.success("Task archived successfully");
+    } catch (error) {
+      toast.error(error.error || "Failed to archive task");
+    }
   };
 
-  const handleSendTask = (id) => {
-    console.log("Sent Task ID:", id);
-    // Add send logic here
+  const handleSendTask = () => {
+    // TODO: Implement share/send task functionality
+    toast("Share functionality coming soon!", { icon: "📤" });
   };
+
+  if (loading && tasks.length === 0) {
+    return (
+      <div className="p-8 bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading tasks...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-8 bg-gray-100 dark:bg-gray-900 min-h-screen">
+    <div className="p-8 bg-transparent min-h-screen">
       <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
         My Tasks
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {tasks.map((task) => (
-          <Task
-            key={task.id}
-            task={task}
-            onUpdate={handleUpdateTask}
-            onDelete={handleDeleteTask}
-            onArchive={handleArchiveTask}
-            onSend={handleSendTask}
-          />
-        ))}
-      </div>
+      {tasks.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500 dark:text-gray-400 text-lg">
+            No tasks yet. Start by creating one!
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {tasks.map((task) => (
+            <Task
+              key={task.id}
+              task={task}
+              onUpdate={handleUpdateTask}
+              onDelete={handleDeleteTask}
+              onArchive={handleArchiveTask}
+              onSend={handleSendTask}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default TaskList; // You can export Task directly if you prefer
+export default TaskList;

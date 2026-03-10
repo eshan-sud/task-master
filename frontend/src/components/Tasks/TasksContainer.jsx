@@ -16,7 +16,8 @@ import TaskFilters from "./TaskFilters";
 import TaskSearch from "./TaskSearch";
 import CreateTaskButton from "./CreateTaskButton";
 import BulkActionsBar from "./BulkActionsBar";
-import { FiGrid, FiList, FiPlus } from "react-icons/fi";
+import KanbanBoard from "./KanbanBoard";
+import { FiGrid, FiList, FiPlus, FiColumns } from "react-icons/fi";
 
 const TasksContainer = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const TasksContainer = () => {
     error,
     searchResults,
   } = useSelector((state) => state.tasks);
-  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState("grid"); // 'grid', 'list', or 'kanban'
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -105,14 +106,6 @@ const TasksContainer = () => {
     );
   };
 
-  const handleSelectAll = () => {
-    if (selectedTasks.length === sortedTasks.length) {
-      setSelectedTasks([]);
-    } else {
-      setSelectedTasks(sortedTasks.map((task) => task._id));
-    }
-  };
-
   const handleBulkAction = async (action, data) => {
     await dispatch(bulkUpdateTasks({ taskIds: selectedTasks, updates: data }));
     setSelectedTasks([]);
@@ -144,17 +137,24 @@ const TasksContainer = () => {
           <div className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-lg p-1">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded ${viewMode === "grid" ? "bg-white dark:bg-gray-600" : ""}`}
+              className={`p-2 rounded ${viewMode === "grid" ? "bg-white dark:bg-gray-600 text-blue-500" : "text-gray-600 dark:text-gray-400"}`}
               title="Grid view"
             >
               <FiGrid />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded ${viewMode === "list" ? "bg-white dark:bg-gray-600" : ""}`}
+              className={`p-2 rounded ${viewMode === "list" ? "bg-white dark:bg-gray-600 text-blue-500" : "text-gray-600 dark:text-gray-400"}`}
               title="List view"
             >
               <FiList />
+            </button>
+            <button
+              onClick={() => setViewMode("kanban")}
+              className={`p-2 rounded ${viewMode === "kanban" ? "bg-white dark:bg-gray-600 text-blue-500" : "text-gray-600 dark:text-gray-400"}`}
+              title="Kanban board"
+            >
+              <FiColumns />
             </button>
           </div>
 
@@ -191,90 +191,97 @@ const TasksContainer = () => {
       )}
 
       {/* Tasks Display */}
-      <div className="space-y-8">
-        {/* Pinned Tasks */}
-        {pinnedTasks.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
-              📌 Pinned
-            </h2>
-            <div
-              className={
-                viewMode === "grid"
-                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-                  : "space-y-2"
-              }
-            >
-              {pinnedTasks.map((task) => (
-                <TaskCard
-                  key={task._id}
-                  task={task}
-                  viewMode={viewMode}
-                  isSelected={selectedTasks.includes(task._id)}
-                  onToggleSelect={handleToggleSelect}
-                  onEdit={() => setEditingTask(task)}
-                  onDelete={handleDeleteTask}
-                  onArchive={handleArchiveTask}
-                  onUpdate={handleUpdateTask}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Regular Tasks */}
-        {unpinnedTasks.length > 0 && (
-          <div>
-            {pinnedTasks.length > 0 && (
+      {viewMode === "kanban" ? (
+        <KanbanBoard
+          tasks={sortedTasks}
+          onTaskClick={(task) => setEditingTask(task)}
+        />
+      ) : (
+        <div className="space-y-8">
+          {/* Pinned Tasks */}
+          {pinnedTasks.length > 0 && (
+            <div>
               <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                All Tasks
+                📌 Pinned
               </h2>
-            )}
-            <div
-              className={
-                viewMode === "grid"
-                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-                  : "space-y-2"
-              }
-            >
-              {unpinnedTasks.map((task) => (
-                <TaskCard
-                  key={task._id}
-                  task={task}
-                  viewMode={viewMode}
-                  isSelected={selectedTasks.includes(task._id)}
-                  onToggleSelect={handleToggleSelect}
-                  onEdit={() => setEditingTask(task)}
-                  onDelete={handleDeleteTask}
-                  onArchive={handleArchiveTask}
-                  onUpdate={handleUpdateTask}
-                />
-              ))}
+              <div
+                className={
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                    : "space-y-2"
+                }
+              >
+                {pinnedTasks.map((task) => (
+                  <TaskCard
+                    key={task._id}
+                    task={task}
+                    viewMode={viewMode}
+                    isSelected={selectedTasks.includes(task._id)}
+                    onToggleSelect={handleToggleSelect}
+                    onEdit={() => setEditingTask(task)}
+                    onDelete={handleDeleteTask}
+                    onArchive={handleArchiveTask}
+                    onUpdate={handleUpdateTask}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Empty State */}
-        {sortedTasks.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 dark:text-gray-600 text-6xl mb-4">
-              📝
+          {/* Regular Tasks */}
+          {unpinnedTasks.length > 0 && (
+            <div>
+              {pinnedTasks.length > 0 && (
+                <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                  All Tasks
+                </h2>
+              )}
+              <div
+                className={
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+                    : "space-y-2"
+                }
+              >
+                {unpinnedTasks.map((task) => (
+                  <TaskCard
+                    key={task._id}
+                    task={task}
+                    viewMode={viewMode}
+                    isSelected={selectedTasks.includes(task._id)}
+                    onToggleSelect={handleToggleSelect}
+                    onEdit={() => setEditingTask(task)}
+                    onDelete={handleDeleteTask}
+                    onArchive={handleArchiveTask}
+                    onUpdate={handleUpdateTask}
+                  />
+                ))}
+              </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              No tasks yet
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">
-              Create your first task to get started
-            </p>
-            <button
-              onClick={() => setIsCreateModalOpen(true)}
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-            >
-              Create Task
-            </button>
-          </div>
-        )}
-      </div>
+          )}
+
+          {/* Empty State */}
+          {sortedTasks.length === 0 && (
+            <div className="text-center py-12">
+              <div className="text-gray-400 dark:text-gray-600 text-6xl mb-4">
+                📝
+              </div>
+              <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                No tasks yet
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">
+                Create your first task to get started
+              </p>
+              <button
+                onClick={() => setIsCreateModalOpen(true)}
+                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Create Task
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Create Task Modal */}
       {isCreateModalOpen && (

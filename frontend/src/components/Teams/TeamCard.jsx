@@ -1,12 +1,8 @@
 // frontend/src/components/Teams/TeamCard.jsx
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import {
-  updateTeam,
-  addMember,
-  removeMember,
-} from "../../store/slices/teamsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addMember, removeMember } from "../../store/slices/teamsSlice";
 import {
   FiUsers,
   FiUserPlus,
@@ -17,6 +13,7 @@ import {
 
 const TeamCard = ({ team, onDelete }) => {
   const dispatch = useDispatch();
+  const onlineUsers = useSelector((state) => state.presence.onlineUsers);
   const [showMenu, setShowMenu] = useState(false);
   const [isAddingMember, setIsAddingMember] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
@@ -125,37 +122,55 @@ const TeamCard = ({ team, onDelete }) => {
           Members
         </h4>
         <div className="space-y-2 max-h-48 overflow-y-auto">
-          {team.members?.map((member) => (
-            <div
-              key={member._id}
-              className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700/50 rounded"
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                  {member.user?.name?.[0]?.toUpperCase() ||
-                    member.user?.email?.[0]?.toUpperCase()}
+          {team.members?.map((member) => {
+            const userId = member.user?._id || member.userId?._id;
+            const isOnline = userId && onlineUsers[userId]?.isOnline;
+
+            return (
+              <div
+                key={member._id}
+                className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700/50 rounded"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                      {member.user?.name?.[0]?.toUpperCase() ||
+                        member.user?.email?.[0]?.toUpperCase()}
+                    </div>
+                    {/* Online status indicator */}
+                    <div
+                      className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-gray-700"
+                      style={{
+                        backgroundColor: isOnline ? "#10b981" : "#6b7280",
+                      }}
+                      title={isOnline ? "Online" : "Offline"}
+                    ></div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                      {member.user?.name || member.user?.email}
+                      {isOnline && (
+                        <span className="ml-2 text-xs text-green-500">●</span>
+                      )}
+                    </p>
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded ${getRoleBadgeColor(member.role)}`}
+                    >
+                      {member.role}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {member.user?.name || member.user?.email}
-                  </p>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded ${getRoleBadgeColor(member.role)}`}
+                {member.role !== "owner" && (
+                  <button
+                    onClick={() => handleRemoveMember(member._id)}
+                    className="p-1 text-gray-400 hover:text-red-500"
                   >
-                    {member.role}
-                  </span>
-                </div>
+                    <FiTrash2 size={14} />
+                  </button>
+                )}
               </div>
-              {member.role !== "owner" && (
-                <button
-                  onClick={() => handleRemoveMember(member._id)}
-                  className="p-1 text-gray-400 hover:text-red-500"
-                >
-                  <FiTrash2 size={14} />
-                </button>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

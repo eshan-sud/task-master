@@ -1,6 +1,7 @@
 // frontend/src/components/Notifications/NotificationItem.jsx
 
 import { formatDistanceToNow } from "date-fns";
+import { useMemo, useCallback, memo } from "react";
 import {
   FiCheck,
   FiTrash2,
@@ -12,8 +13,8 @@ import {
   FiBell,
 } from "react-icons/fi";
 
-const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
-  const getIcon = () => {
+const NotificationItem = memo(({ notification, onMarkAsRead, onDelete }) => {
+  const icon = useMemo(() => {
     switch (notification.type) {
       case "task_assigned":
       case "task_updated":
@@ -35,9 +36,9 @@ const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
       default:
         return <FiBell className="text-gray-500" />;
     }
-  };
+  }, [notification.type]);
 
-  const getTitle = () => {
+  const title = useMemo(() => {
     switch (notification.type) {
       case "task_assigned":
         return "Task assigned to you";
@@ -66,7 +67,15 @@ const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
       default:
         return "Notification";
     }
-  };
+  }, [notification.type]);
+
+  const handleMarkAsRead = useCallback(() => {
+    onMarkAsRead(notification._id);
+  }, [onMarkAsRead, notification._id]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(notification._id);
+  }, [onDelete, notification._id]);
 
   return (
     <div
@@ -78,14 +87,14 @@ const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
     >
       <div className="flex gap-3">
         {/* Icon */}
-        <div className="flex-shrink-0 mt-1">{getIcon()}</div>
+        <div className="flex-shrink-0 mt-1">{icon}</div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1">
               <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                {getTitle()}
+                {title}
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                 {notification.message}
@@ -101,7 +110,7 @@ const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
             <div className="flex items-center gap-1">
               {!notification.read && (
                 <button
-                  onClick={() => onMarkAsRead(notification._id)}
+                  onClick={handleMarkAsRead}
                   className="p-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                   title="Mark as read"
                 >
@@ -109,7 +118,7 @@ const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
                 </button>
               )}
               <button
-                onClick={() => onDelete(notification._id)}
+                onClick={handleDelete}
                 className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500"
                 title="Delete"
               >
@@ -131,6 +140,6 @@ const NotificationItem = ({ notification, onMarkAsRead, onDelete }) => {
       </div>
     </div>
   );
-};
+});
 
 export default NotificationItem;

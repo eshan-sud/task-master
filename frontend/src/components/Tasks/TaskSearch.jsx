@@ -1,5 +1,5 @@
 // frontend/src/components/Tasks/TaskSearch.jsx
-import { useState, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import { debounce } from "../../utils/Debounce";
 
@@ -7,12 +7,15 @@ const TaskSearch = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce((query) => {
-      onSearch(query);
-    }, 300),
-    [onSearch],
-  );
+  const debouncedSearch = useMemo(() => {
+    return debounce((query) => onSearch(query), 300);
+  }, [onSearch]);
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel?.();
+    };
+  }, [debouncedSearch]);
 
   const handleSearchChange = (e) => {
     const query = e.target.value;

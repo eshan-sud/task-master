@@ -2,16 +2,19 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { FiTrash2, FiSmile } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
+import { sanitizeText } from "../../utils/sanitize";
 
-const CommentItem = ({ comment, onDelete, onReaction }) => {
+const CommentItem = memo(({ comment, onDelete, onReaction }) => {
   const [showReactions, setShowReactions] = useState(false);
-  const reactions = ["👍", "❤️", "😊", "🎉", "👏"];
+  const reactions = useMemo(() => ["👍", "❤️", "😊", "🎉", "👏"], []);
 
-  // Extract mentions from content
-  const renderContent = (content) => {
+  // Extract mentions from content with useMemo
+  const renderedContent = useMemo(() => {
+    // Sanitize content to remove any HTML/XSS attacks
+    const cleanContent = sanitizeText(comment.content);
     const mentionRegex = /@(\w+)/g;
-    const parts = content.split(mentionRegex);
+    const parts = cleanContent.split(mentionRegex);
 
     return parts.map((part, index) => {
       if (index % 2 === 1) {
@@ -27,7 +30,18 @@ const CommentItem = ({ comment, onDelete, onReaction }) => {
       }
       return part;
     });
-  };
+  }, [comment.content]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(comment._id);
+  }, [onDelete, comment._id]);
+
+  const handleReaction = useCallback(
+    (emoji) => {
+      onReaction(comment._id, emoji);
+    },
+    [onReaction, comment._id],
+  );
 
   return (
     <div className="flex gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
@@ -53,7 +67,7 @@ const CommentItem = ({ comment, onDelete, onReaction }) => {
             </span>
           </div>
           <button
-            onClick={() => onDelete(comment._id)}
+            onClick={handleDelete}
             className="p-1 text-gray-400 hover:text-red-500 transition-colors"
           >
             <FiTrash2 size={14} />
@@ -61,7 +75,7 @@ const CommentItem = ({ comment, onDelete, onReaction }) => {
         </div>
 
         <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
-          {renderContent(comment.content)}
+          {renderedContent}
         </p>
 
         {/* Reactions */}
@@ -71,7 +85,7 @@ const CommentItem = ({ comment, onDelete, onReaction }) => {
               {Object.entries(comment.reactions).map(([emoji, count]) => (
                 <button
                   key={emoji}
-                  onClick={() => onReaction(comment._id, emoji)}
+                  onClick={() => handleReaction(emoji)}
                   className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                 >
                   {emoji} {count}
@@ -95,7 +109,7 @@ const CommentItem = ({ comment, onDelete, onReaction }) => {
                   <button
                     key={emoji}
                     onClick={() => {
-                      onReaction(comment._id, emoji);
+                      handleReaction(emoji);
                       setShowReactions(false);
                     }}
                     className="px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
@@ -110,6 +124,6 @@ const CommentItem = ({ comment, onDelete, onReaction }) => {
       </div>
     </div>
   );
-};
+});
 
 export default CommentItem;

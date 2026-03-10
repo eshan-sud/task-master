@@ -13,9 +13,7 @@ import { FiMessageSquare } from "react-icons/fi";
 
 const MessagesPage = () => {
   const dispatch = useDispatch();
-  const { conversations, loading, error } = useSelector(
-    (state) => state.messages,
-  );
+  const { conversations, error } = useSelector((state) => state.messages);
   const [selectedConversation, setSelectedConversation] = useState(null);
 
   useEffect(() => {

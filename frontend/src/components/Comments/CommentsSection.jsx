@@ -13,7 +13,7 @@ import { FiMessageSquare, FiSend } from "react-icons/fi";
 
 const CommentsSection = ({ taskId }) => {
   const dispatch = useDispatch();
-  const { byTaskId, loading, error } = useSelector((state) => state.comments);
+  const { byTaskId, error } = useSelector((state) => state.comments);
   const comments = byTaskId[taskId] || [];
   const [newComment, setNewComment] = useState("");
 
