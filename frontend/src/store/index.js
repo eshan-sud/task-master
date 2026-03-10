@@ -8,6 +8,8 @@ import teamsReducer from "./slices/teamsSlice";
 import commentsReducer from "./slices/commentsSlice";
 import messagesReducer from "./slices/messagesSlice";
 import categoriesReducer from "./slices/categoriesSlice";
+import presenceReducer from "./slices/presenceSlice";
+import csrfReducer from "./slices/csrfSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +20,8 @@ export const store = configureStore({
     comments: commentsReducer,
     messages: messagesReducer,
     categories: categoriesReducer,
+    presence: presenceReducer,
+    csrf: csrfReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -30,7 +34,7 @@ export const store = configureStore({
         ignoredPaths: ["socket.connection"],
       },
     }),
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: !import.meta.env.PROD,
 });
 
 export default store;

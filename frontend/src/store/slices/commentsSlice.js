@@ -1,21 +1,19 @@
 // frontend/src/store/slices/commentsSlice.js
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { endpoints } from "../../ApiEndpoints";
+import { apiService } from "../../services/api.service";
 
 // Async thunks
 export const fetchComments = createAsyncThunk(
   "comments/fetchComments",
   async (taskId, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.getComments(taskId), {
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to fetch comments");
-      const data = await response.json();
-      return data.comments;
+      const response = await apiService.get(`/comments/task/${taskId}`);
+      return response.data.comments || [];
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to fetch comments" },
+      );
     }
   },
 );
@@ -24,17 +22,16 @@ export const createComment = createAsyncThunk(
   "comments/createComment",
   async ({ taskId, text, mentions, parentComment }, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.createComment(taskId), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ text, mentions, parentComment }),
+      const response = await apiService.post(`/comments/task/${taskId}`, {
+        text,
+        mentions,
+        parentComment,
       });
-      if (!response.ok) throw new Error("Failed to create comment");
-      const data = await response.json();
-      return data.comment;
+      return response.data.comment;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to create comment" },
+      );
     }
   },
 );
@@ -43,17 +40,14 @@ export const updateComment = createAsyncThunk(
   "comments/updateComment",
   async ({ commentId, text }, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.updateComment(commentId), {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ text }),
+      const response = await apiService.patch(`/comments/${commentId}`, {
+        text,
       });
-      if (!response.ok) throw new Error("Failed to update comment");
-      const data = await response.json();
-      return data.comment;
+      return response.data.comment;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to update comment" },
+      );
     }
   },
 );
@@ -62,14 +56,12 @@ export const deleteComment = createAsyncThunk(
   "comments/deleteComment",
   async (commentId, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.deleteComment(commentId), {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to delete comment");
+      await apiService.delete(`/comments/${commentId}`);
       return commentId;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to delete comment" },
+      );
     }
   },
 );
@@ -78,17 +70,17 @@ export const addReaction = createAsyncThunk(
   "comments/addReaction",
   async ({ commentId, emoji }, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.addReaction(commentId), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ emoji }),
-      });
-      if (!response.ok) throw new Error("Failed to add reaction");
-      const data = await response.json();
-      return data.comment;
+      const response = await apiService.post(
+        `/comments/${commentId}/reaction`,
+        {
+          emoji,
+        },
+      );
+      return response.data.comment;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to add reaction" },
+      );
     }
   },
 );

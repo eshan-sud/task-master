@@ -1,20 +1,19 @@
 // frontend/src/store/slices/teamsSlice.js
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { endpoints } from "../../ApiEndpoints";
+import { apiService } from "../../services/api.service";
 
 // Async thunks
 export const fetchTeams = createAsyncThunk(
   "teams/fetchTeams",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.getTeams, {
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to fetch teams");
-      return await response.json();
+      const response = await apiService.get("/teams");
+      return response.data.teams || [];
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to fetch teams" },
+      );
     }
   },
 );
@@ -23,17 +22,12 @@ export const createTeam = createAsyncThunk(
   "teams/createTeam",
   async (teamData, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.createTeam, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(teamData),
-      });
-      if (!response.ok) throw new Error("Failed to create team");
-      const data = await response.json();
-      return data.team;
+      const response = await apiService.post("/teams/create", teamData);
+      return response.data.team;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to create team" },
+      );
     }
   },
 );
@@ -42,17 +36,12 @@ export const updateTeam = createAsyncThunk(
   "teams/updateTeam",
   async ({ teamId, updates }, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.updateTeam(teamId), {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(updates),
-      });
-      if (!response.ok) throw new Error("Failed to update team");
-      const data = await response.json();
-      return data.team;
+      const response = await apiService.patch(`/teams/${teamId}`, updates);
+      return response.data.team;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to update team" },
+      );
     }
   },
 );
@@ -61,14 +50,12 @@ export const deleteTeam = createAsyncThunk(
   "teams/deleteTeam",
   async (teamId, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.deleteTeam(teamId), {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to delete team");
+      await apiService.delete(`/teams/${teamId}`);
       return teamId;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to delete team" },
+      );
     }
   },
 );
@@ -77,17 +64,15 @@ export const addTeamMember = createAsyncThunk(
   "teams/addMember",
   async ({ teamId, email, role }, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.addTeamMember(teamId), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, role }),
+      const response = await apiService.post(`/teams/${teamId}/members`, {
+        email,
+        role,
       });
-      if (!response.ok) throw new Error("Failed to add member");
-      const data = await response.json();
-      return data.team;
+      return response.data.team;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to add member" },
+      );
     }
   },
 );
@@ -108,6 +93,9 @@ const teamsSlice = createSlice({
       state.selectedTeam = null;
     },
     // Real-time updates
+    teamAdded: (state, action) => {
+      state.items.unshift(action.payload);
+    },
     teamUpdated: (state, action) => {
       const index = state.items.findIndex((t) => t._id === action.payload._id);
       if (index !== -1) {
@@ -115,6 +103,12 @@ const teamsSlice = createSlice({
       }
     },
     teamDeleted: (state, action) => {
+      state.items = state.items.filter((t) => t._id !== action.payload);
+      if (state.selectedTeam?._id === action.payload) {
+        state.selectedTeam = null;
+      }
+    },
+    teamRemoved: (state, action) => {
       state.items = state.items.filter((t) => t._id !== action.payload);
       if (state.selectedTeam?._id === action.payload) {
         state.selectedTeam = null;
@@ -128,10 +122,20 @@ const teamsSlice = createSlice({
       }
     },
     memberRemoved: (state, action) => {
-      const { teamId, memberId } = action.payload;
+      const { teamId, userId } = action.payload;
       const team = state.items.find((t) => t._id === teamId);
       if (team) {
-        team.members = team.members.filter((m) => m.userId._id !== memberId);
+        team.members = team.members.filter((m) => m.userId._id !== userId);
+      }
+    },
+    memberRoleUpdated: (state, action) => {
+      const { teamId, userId, role } = action.payload;
+      const team = state.items.find((t) => t._id === teamId);
+      if (team) {
+        const member = team.members.find((m) => m.userId._id === userId);
+        if (member) {
+          member.role = role;
+        }
       }
     },
   },
@@ -182,10 +186,13 @@ const teamsSlice = createSlice({
 export const {
   setSelectedTeam,
   clearSelectedTeam,
+  teamAdded,
   teamUpdated,
   teamDeleted,
+  teamRemoved,
   memberAdded,
   memberRemoved,
+  memberRoleUpdated,
 } = teamsSlice.actions;
 
 export default teamsSlice.reducer;

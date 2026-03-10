@@ -1,11 +1,56 @@
 // frontend/src/services/api.service.js
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8023/api/v1";
+  import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
 
 class APIService {
   constructor() {
     this.baseURL = API_BASE_URL;
+    this.csrfToken = null;
+  }
+
+  // Fetch CSRF token from backend with retry logic
+  async fetchCSRFToken(retries = 3, delay = 1000) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await fetch(
+          `${this.baseURL.replace("/api/v1", "")}/csrf-token`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          this.csrfToken = data.csrfToken;
+          return this.csrfToken;
+        } else if (response.status === 429 && i < retries - 1) {
+          // Rate limited - wait and retry
+          console.warn(
+            `Rate limited. Retrying in ${delay}ms... (${i + 1}/${retries})`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          delay *= 2; // Exponential backoff
+          continue;
+        } else {
+          const errorData = await response.json().catch(() => ({}));
+          console.error("CSRF token fetch failed:", response.status, errorData);
+          throw new Error(
+            errorData.message ||
+              `Failed to fetch CSRF token: ${response.status}`,
+          );
+        }
+      } catch (error) {
+        if (i === retries - 1) {
+          console.error("CSRF Token fetch error:", error);
+          throw error;
+        }
+        // Wait before retry on network error
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        delay *= 2;
+      }
+    }
   }
 
   async request(endpoint, options = {}) {
@@ -15,6 +60,7 @@ class APIService {
       ...options,
       headers: {
         "Content-Type": "application/json",
+        ...(this.csrfToken && { "X-CSRF-Token": this.csrfToken }),
         ...options.headers,
       },
       credentials: "include", // Important for cookies
@@ -102,10 +148,11 @@ class APIService {
     });
   }
 
-  async delete(endpoint, options = {}) {
+  async delete(endpoint, data, options = {}) {
     return this.request(endpoint, {
       ...options,
       method: "DELETE",
+      body: data ? JSON.stringify(data) : undefined,
     });
   }
 

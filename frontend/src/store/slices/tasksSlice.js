@@ -3,6 +3,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiService } from "../../services/api.service";
 
+// Helper function to normalize backend task to frontend format
+const normalizeTask = (task) => ({
+  ...task,
+  title: task.title || task.text, // Support old 'text' field if present
+});
+
 // Async thunks for API calls
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
@@ -13,7 +19,8 @@ export const fetchTasks = createAsyncThunk(
       if (category) params.append("category", category);
 
       const response = await apiService.get(`/tasks/list?${params.toString()}`);
-      return response.data.tasks || [];
+      const tasks = response.data.tasks || response.data || [];
+      return tasks.map(normalizeTask);
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { error: "Failed to fetch tasks" },
@@ -26,8 +33,15 @@ export const createTask = createAsyncThunk(
   "tasks/createTask",
   async (taskData, { rejectWithValue }) => {
     try {
-      const response = await apiService.post("/tasks/create", taskData);
-      return response.data.task;
+      const response = await apiService.post("/tasks/create", {
+        title: taskData.title,
+        description: taskData.description,
+        category: taskData.category,
+        dueDate: taskData.dueDate,
+        priority: taskData.priority,
+        status: taskData.status || "pending",
+      });
+      return normalizeTask(response.data.task);
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { error: "Failed to create task" },
@@ -42,9 +56,15 @@ export const updateTask = createAsyncThunk(
     try {
       const response = await apiService.patch("/tasks/update", {
         taskId,
-        ...updates,
+        title: updates.title,
+        description: updates.description,
+        category: updates.category,
+        dueDate: updates.dueDate,
+        priority: updates.priority,
+        status: updates.status,
+         pinned: updates.pinned,
       });
-      return response.data.task;
+      return normalizeTask(response.data.task);
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { error: "Failed to update task" },
@@ -57,7 +77,7 @@ export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (taskId, { rejectWithValue }) => {
     try {
-      await apiService.delete("/tasks/delete", { data: { taskId } });
+      await apiService.delete("/tasks/delete", { taskId });
       return taskId;
     } catch (error) {
       return rejectWithValue(
@@ -71,11 +91,39 @@ export const archiveTask = createAsyncThunk(
   "tasks/archiveTask",
   async (taskId, { rejectWithValue }) => {
     try {
-      const response = await apiService.post("/tasks/archive", { taskId });
+      const response = await apiService.patch(`/tasks/${taskId}/archive`);
       return response.data.task;
     } catch (error) {
       return rejectWithValue(
         error.response?.data || { error: "Failed to archive task" },
+      );
+    }
+  },
+);
+
+export const fetchArchivedTasks = createAsyncThunk(
+  "tasks/fetchArchivedTasks",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiService.get("/tasks/archived");
+      return response.data.tasks || [];
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to fetch archived tasks" },
+      );
+    }
+  },
+);
+
+export const unarchiveTask = createAsyncThunk(
+  "tasks/unarchiveTask",
+  async (taskId, { rejectWithValue }) => {
+    try {
+      const response = await apiService.patch(`/tasks/${taskId}/unarchive`);
+      return response.data.task;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to unarchive task" },
       );
     }
   },
@@ -118,6 +166,7 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState: {
     items: [],
+    archivedItems: [],
     selectedTask: null,
     searchResults: [],
     filters: {
@@ -126,6 +175,7 @@ const tasksSlice = createSlice({
       search: "",
     },
     loading: false,
+    archiveLoading: false,
     error: null,
   },
   reducers: {
@@ -151,6 +201,9 @@ const tasksSlice = createSlice({
       state.items.unshift(action.payload);
     },
     taskRemoved: (state, action) => {
+      state.items = state.items.filter((task) => task._id !== action.payload);
+    },
+    taskArchived: (state, action) => {
       state.items = state.items.filter((task) => task._id !== action.payload);
     },
   },
@@ -222,6 +275,32 @@ const tasksSlice = createSlice({
       .addCase(archiveTask.rejected, (state, action) => {
         state.error = action.payload?.error || "Failed to archive task";
       })
+      // Fetch archived tasks
+      .addCase(fetchArchivedTasks.pending, (state) => {
+        state.archiveLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchArchivedTasks.fulfilled, (state, action) => {
+        state.archiveLoading = false;
+        state.archivedItems = action.payload;
+      })
+      .addCase(fetchArchivedTasks.rejected, (state, action) => {
+        state.archiveLoading = false;
+        state.error = action.payload?.error || "Failed to fetch archived tasks";
+      })
+      // Unarchive task
+      .addCase(unarchiveTask.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(unarchiveTask.fulfilled, (state, action) => {
+        state.archivedItems = state.archivedItems.filter(
+          (task) => task._id !== action.payload._id,
+        );
+        state.items.unshift(action.payload);
+      })
+      .addCase(unarchiveTask.rejected, (state, action) => {
+        state.error = action.payload?.error || "Failed to unarchive task";
+      })
       // Bulk update tasks
       .addCase(bulkUpdateTasks.pending, (state) => {
         state.loading = true;
@@ -265,6 +344,7 @@ export const {
   taskUpdated,
   taskAdded,
   taskRemoved,
+  taskArchived,
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

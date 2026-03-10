@@ -8,7 +8,7 @@ export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await apiService.get("/categories/list");
+      const response = await apiService.get("/categories/getCategories");
       return response.data.categories || [];
     } catch (error) {
       return rejectWithValue(
@@ -23,7 +23,7 @@ export const createCategory = createAsyncThunk(
   async (categoryData, { rejectWithValue }) => {
     try {
       const response = await apiService.post(
-        "/categories/create",
+        "/categories/createCategory",
         categoryData,
       );
       return response.data.category;
@@ -40,7 +40,7 @@ export const updateCategory = createAsyncThunk(
   async ({ categoryId, updates }, { rejectWithValue }) => {
     try {
       const response = await apiService.patch(
-        `/categories/${categoryId}`,
+        `/categories/updateCategory/${categoryId}`,
         updates,
       );
       return response.data.category;
@@ -56,7 +56,7 @@ export const deleteCategory = createAsyncThunk(
   "categories/deleteCategory",
   async (categoryId, { rejectWithValue }) => {
     try {
-      await apiService.delete(`/categories/${categoryId}`);
+      await apiService.delete(`/categories/deleteCategory/${categoryId}`);
       return categoryId;
     } catch (error) {
       return rejectWithValue(

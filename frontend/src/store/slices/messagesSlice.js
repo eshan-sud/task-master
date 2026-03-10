@@ -1,23 +1,21 @@
 // frontend/src/store/slices/messagesSlice.js
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { endpoints } from "../../ApiEndpoints";
+import { apiService } from "../../services/api.service";
 
 // Async thunks
 export const fetchConversations = createAsyncThunk(
   "messages/fetchConversations",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.getConversations, {
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to fetch conversations");
-      const data = await response.json();
-      return data.conversations;
+      const response = await apiService.get("/messages/conversations");
+      return response.data.conversations || [];
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to fetch conversations" },
+      );
     }
-  }
+  },
 );
 
 export const fetchMessages = createAsyncThunk(
@@ -28,51 +26,50 @@ export const fetchMessages = createAsyncThunk(
       if (receiverId) params.append("receiverId", receiverId);
       if (teamId) params.append("teamId", teamId);
 
-      const response = await fetch(`${endpoints.getMessages}?${params}`, {
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to fetch messages");
-      const data = await response.json();
-      return { messages: data.messages, conversationId: receiverId || teamId };
+      const response = await apiService.get(`/messages?${params}`);
+      return {
+        messages: response.data.messages || [],
+        conversationId: receiverId || teamId,
+      };
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to fetch messages" },
+      );
     }
-  }
+  },
 );
 
 export const sendMessage = createAsyncThunk(
   "messages/sendMessage",
   async ({ receiverId, teamId, text, replyTo }, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.sendMessage, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ receiverId, teamId, text, replyTo }),
+      const response = await apiService.post("/messages/send", {
+        receiverId,
+        teamId,
+        text,
+        replyTo,
       });
-      if (!response.ok) throw new Error("Failed to send message");
-      const data = await response.json();
-      return data.data;
+      return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to send message" },
+      );
     }
-  }
+  },
 );
 
 export const markMessageAsRead = createAsyncThunk(
   "messages/markAsRead",
   async (messageId, { rejectWithValue }) => {
     try {
-      const response = await fetch(endpoints.markMessageRead(messageId), {
-        method: "PATCH",
-        credentials: "include",
-      });
-      if (!response.ok) throw new Error("Failed to mark message as read");
+      await apiService.patch(`/messages/${messageId}/read`);
       return messageId;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(
+        error.response?.data || { error: "Failed to mark message as read" },
+      );
     }
-  }
+  },
 );
 
 const messagesSlice = createSlice({
@@ -95,17 +92,21 @@ const messagesSlice = createSlice({
     messageReceived: (state, action) => {
       const message = action.payload;
       const conversationId = message.receiverId || message.teamId;
-      
+
       if (!state.byConversationId[conversationId]) {
-        state.byConversationId[conversationId] = { items: [], loading: false, error: null };
+        state.byConversationId[conversationId] = {
+          items: [],
+          loading: false,
+          error: null,
+        };
       }
-      
+
       // Add to messages
       state.byConversationId[conversationId].items.push(message);
-      
+
       // Update conversations list
       const convIndex = state.conversations.findIndex(
-        (c) => c.userId === conversationId
+        (c) => c.userId === conversationId,
       );
       if (convIndex !== -1) {
         state.conversations[convIndex].lastMessage = message;
@@ -118,12 +119,12 @@ const messagesSlice = createSlice({
     messageSent: (state, action) => {
       const { tempId, message } = action.payload;
       const conversationId = message.receiverId || message.teamId;
-      
+
       if (state.byConversationId[conversationId]) {
         // Replace temp message with real message
-        const tempIndex = state.byConversationId[conversationId].items.findIndex(
-          (m) => m.tempId === tempId
-        );
+        const tempIndex = state.byConversationId[
+          conversationId
+        ].items.findIndex((m) => m.tempId === tempId);
         if (tempIndex !== -1) {
           state.byConversationId[conversationId].items[tempIndex] = message;
         } else {
@@ -134,14 +135,35 @@ const messagesSlice = createSlice({
     messageDeleted: (state, action) => {
       const messageId = action.payload;
       Object.keys(state.byConversationId).forEach((conversationId) => {
-        state.byConversationId[conversationId].items = 
-          state.byConversationId[conversationId].items.filter((m) => m._id !== messageId);
+        state.byConversationId[conversationId].items = state.byConversationId[
+          conversationId
+        ].items.filter((m) => m._id !== messageId);
       });
+    },
+    messageRead: (state, action) => {
+      const { messageId, conversationId } = action.payload;
+      if (state.byConversationId[conversationId]) {
+        const message = state.byConversationId[conversationId].items.find(
+          (m) => m._id === messageId,
+        );
+        if (message) {
+          message.isRead = true;
+        }
+      }
+      // Update unread count in conversations
+      const conv = state.conversations.find((c) => c.userId === conversationId);
+      if (conv && conv.unreadCount > 0) {
+        conv.unreadCount -= 1;
+      }
     },
     addTempMessage: (state, action) => {
       const { conversationId, message } = action.payload;
       if (!state.byConversationId[conversationId]) {
-        state.byConversationId[conversationId] = { items: [], loading: false, error: null };
+        state.byConversationId[conversationId] = {
+          items: [],
+          loading: false,
+          error: null,
+        };
       }
       state.byConversationId[conversationId].items.push(message);
     },
@@ -165,9 +187,13 @@ const messagesSlice = createSlice({
       .addCase(fetchMessages.pending, (state, action) => {
         const { receiverId, teamId } = action.meta.arg;
         const conversationId = receiverId || teamId;
-        
+
         if (!state.byConversationId[conversationId]) {
-          state.byConversationId[conversationId] = { items: [], loading: false, error: null };
+          state.byConversationId[conversationId] = {
+            items: [],
+            loading: false,
+            error: null,
+          };
         }
         state.byConversationId[conversationId].loading = true;
       })
@@ -186,11 +212,11 @@ const messagesSlice = createSlice({
       .addCase(sendMessage.fulfilled, (state, action) => {
         const message = action.payload;
         const conversationId = message.receiverId || message.teamId;
-        
+
         if (state.byConversationId[conversationId]) {
           // Check if message already exists (optimistic update)
           const exists = state.byConversationId[conversationId].items.some(
-            (m) => m._id === message._id
+            (m) => m._id === message._id,
           );
           if (!exists) {
             state.byConversationId[conversationId].items.push(message);
@@ -202,7 +228,7 @@ const messagesSlice = createSlice({
         const messageId = action.payload;
         Object.keys(state.byConversationId).forEach((conversationId) => {
           const message = state.byConversationId[conversationId].items.find(
-            (m) => m._id === messageId
+            (m) => m._id === messageId,
           );
           if (message) {
             message.isRead = true;
@@ -219,6 +245,7 @@ export const {
   messageReceived,
   messageSent,
   messageDeleted,
+  messageRead,
   addTempMessage,
 } = messagesSlice.actions;
 
