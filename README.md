@@ -29,6 +29,9 @@ This application is ideal for individuals, teams, or organisations looking for a
   - chart.js
   - date-fns
   - react-draggable
+  - @dnd-kit/core
+  - @dnd-kit/sortable
+  - @dnd-kit/utilities
   - react-hot-toast
   - react-icons
   - react-router-dom
@@ -108,15 +111,43 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Captchas
   - [x] Rate Limiting
   - [] IP Blocking (Use extra links that can't be found by any user, but a web scrapper could & if they visit that link, we block that IP address from accessing the content)
-- [] Add XSS protection
+- [x] Add XSS protection
   - [x] Implement on backend
-  - [] Implement on frontend
-    - [] Sanitise user-generated content before rendering
-    - [] Use strict CSP on frontend
-- [] Add CSRF protection
+  - [x] Implement on frontend
+    - [x] Sanitise user-generated content before rendering (DOMPurify)
+      - [x] Created comprehensive sanitize.js utility with 6 sanitization functions
+      - [x] Applied sanitization to TaskCard descriptions
+      - [x] Applied sanitization to CommentItem content
+      - [x] Applied sanitization to ChatWindow messages
+    - [] Use strict CSP on frontend (Content-Security-Policy meta tag)
+      - Note: CSP temporarily disabled in development due to backend on different port (localhost:8000)
+      - TODO: Re-enable in production with proper connect-src configuration
+- [x] Add CSRF protection
   - [x] Implement on backend
-  - [] Implement on frontend
-    - [] Add CSRF token to context
+  - [x] Implement on frontend
+    - [x] Created CSRF Redux slice for token management
+    - [x] Added CSRF token fetching utility in api.service.js
+    - [x] Automatic token inclusion in all API request headers (X-CSRF-Token)
+    - [x] Initialize CSRF token on app load in App.jsx
+    - [x] Token stored in Redux with loading and error states
+- [x] Performance Optimizations
+  - [x] React.memo for component memoization
+    - [x] TaskCard wrapped with React.memo
+    - [x] CommentItem wrapped with React.memo
+    - [x] NotificationItem wrapped with React.memo
+  - [x] useCallback for event handler memoization
+    - [x] All TaskCard event handlers memoized
+    - [x] CommentItem handlers optimized
+    - [x] NotificationItem handlers optimized
+  - [x] useMemo for expensive calculations
+    - [x] Analytics statistics calculations memoized
+    - [x] Analytics trend data generation memoized
+    - [x] Analytics chart data memoized
+    - [x] TaskCard date calculations memoized
+    - [x] CommentItem content rendering memoized
+    - [x] NotificationItem icon/title memoized
+  - [x] Debouncing (TaskSearch component - already implemented)
+  - [x] Code splitting with React.lazy (11 pages lazy-loaded)
 - [] Protection against Eavesdropping & MiTM (Man-in-the-Middle) attacks
   - [] Implement SSL certificate from `Let's Encrypt`
   - [] Add CertBot to renew SSL certificate automatically
@@ -146,7 +177,12 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Backend
   - [x] Frontend (attachments in task modal)
 - [] Custom task status pipelines (eg, Intial → Pending → Started → Review → Completed)
-- [] Drag & drop task prioritization within lists
+- [x] Drag & drop task prioritization within lists
+  - [x] Kanban board view with drag & drop functionality
+  - [x] Drag between columns to change task status
+  - [x] Reorder tasks within columns
+  - [x] Three-way view toggle (grid/list/kanban)
+  - [x] Backend reorder endpoint
 - [x] Recurring tasks
 - [] Encrypted tasks w/ end-to-end encryption (only available on user's own private key not stored anywhere using AES-256)
 - [] Quick task creation modal via shortcut (eg, /new command)
@@ -167,7 +203,19 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Advanced filters (status, priority, category, sort)
 - [x] Task statistics and analytics
   - [x] Backend aggregation API
-  - [] Frontend charts & dashboards
+  - [x] Frontend charts & dashboards
+    - [x] Chart.js integration with react-chartjs-2
+    - [x] StatCard component for key metrics display
+    - [x] TasksTrendChart (line chart with 7-day trend)
+    - [x] PriorityDistributionChart (doughnut chart)
+    - [x] CategoryDistributionChart (horizontal bar chart)
+    - [x] Comprehensive Analytics page with real-time data
+    - [x] Dark mode support for all charts
+    - [x] Performance summary section
+- [x] Real-time task updates
+  - [x] Socket.io client integration with Redux
+  - [x] Real-time task creation/update/deletion sync
+  - [x] Real-time archive notifications
   <!-- - [x] Bulk operations (update, delete multiple tasks)
 - [x] Search and filter tasks with advanced filters
 - [x] Task statistics and analytics -->
@@ -178,8 +226,8 @@ This application is ideal for individuals, teams, or organisations looking for a
   <summary><strong>Search & Organisation</strong></summary>
 
 - [x] Search & filter tasks based on various criteria (due date, priority, status, etc.)
-  - [] Debouncing (frontend)
-  - [] Throttling (frontend)
+  - [x] Debouncing (frontend - TaskSearch component)
+  - [] Throttling (frontend - for scroll events if needed)
 - [] Tagging System for easiar searching
 - [] Sync tasks with Google Calendar + Outlook
 - [] Two-way sync with Google Calendar + Outlook
@@ -188,6 +236,8 @@ This application is ideal for individuals, teams, or organisations looking for a
 
 <details open>
   <summary><strong>Collaboration & Sharing</strong></summary>
+
+**🔴 REAL-TIME INFRASTRUCTURE ACTIVE** - All collaboration features powered by Socket.io with instant synchronization across devices
 
 - [x] Real-time task allotment to team members (Backend)
 - [x] Collaborate & share tasks with others (Backend)
@@ -200,16 +250,21 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Frontend comments component
   - [x] Mention detection and highlighting
   - [x] Emoji reactions support
+  - [x] Real-time comment updates via Socket.io
 - [x] In-App chat app
   - [x] User Interface (MessagesPage, ChatWindow, ConversationList)
   - [x] Communicate with team members directly in the app (Backend)
   - [x] Real-Time (Backend)
-  - [] End-to-end encryption
+  - [x] Real-Time Socket.io integration (Frontend)
+  - [x] Typing indicators
+  - [x] Message delivery and read receipts
+  - [] E2EE (End-to-end encryption)
 - [x] Teams management
   - [x] Backend (Create/update/delete teams, Add/remove members)
   - [x] Frontend UI (TeamsPage, TeamCard, CreateTeamModal)
   - [x] Role-based permissions (owner, admin, member, viewer)
   - [x] Member management interface
+  - [x] Real-time user presence indicators (online/offline status)
 - [] Teams joining link sharing
 
 </details>
@@ -233,7 +288,12 @@ This application is ideal for individuals, teams, or organisations looking for a
 <details open>
   <summary><strong>User Interface & User Experience</strong></summary>
 
-- [] Light/dark themes
+- [x] Light/dark themes
+  - [x] Theme toggle button in navigation
+  - [x] Smooth transitions between themes
+  - [x] Persistent theme preference (localStorage)
+  - [x] Dark mode support across all components
+  - [x] Automatic dark/light class application to root element
 - [] Offline mode
 - [] Pinned messages/comments
 - [] Meeting scheduling linked with task deadlines
@@ -243,7 +303,15 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [] Natural Language Processing for due date parsing (eg, "next Monday at 5pm")
   - [] Smart task suggestions/reminders based on usage
   - [] Auto-prioritization using a weighted urgency matrix (Eisenhower matrix)
-- [] Skeleton loaders & Lazy loading
+- [x] Skeleton loaders & Lazy loading
+  - [x] TaskCardSkeleton for task loading states
+  - [x] NotificationItemSkeleton and NotificationListSkeleton
+  - [x] TeamCardSkeleton and TeamGridSkeleton
+  - [x] MessageSkeleton, ChatWindowSkeleton, ConversationItemSkeleton
+  - [x] PageLoader for route-level loading
+  - [x] React.lazy for code splitting (all pages)
+  - [x] Suspense boundaries in App.jsx
+  - [x] Centralized skeleton exports via index.js
 
 </details>
 
@@ -257,8 +325,8 @@ This application is ideal for individuals, teams, or organisations looking for a
 - [x] Push notifications (Backend infrastructure ready)
   - [] Password changes
   - [] Profile updates
-  - [] Real-time updates/alerts
-  - [] Tasks updates
+  - [x] Real-time updates/alerts (Socket.io integration)
+  - [x] Tasks updates (real-time)
   - [] Reminders
 - [] Desktop notifications
   - [] Task updates
@@ -271,6 +339,7 @@ This application is ideal for individuals, teams, or organisations looking for a
   - [x] Unread count tracking
   - [x] Filter notifications (all, unread, read)
   - [x] Delete notifications
+  - [x] Real-time notification delivery via Socket.io
 - [] Client location-based reminders notifications
 - [] Missed/overdue task notifications
 - [] Customisable task reminder settings - how & when users are to be notified (eg, push, email, or desktop, etc)

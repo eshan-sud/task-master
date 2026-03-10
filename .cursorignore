@@ -1,4 +1,4 @@
-# .copilotignore
+# .cursorignore
 
 # Ignore environment files
 .env
