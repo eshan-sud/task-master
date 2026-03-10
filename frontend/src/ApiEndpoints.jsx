@@ -2,7 +2,7 @@
 
 // Base URL
 const baseURL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:8023/api/v1/";
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:8000/api/v1/";
 
 export const endpoints = {
   // Auth Endpoints
@@ -105,6 +105,7 @@ export const endpoints = {
   revokeShare: (shareId) => `${baseURL}task-share/${shareId}/revoke`, // DELETE
   checkPermissions: (taskId) => `${baseURL}task-share/${taskId}/permissions`, // GET
 
-  // Search Endpoint
-  userSearch: `${baseURL}search/userSearch`, // GET
+  // Search Endpoints
+  userSearch: `${baseURL}search/users`, // GET
+  globalSearch: `${baseURL}search/global`, // GET
 };
