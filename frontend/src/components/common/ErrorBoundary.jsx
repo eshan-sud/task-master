@@ -12,7 +12,7 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -65,7 +65,7 @@ class ErrorBoundary extends React.Component {
                 an unexpected error.
               </p>
 
-              {process.env.NODE_ENV === "development" && this.state.error && (
+              {import.meta.env.DEV && this.state.error && (
                 <details className="text-left bg-gray-50 dark:bg-gray-700 rounded p-4 mb-4">
                   <summary className="cursor-pointer font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Error Details
